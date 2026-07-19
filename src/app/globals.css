@@ -28,6 +28,9 @@
   --margin-outer: 20px; /* below 768px */
   --gutter: 16px; /* below 768px */
 
+  /* ---- Shell (Bible silent; see DECISIONS.md) ---- */
+  --header-height: 56px;
+
   /* ---- Motion — Bible §7 ---- */
   --duration-rise: 640ms;
   --duration-shift: 240ms;
@@ -288,6 +291,20 @@
     outline-color var(--duration-veil) var(--ease-veil) !important;
 }
 
+/* Header wordmark — Bible §2.3: monochrome, letters in --text-primary,
+   no wedge, wordmark-only. Typographic stand-in scaled above the 90px
+   floor until the source vector is supplied. */
+@utility wordmark {
+  font-size: 1.375rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  font-stretch: 125%;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
 /* Hairline rule — Bible §4.4: the only divider device on the site */
 @utility hairline {
   border-top: 1px solid var(--rule);
@@ -295,6 +312,10 @@
 
 @utility hairline-v {
   border-left: 1px solid var(--rule);
+}
+
+@utility hairline-b {
+  border-bottom: 1px solid var(--rule);
 }
 
 /* Site container: max content width + outer margin — Bible §6.1 */

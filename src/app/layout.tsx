@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Archivo } from "next/font/google";
+import { Footer } from "@/components/shell/Footer";
+import { Header } from "@/components/shell/Header";
+import { SkipLink } from "@/components/shell/SkipLink";
 import { ThemeProvider } from "@/components/shell/ThemeProvider";
 import "./globals.css";
 
@@ -29,8 +32,15 @@ export default function RootLayout({
   return (
     // suppressHydrationWarning: next-themes sets data-theme pre-hydration
     <html lang="en" className={archivo.variable} suppressHydrationWarning>
-      <body>
-        <ThemeProvider>{children}</ThemeProvider>
+      <body className="flex min-h-svh flex-col">
+        <ThemeProvider>
+          <SkipLink />
+          <Header />
+          <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
+            {children}
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

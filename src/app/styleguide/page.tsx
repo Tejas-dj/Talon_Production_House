@@ -89,7 +89,7 @@ function Swatch({ cssVar, utility, role }: (typeof COLOR_TOKENS)[number]) {
 
 export default function StyleguidePage() {
   return (
-    <main className="container-site pb-7">
+    <div className="container-site pb-7">
       {/* Statement-role header (§6.3) */}
       <header className="flex flex-wrap items-end justify-between gap-4 pt-7 pb-6">
         <div>
@@ -284,6 +284,6 @@ export default function StyleguidePage() {
           Stagger sequence for grouped Rise reveals: 0 / 70 / 160 / 220 / 330ms, repeating.
         </p>
       </section>
-    </main>
+    </div>
   );
 }
