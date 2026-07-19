@@ -273,6 +273,21 @@
   }
 }
 
+/* P3 Veil on theme switch — Bible §7: color-only crossfade, 320ms ease-out,
+   never layout properties. The class is applied by ThemeToggle for one beat
+   so every color moves on the veil clock, then normal timing returns.
+   Reduced motion: the global kill switch turns this into an instant cut. */
+.theme-veil,
+.theme-veil *,
+.theme-veil *::before,
+.theme-veil *::after {
+  transition:
+    background-color var(--duration-veil) var(--ease-veil),
+    color var(--duration-veil) var(--ease-veil),
+    border-color var(--duration-veil) var(--ease-veil),
+    outline-color var(--duration-veil) var(--ease-veil) !important;
+}
+
 /* Hairline rule — Bible §4.4: the only divider device on the site */
 @utility hairline {
   border-top: 1px solid var(--rule);

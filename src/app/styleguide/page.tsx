@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { FilterChipsDemo } from "@/components/styleguide/FilterChipsDemo";
-import { StyleguideThemeToggle } from "@/components/styleguide/StyleguideThemeToggle";
+import { ThemeToggle } from "@/components/shell/ThemeToggle";
 
 export const metadata: Metadata = {
   title: "Styleguide",
@@ -96,7 +96,7 @@ export default function StyleguidePage() {
           <p className="type-meta text-muted">Phase 2 · Internal reference · Not linked</p>
           <h1 className="type-display">Styleguide</h1>
         </div>
-        <StyleguideThemeToggle />
+        <ThemeToggle />
       </header>
 
       {/* ---- COLOR ---- */}

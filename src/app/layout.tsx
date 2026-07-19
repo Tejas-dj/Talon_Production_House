@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo } from "next/font/google";
+import { ThemeProvider } from "@/components/shell/ThemeProvider";
 import "./globals.css";
 
 /* Bible §5.1-A / §5.3: Archivo variable (wght + wdth axes), single self-hosted
@@ -26,8 +27,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={archivo.variable}>
-      <body>{children}</body>
+    // suppressHydrationWarning: next-themes sets data-theme pre-hydration
+    <html lang="en" className={archivo.variable} suppressHydrationWarning>
+      <body>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }
