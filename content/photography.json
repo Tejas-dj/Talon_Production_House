@@ -1,0 +1,35 @@
+[
+  {
+    "slug": "monsoon-portraits",
+    "title": "Monsoon Portraits",
+    "statement": "Faces caught mid-downpour across the city, lit only by whatever light the clouds allowed that hour.",
+    "imageIds": [
+      "talon/photography/monsoon-portraits/img-01",
+      "talon/photography/monsoon-portraits/img-02",
+      "talon/photography/monsoon-portraits/img-03",
+      "talon/photography/monsoon-portraits/img-04"
+    ]
+  },
+  {
+    "slug": "concrete-and-canopy",
+    "title": "Concrete and Canopy",
+    "statement": "Where Bengaluru's tree cover presses up against its newest towers, shot at the seam between the two.",
+    "imageIds": [
+      "talon/photography/concrete-and-canopy/img-01",
+      "talon/photography/concrete-and-canopy/img-02",
+      "talon/photography/concrete-and-canopy/img-03",
+      "talon/photography/concrete-and-canopy/img-04",
+      "talon/photography/concrete-and-canopy/img-05"
+    ]
+  },
+  {
+    "slug": "night-market-studies",
+    "title": "Night Market Studies",
+    "statement": "Available-light studies of the vendors who set up after dark along KR Market's outer lanes.",
+    "imageIds": [
+      "talon/photography/night-market-studies/img-01",
+      "talon/photography/night-market-studies/img-02",
+      "talon/photography/night-market-studies/img-03"
+    ]
+  }
+]

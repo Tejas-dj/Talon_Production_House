@@ -1,0 +1,73 @@
+[
+  {
+    "slug": "monsoon-sessions-ep-collective",
+    "title": "Monsoon Sessions: Ep Collective Live",
+    "client": "Ep Collective",
+    "year": 2025,
+    "format": "16:9 · 4K",
+    "runtime": "04:12",
+    "role": "Direction & Edit",
+    "credits": [
+      { "role": "Direction", "name": "Aditi Rao" },
+      { "role": "Cinematography", "name": "Karthik Subramaniam" },
+      { "role": "Picture Edit", "name": "Farhan Iqbal" },
+      { "role": "Sound Design", "name": "Meera Nair" },
+      { "role": "Colorist", "name": "Rohan Kapoor" }
+    ],
+    "synopsis": "Shot across one rain-soaked night at a warehouse space off Old Airport Road, this session film follows Ep Collective through a single unbroken take of their new single. The brief asked for texture over polish: handheld camera, practical lighting, the room's own reverb left in the mix. Grading leaned into the greens and ambers already present in the space rather than correcting toward a neutral palette.",
+    "category": "Music Video",
+    "bunnyVideoId": "1a2b3c4d-5e6f-4a1b-8c9d-0e1f2a3b4c5d",
+    "posterImageId": "talon/projects/monsoon-sessions/poster",
+    "stillImageIds": [
+      "talon/projects/monsoon-sessions/still-01",
+      "talon/projects/monsoon-sessions/still-02",
+      "talon/projects/monsoon-sessions/still-03"
+    ]
+  },
+  {
+    "slug": "namma-metro-city-in-motion",
+    "title": "Namma Metro: The City in Motion",
+    "client": "Bangalore Metro Rail Corp.",
+    "year": 2024,
+    "format": "16:9 · HD Broadcast",
+    "runtime": "01:45",
+    "role": "Full Production",
+    "credits": [
+      { "role": "Direction", "name": "Vikram Achar" },
+      { "role": "Cinematography", "name": "Sneha Reddy" },
+      { "role": "Line Producer", "name": "Aakash Bhandari" },
+      { "role": "Picture Edit", "name": "Priya Venkatesh" },
+      { "role": "Colorist", "name": "Devika Menon" },
+      { "role": "Composer", "name": "Arjun Mehta" }
+    ],
+    "synopsis": "A 90-second brand film commissioned for the opening of the Yellow Line, built around commuters rather than infrastructure: a tailor catching the first train of the day, two students revising for an exam on the platform, a grandmother carrying idli boxes to her daughter's house across town. The metro itself appears mostly in reflections and passing frames, present but never the subject.",
+    "category": "Brand Film",
+    "bunnyVideoId": "2b3c4d5e-6f7a-4b2c-9d0e-1f2a3b4c5d6e",
+    "posterImageId": "talon/projects/namma-metro/poster",
+    "stillImageIds": [
+      "talon/projects/namma-metro/still-01",
+      "talon/projects/namma-metro/still-02",
+      "talon/projects/namma-metro/still-03"
+    ]
+  },
+  {
+    "slug": "chai-stalls-of-old-bengaluru",
+    "title": "Chai Stalls of Old Bengaluru",
+    "client": "Talon Originals",
+    "year": 2025,
+    "format": "16:9 · HD",
+    "runtime": "08:30",
+    "role": "Direction & Camera",
+    "credits": [
+      { "role": "Direction", "name": "Ishaan Chowdhury" },
+      { "role": "Cinematography", "name": "Lakshmi Iyer" },
+      { "role": "Picture Edit", "name": "Nikhil Suresh" },
+      { "role": "Sound Design", "name": "Tara Fernandes" }
+    ],
+    "synopsis": "A self-initiated short documentary tracing four chai stalls that have run continuously since before the IT boom, filmed over three mornings in Malleswaram, Basavanagudi, Shivajinagar, and Fraser Town. No narration; the film lets pouring, glass-clinking, and half-heard counter conversations carry the structure. Made on our own time between commissioned work, mostly to keep the crew's eyes sharp between briefs.",
+    "category": "Documentary",
+    "bunnyVideoId": "3c4d5e6f-7a8b-4c3d-0e1f-2a3b4c5d6e7f",
+    "posterImageId": "talon/projects/chai-stalls/poster",
+    "stillImageIds": ["talon/projects/chai-stalls/still-01", "talon/projects/chai-stalls/still-02"]
+  }
+]

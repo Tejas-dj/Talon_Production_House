@@ -1,0 +1,98 @@
+[
+  {
+    "slug": "cyclorama-studio",
+    "name": "Cyclorama Studio",
+    "location": "Indiranagar, Bengaluru",
+    "heroImageId": "talon/studio/cyclorama/hero",
+    "galleryImageIds": [
+      "talon/studio/cyclorama/gallery-01",
+      "talon/studio/cyclorama/gallery-02",
+      "talon/studio/cyclorama/gallery-03"
+    ],
+    "specs": {
+      "dimensions": "40ft × 30ft, 16ft ceiling height",
+      "cycWall": "Seamless white cyclorama, 12ft radius",
+      "power": "3-phase supply, 63A with full distro",
+      "sound": "Acoustically treated, street-isolated",
+      "gripAndLighting": [
+        "4x Aputure 600d Pro fresnel kits",
+        "2x 6ft x 6ft bounce and floppy set",
+        "Full grip package: C-stands, flags, nets",
+        "Overhead truss with 12 rigging points",
+        "Fog and haze machine on request"
+      ],
+      "amenities": "Green room, styling area, parking for 6 cars"
+    },
+    "rates": {
+      "hourly": { "item": "Hourly rate", "price": "₹3,500" },
+      "halfDay": { "item": "Half day (5 hrs)", "price": "₹14,000" },
+      "fullDay": { "item": "Full day (10 hrs)", "price": "₹24,000" },
+      "equipmentAddOns": [
+        { "item": "Grip & lighting package", "price": "₹6,000" },
+        { "item": "Camera package (body + lens)", "price": "₹8,500" }
+      ]
+    },
+    "terms": "Rates exclude GST. 50% advance confirms the booking; balance due on the shoot day.",
+    "whatsappCtaText": "Message us with your date"
+  },
+  {
+    "slug": "green-room-studio",
+    "name": "Green Room Studio",
+    "location": "HSR Layout, Bengaluru",
+    "heroImageId": "talon/studio/green-room/hero",
+    "galleryImageIds": ["talon/studio/green-room/gallery-01", "talon/studio/green-room/gallery-02"],
+    "specs": {
+      "dimensions": "28ft × 22ft, 12ft ceiling height",
+      "cycWall": "Chroma-key green wall, 9ft radius",
+      "power": "Single-phase, 32A with backup UPS",
+      "sound": "Partially treated, quiet lane",
+      "gripAndLighting": [
+        "2x Aputure 300d II LED fresnels",
+        "4x LED panel lights with softboxes",
+        "Basic grip kit: stands, clamps, flags",
+        "Green screen tensioning frame"
+      ],
+      "amenities": "Changing room, kitchenette, street parking"
+    },
+    "rates": {
+      "hourly": { "item": "Hourly rate", "price": "₹2,200" },
+      "halfDay": { "item": "Half day (5 hrs)", "price": "₹9,000" },
+      "fullDay": { "item": "Full day (10 hrs)", "price": "₹16,000" },
+      "equipmentAddOns": [{ "item": "Camera package (body + lens)", "price": "₹7,000" }]
+    },
+    "terms": "Rates exclude GST. Cancellations within 48 hours forfeit the advance paid.",
+    "whatsappCtaText": "Message us to check dates"
+  },
+  {
+    "slug": "loft-daylight-studio",
+    "name": "Loft Daylight Studio",
+    "location": "Domlur, Bengaluru",
+    "heroImageId": "talon/studio/loft-daylight/hero",
+    "galleryImageIds": [
+      "talon/studio/loft-daylight/gallery-01",
+      "talon/studio/loft-daylight/gallery-02",
+      "talon/studio/loft-daylight/gallery-03"
+    ],
+    "specs": {
+      "dimensions": "35ft × 20ft, exposed 14ft ceiling",
+      "cycWall": "No built-in cyc; whitewashed brick",
+      "power": "Single-phase, 32A, two circuits",
+      "sound": "Untreated loft acoustics, natural reverb",
+      "gripAndLighting": [
+        "North-facing skylight, diffused all day",
+        "2x 4ft x 6ft bounce boards",
+        "Blackout drapes for full daylight control",
+        "Small grip kit: clamps, sandbags, poles"
+      ],
+      "amenities": "Rooftop access, freight lift, 4 parking bays"
+    },
+    "rates": {
+      "hourly": { "item": "Hourly rate", "price": "₹2,800" },
+      "halfDay": { "item": "Half day (5 hrs)", "price": "₹11,000" },
+      "fullDay": { "item": "Full day (10 hrs)", "price": "₹19,500" },
+      "equipmentAddOns": [{ "item": "Lighting top-up kit", "price": "₹4,500" }]
+    },
+    "terms": "Rates exclude GST. Natural light only after 6pm; add lighting kit for evening shoots.",
+    "whatsappCtaText": "Message us with your brief"
+  }
+]
