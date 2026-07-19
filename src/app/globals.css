@@ -189,6 +189,90 @@
   text-transform: uppercase;
 }
 
+/* ==========================================================================
+   INTERACTION VOCABULARY — Bible §7 "Interaction states, both themes".
+   The site's entire hover language is P2 Shift; these utilities are the only
+   implementations of it for links and buttons.
+   ========================================================================== */
+
+/* Links (nav/meta style): no underline at rest, underline draws left-to-right
+   on hover/focus (P2), held at full width + accent when current (§4.2). */
+@utility link-draw {
+  position: relative;
+  text-decoration: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.2em;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--duration-shift) var(--ease-shift);
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  &[aria-current]::after {
+    transform: scaleX(1);
+  }
+
+  &[aria-current] {
+    color: var(--accent);
+  }
+}
+
+/* Buttons: rest = hairline border, transparent fill; hover/focus = inverted
+   fill (P2); selected = accent border + label (filters); disabled = inert. */
+@utility btn {
+  display: inline-block;
+  border: 1px solid var(--rule);
+  color: var(--text-primary);
+  background-color: transparent;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-shift) var(--ease-shift),
+    color var(--duration-shift) var(--ease-shift),
+    border-color var(--duration-shift) var(--ease-shift);
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--text-primary);
+    color: var(--bg);
+    border-color: var(--text-primary);
+  }
+
+  &[aria-pressed="true"],
+  &[aria-current] {
+    background-color: transparent;
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    color: var(--disabled-fg);
+    background-color: var(--disabled-bg);
+    border-color: var(--rule);
+    cursor: not-allowed;
+  }
+}
+
+/* CTA variant (WhatsApp): pressed state fills with accent — Bible §7 */
+@utility btn-cta {
+  &:active:not(:disabled):not([aria-disabled="true"]) {
+    background-color: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+}
+
 /* Hairline rule — Bible §4.4: the only divider device on the site */
 @utility hairline {
   border-top: 1px solid var(--rule);
@@ -225,5 +309,17 @@
   :focus-visible {
     outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
+  }
+
+  /* Bible §7 reduced-motion fallbacks for CSS-driven motion: P2 Shift changes
+     apply instantly, P3 Veil cuts. (JS-driven motion checks useReducedMotion;
+     Framer Motion is unaffected by this block.) */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0ms !important;
+      animation-duration: 0ms !important;
+    }
   }
 }
