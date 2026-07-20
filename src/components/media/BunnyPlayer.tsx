@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 
 type BunnyPlayerProps = {
   /** Bunny Stream video GUID */
@@ -25,6 +26,12 @@ type BunnyPlayerProps = {
  * Edge, Android); Safari/iOS get native `<video src>` HLS support directly,
  * since layering hls.js on top of a browser that already plays HLS natively
  * only adds a dependency for no benefit.
+ *
+ * Poster→player transition (Phase 3): when `posterImageId` is given, a
+ * `<CloudinaryImage>` sits above the video and crossfades out (P3 Veil,
+ * 320ms) once the video actually starts rendering frames (`onPlaying`) —
+ * not merely on click/autoplay-intent — so there is never a gap between the
+ * poster disappearing and the stream having a frame ready to show.
  */
 export function BunnyPlayer({
   videoId,
@@ -35,14 +42,13 @@ export function BunnyPlayer({
 }: BunnyPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(autoPlayMuted);
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   const pullZone = process.env.NEXT_PUBLIC_BUNNY_PULL_ZONE;
   const hlsSrc = pullZone ? `https://${pullZone}.b-cdn.net/${videoId}/playlist.m3u8` : undefined;
-  const posterSrc = posterImageId
-    ? undefined // Phase 3: render <CloudinaryImage> above the video before play, or pass a resolved URL
-    : pullZone
-      ? `https://${pullZone}.b-cdn.net/${videoId}/thumbnail.jpg`
-      : undefined;
+  const bunnyThumbnail = pullZone
+    ? `https://${pullZone}.b-cdn.net/${videoId}/thumbnail.jpg`
+    : undefined;
 
   useEffect(() => {
     const video = videoRef.current;
@@ -87,18 +93,32 @@ export function BunnyPlayer({
   }
 
   return (
-    <div className={`relative ${className ?? ""}`}>
+    <div className={`relative overflow-hidden ${className ?? ""}`}>
       <video
         ref={videoRef}
-        poster={posterSrc}
+        poster={posterImageId ? undefined : bunnyThumbnail}
         controls={playing && !autoPlayMuted}
         playsInline
         muted={autoPlayMuted}
         loop={autoPlayMuted}
         autoPlay={autoPlayMuted}
+        onPlaying={() => setVideoPlaying(true)}
         aria-label={title}
-        className="h-full w-full"
+        className="h-full w-full object-cover"
       />
+      {posterImageId && (
+        <CloudinaryImage
+          id={posterImageId}
+          preset="poster"
+          alt=""
+          aria-hidden="true"
+          fill
+          priority
+          className={`absolute inset-0 object-cover transition-opacity duration-[320ms] ease-veil ${
+            videoPlaying ? "pointer-events-none opacity-0" : "opacity-100"
+          }`}
+        />
+      )}
       {!playing && !autoPlayMuted && (
         <button
           type="button"

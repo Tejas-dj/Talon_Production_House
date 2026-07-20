@@ -16,6 +16,7 @@
     ],
     "synopsis": "Shot across one rain-soaked night at a warehouse space off Old Airport Road, this session film follows Ep Collective through a single unbroken take of their new single. The brief asked for texture over polish: handheld camera, practical lighting, the room's own reverb left in the mix. Grading leaned into the greens and ambers already present in the space rather than correcting toward a neutral palette.",
     "category": "Music Video",
+    "featured": true,
     "bunnyVideoId": "1a2b3c4d-5e6f-4a1b-8c9d-0e1f2a3b4c5d",
     "posterImageId": "talon/projects/monsoon-sessions/poster",
     "stillImageIds": [
@@ -42,6 +43,7 @@
     ],
     "synopsis": "A 90-second brand film commissioned for the opening of the Yellow Line, built around commuters rather than infrastructure: a tailor catching the first train of the day, two students revising for an exam on the platform, a grandmother carrying idli boxes to her daughter's house across town. The metro itself appears mostly in reflections and passing frames, present but never the subject.",
     "category": "Brand Film",
+    "featured": true,
     "bunnyVideoId": "2b3c4d5e-6f7a-4b2c-9d0e-1f2a3b4c5d6e",
     "posterImageId": "talon/projects/namma-metro/poster",
     "stillImageIds": [
@@ -66,6 +68,7 @@
     ],
     "synopsis": "A self-initiated short documentary tracing four chai stalls that have run continuously since before the IT boom, filmed over three mornings in Malleswaram, Basavanagudi, Shivajinagar, and Fraser Town. No narration; the film lets pouring, glass-clinking, and half-heard counter conversations carry the structure. Made on our own time between commissioned work, mostly to keep the crew's eyes sharp between briefs.",
     "category": "Documentary",
+    "featured": true,
     "bunnyVideoId": "3c4d5e6f-7a8b-4c3d-0e1f-2a3b4c5d6e7f",
     "posterImageId": "talon/projects/chai-stalls/poster",
     "stillImageIds": ["talon/projects/chai-stalls/still-01", "talon/projects/chai-stalls/still-02"]

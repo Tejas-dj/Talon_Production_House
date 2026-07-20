@@ -36,7 +36,11 @@ export function Footer() {
             <ul className="flex flex-col gap-2">
               {CONTACT_LINKS.map((item) => (
                 <li key={item.label}>
-                  <a href={item.href} className="link-draw type-meta">
+                  <a
+                    href={item.href}
+                    className="link-draw type-meta"
+                    {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  >
                     {item.label}
                   </a>
                 </li>

@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import type {
+  ClientLogo,
   Credit,
   PhotoSeries,
   StudioSpace,
@@ -137,6 +138,14 @@ function assertStudioSpace(value: unknown, index: number): asserts value is Stud
     fail(file, index, `"${s.slug}" is missing "whatsappCtaText"`);
 }
 
+function assertClientLogo(value: unknown, index: number): asserts value is ClientLogo {
+  const file = "clients.json";
+  const c = value as Partial<ClientLogo> | null;
+  if (!c || typeof c !== "object") fail(file, index, "is not an object");
+  if (!isNonEmptyString(c.name)) fail(file, index, 'is missing "name"');
+  if (!isNonEmptyString(c.logoId)) fail(file, index, `"${c.name}" is missing "logoId"`);
+}
+
 function loadAndValidate<T>(
   file: string,
   assertItem: (value: unknown, index: number) => asserts value is T,
@@ -154,6 +163,7 @@ function loadAndValidate<T>(
 const projects = loadAndValidate("projects.json", assertVideoProject);
 const photography = loadAndValidate("photography.json", assertPhotoSeries);
 const studioSpaces = loadAndValidate("studio.json", assertStudioSpace);
+const clientLogos = loadAndValidate("clients.json", assertClientLogo);
 
 export function getAllProjects(): VideoProject[] {
   return projects;
@@ -177,4 +187,15 @@ export function getAllStudioSpaces(): StudioSpace[] {
 
 export function getStudioSpaceBySlug(slug: string): StudioSpace | undefined {
   return studioSpaces.find((s) => s.slug === slug);
+}
+
+/** The site currently rents a single physical space; Studio is a one-space page. */
+export function getStudioSpace(): StudioSpace {
+  const space = studioSpaces[0];
+  if (!space) throw new Error("content/studio.json: no studio space defined");
+  return space;
+}
+
+export function getAllClientLogos(): ClientLogo[] {
+  return clientLogos;
 }

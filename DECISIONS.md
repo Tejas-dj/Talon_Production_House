@@ -78,3 +78,69 @@ Reasoning: `src/` with `@/*` alias keeps app code separate from content and docs
 - **Bunny playback URL needs the library's pull-zone CDN hostname (`vz-xxxxxxxx-yyy.b-cdn.net`), not the numeric library id** — the brief asks for "the Bunny library id," but the pull-zone hostname is what HLS playback URLs actually require. `.env.example` documents where to find it (Stream library → API tab) and the env var is named `NEXT_PUBLIC_BUNNY_PULL_ZONE` to be unambiguous about which value it wants.
 - **`.env.example` is force-included in `.gitignore`'s `.env*` blanket-ignore** (`!.env.example`) so the documentation file itself is committed while real `.env.local` values never are.
 - **Gate verification (one real image via Cloudinary, one real video via Bunny, checked on a physical phone) is deferred to a later phase at the client's own instruction** — asked in chat per the brief; the client confirmed neither account exists yet and will supply the cloud name and pull-zone hostname in a future phase. The loader, presets, player component, and `.env.example` are built and pass `next build`/lint with placeholder-shaped code paths now, so Phase 3 has working infrastructure to build on; only the live-credential + physical-phone check remains, and it needs no further code once those two values arrive — set them in `.env.local` and the same components resolve real URLs immediately.
+
+## Page construction (Phase 3)
+
+Two questions were asked and answered before Phase 3 work began (see chat, not repeated here):
+**Studio is one physical space**, not the three `StudioSpace` entries Phase 2 modeled — trimmed
+`content/studio.json` to one entry (kept Cyclorama Studio). **Build against current placeholder
+content** — no real Cloudinary/Bunny credentials, WhatsApp number, or social handles exist yet;
+every step's gate report names the exact swap points.
+
+- **`AGENTS.md`'s `node_modules/next/dist/docs/` instruction points at a path that doesn't exist**
+  in this project's `next` package (verified with `ls`). Proceeded with the standard Next.js 16
+  App Router conventions Phase 2 already used throughout, rather than inventing undocumented
+  "breaking changes."
+- **`VideoProject` gets a new `featured?: boolean` field.** Selection AND ordering both come from
+  it plus the JSON array's own order — no separate order field, since array order already gives
+  full control (simplest thing that works). All 3 placeholder projects are marked `featured` for
+  now; gate report flags that Home wants 6–9 once more projects exist.
+- **New `content/clients.json` (empty array) + `ClientLogo` type/loader**, following the exact
+  validation pattern of the other three content files. Empty is valid input — the Home page's
+  logo strip conditionally renders nothing, per the brief's own instruction for this situation.
+- **`src/lib/use-dialog.ts` (new)** generalizes the focus-trap/escape/scroll-lock/focus-restore
+  behavior already proven in `MobileNav.tsx` into a reusable hook, rather than writing the same
+  fiddly a11y logic a third time for the stills overlay and the Photography Lightbox.
+  `MobileNav.tsx` itself is left untouched — different container-ref shape, already verified in
+  Phase 2, not worth the refactor risk.
+- **`BunnyPlayer`'s Phase 2 TODO (poster handling was stubbed) is now implemented**: a
+  `<CloudinaryImage>` sits above the `<video>` and crossfades out (P3 Veil, 320ms) once the video
+  actually starts rendering frames (`onPlaying`), not merely on click/autoplay-intent — avoids a
+  gap between the poster disappearing and the HLS stream having a frame ready.
+- **Project detail cinematic aspect ratio = 16:9`**, matching the existing `poster` Cloudinary
+  preset (`ar_16:9`) and each project's own `format` field, rather than inventing an un-Bibled
+  ultra-wide crop the wireframe's greybox proportions only vaguely suggested.
+- **Synopsis measure capped at `max-w-[70ch]`** — the wireframe gives a column span but no exact
+  character measure; 70ch sits in the brief's own 65–75ch "readability sweet spot."
+- **The metadata block became a 6-field `<dl>` data-plate** (Client/Year/Type/Format/Runtime/
+  Role) instead of the wireframe's simplified 4-field single meta line — the brief's own Step 1
+  text is explicit about 6 fields and says the block "must feel like a data plate, not a
+  paragraph," which the wireframe's low-fidelity greybox line under-specifies. `category` reads
+  as "Type" and the schema's own `format` field (aspect/resolution) reads as "Format," both shown
+  since both are real, already-existing data (see Step 6 content-layer note above for why they're
+  separate fields).
+- **Previous/Next both render** (the brief requires both directions; the wireframe's greybox only
+  shows one "next" block) — split 7/5 per the asymmetry doctrine, hairline above, wrap-around at
+  both ends. Text-only, no thumbnail (brief calls a thumbnail optional; the wireframe omits it).
+- **`type-display` project titles need `break-words`.** Found during 320px verification: a single
+  long word (e.g. "COLLECTIVE") set at the minimum display clamp (3.25rem) with 125% width-stretch
+  can exceed a mobile column's width with nowhere to wrap, causing real horizontal overflow.
+  `break-words` allows a mid-word break only when unavoidable; normal-length words are unaffected.
+- **Removed a `text-right` I'd initially put on the "Next" link** — Bible §6.4 rule 2 is explicit
+  that *text* blocks stay left-anchored (only media is allowed to drift/offset right); right-
+  aligning a text block was a rule violation on my part, caught in the same 320px pass.
+- **`src/components/work/ProjectGrid.tsx` (new)** is the one implementation of the asymmetric
+  card stagger (Bible §6.4 rule 4) shared by the Video index and Home's featured section, so the
+  alternating-side/offset-down logic exists exactly once.
+- **`SITE_URL` consolidated into `site.ts`**, replacing the `process.env.NEXT_PUBLIC_SITE_URL ??
+  "http://localhost:3000"` fallback that was duplicated in `sitemap.ts` and `robots.ts`; also
+  backs `layout.tsx`'s new `metadataBase` and every page's canonical URL (Step 7).
+- **`sitemap.ts` now includes project detail URLs** (`/work/[slug]` for every project) — a small,
+  obviously-correct gap left over from Phase 2, when no project pages existed yet to list.
+- **Known pre-existing issue, out of Phase 3 scope: `Header.tsx` overflows by ~7px at exactly
+  320px** (its flex row of wordmark + nav + theme toggle + menu button doesn't quite fit at the
+  narrowest supported width). This is unmodified Phase 2 shell code; flagging it here rather than
+  patching shell code that wasn't part of this phase's task list.
+- **Local-only `.env.local`** (already covered by the repo's blanket `.env*` gitignore rule) holds
+  placeholder `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`/`NEXT_PUBLIC_BUNNY_PULL_ZONE` values so pages
+  render without the loader's "not set" throw during my own visual verification. Never committed.

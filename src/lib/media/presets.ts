@@ -40,6 +40,11 @@ export const CLOUDINARY_PRESETS = {
     transform: "c_limit",
     sizes: "100vw",
   },
+  /** Open Graph / Twitter card crop for project detail pages: fixed 1200x630 */
+  ogImage: {
+    transform: "c_fill,g_auto,ar_1200:630",
+    sizes: "1200px",
+  },
 } as const satisfies Record<string, CloudinaryPreset>;
 
 export type CloudinaryPresetName = keyof typeof CLOUDINARY_PRESETS;

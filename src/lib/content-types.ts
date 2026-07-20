@@ -34,6 +34,9 @@ export interface VideoProject {
   synopsis: string;
   /** Filter category — matches the wireframe's TYPE filter chips, [6–14 ch] */
   category: VideoCategory;
+  /** Hand-picked Home-page highlight (Phase 3). Selection AND ordering both
+   * come from this flag plus the array's own order — no separate order field. */
+  featured?: boolean;
   /** Bunny Stream video GUID */
   bunnyVideoId: string;
   /** Cloudinary public id */
@@ -72,6 +75,13 @@ export interface StudioSpaceSpecs {
   gripAndLighting: string[];
   /** [20–44 ch] */
   amenities: string;
+}
+
+export interface ClientLogo {
+  /** [4–24 ch], used as alt text */
+  name: string;
+  /** Cloudinary public id, monochrome-treatable SVG/PNG */
+  logoId: string;
 }
 
 export interface StudioSpace {
