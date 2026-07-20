@@ -59,3 +59,9 @@ export const CREDIT = {
   label: "CobaltKite Creatives",
   href: "#", // TODO: confirm URL
 } as const;
+
+/* Home hero background — the studio's own 24s silent showreel, uploaded to
+   Bunny Stream (library 708480) specifically for this purpose. Kept separate
+   from `featured` projects: it's a reel, not a client project with a
+   client/synopsis/credits, so it shouldn't also render as a Work grid card. */
+export const HERO_BUNNY_VIDEO_ID = "80b37aa9-bd62-4afe-a447-175a609f7695";

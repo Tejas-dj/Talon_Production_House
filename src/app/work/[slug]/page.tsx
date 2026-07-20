@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { BunnyPlayer } from "@/components/media/BunnyPlayer";
 import { ProjectStillsGallery } from "@/components/work/ProjectStillsGallery";
 import { getAllProjects, getProjectBySlug } from "@/lib/content";
+import { bunnyThumbnailUrl } from "@/lib/media/bunny";
 import { cloudinaryUrl } from "@/lib/media/presets";
 
 type Params = { slug: string };
@@ -32,7 +33,11 @@ export async function generateMetadata({
   const ogTitle = `${project.title} — Talon Production House`;
   // Project OG images use the poster image via a Cloudinary transform, per
   // the brief, rather than the ImageResponse-based cards the static pages use.
-  const ogImage = cloudinaryUrl(project.posterImageId, "ogImage", 1200);
+  // Falls back to Bunny Stream's own thumbnail when no Cloudinary poster
+  // exists yet — still a real image, not a broken/invented one.
+  const ogImage = project.posterImageId
+    ? cloudinaryUrl(project.posterImageId, "ogImage", 1200)
+    : (bunnyThumbnailUrl(project.bunnyVideoId) ?? "");
 
   return {
     title: project.title,
@@ -125,10 +130,17 @@ export default async function ProjectDetailPage({ params }: { params: Promise<Pa
       </section>
 
       {/* Stills gallery — continues the working section (no rule needed
-          between same-role blocks per Bible §6.3). */}
-      <section className="container-site pb-6">
-        <ProjectStillsGallery projectTitle={project.title} stillImageIds={project.stillImageIds} />
-      </section>
+          between same-role blocks per Bible §6.3). Hidden entirely when no
+          real production stills exist yet, rather than showing an empty
+          "Stills" heading. */}
+      {project.stillImageIds && project.stillImageIds.length > 0 && (
+        <section className="container-site pb-6">
+          <ProjectStillsGallery
+            projectTitle={project.title}
+            stillImageIds={project.stillImageIds}
+          />
+        </section>
+      )}
 
       <div className="hairline" />
 

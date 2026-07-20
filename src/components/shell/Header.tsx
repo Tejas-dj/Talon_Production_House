@@ -40,7 +40,7 @@ export function Header() {
           menuOpen ? "bg-page" : scrolled ? "hairline-b bg-page" : "border-b border-b-transparent"
         }`}
       >
-        <div className="container-site flex h-(--header-height) items-center justify-between">
+        <div className="container-header flex h-(--header-height) items-center justify-between">
           <Link href="/" className="flex items-center" aria-label="Talon Production House — home">
             {/* Full-color lockup (TALON + PRODUCTION HOUSE + wedge) — both
                 theme variants render in the DOM; CSS selects which paints
@@ -52,7 +52,7 @@ export function Header() {
               height={660}
               unoptimized
               priority
-              className="theme-logo-light h-6 w-auto"
+              className="theme-logo-light h-7 w-auto"
             />
             <Image
               src="/images/logo/TALON_Logo_DarkTheme.svg"
@@ -61,7 +61,7 @@ export function Header() {
               height={660}
               unoptimized
               priority
-              className="theme-logo-dark h-6 w-auto"
+              className="theme-logo-dark h-7 w-auto"
             />
           </Link>
 

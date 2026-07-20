@@ -1,6 +1,28 @@
 import Link from "next/link";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
+import { bunnyThumbnailUrl } from "@/lib/media/bunny";
 import type { VideoProject } from "@/lib/content-types";
+
+/** Poster if a real Cloudinary still exists, else Bunny Stream's own
+ * auto-generated thumbnail — never a broken image for an unpublished poster. */
+function ProjectThumb({ project, className }: { project: VideoProject; className: string }) {
+  const alt = `${project.title}, ${project.category.toLowerCase()} for ${project.client}`;
+  if (project.posterImageId) {
+    return (
+      <CloudinaryImage
+        id={project.posterImageId}
+        preset="thumbnail"
+        alt={alt}
+        fill
+        className={className}
+      />
+    );
+  }
+  const thumb = bunnyThumbnailUrl(project.bunnyVideoId);
+  if (!thumb) return null;
+  // eslint-disable-next-line @next/next/no-img-element -- external Bunny CDN URL; next/image would route it through the global Cloudinary loader.
+  return <img src={thumb} alt={alt} className={`absolute inset-0 h-full w-full ${className}`} />;
+}
 
 type ProjectGridProps = {
   projects: VideoProject[];
@@ -31,11 +53,8 @@ export function ProjectGrid({ projects, variant = "index" }: ProjectGridProps) {
               {thumbFirst ? (
                 <>
                   <div className="relative aspect-video overflow-hidden md:[grid-column:1/8]">
-                    <CloudinaryImage
-                      id={project.posterImageId}
-                      preset="thumbnail"
-                      alt={`${project.title}, ${project.category.toLowerCase()} for ${project.client}`}
-                      fill
+                    <ProjectThumb
+                      project={project}
                       className="scale-100 object-cover saturate-[.92] transition-[filter,transform] duration-[240ms] ease-shift group-hover:scale-[1.015] group-hover:saturate-100 group-focus-visible:scale-[1.015] group-focus-visible:saturate-100"
                     />
                   </div>
@@ -55,11 +74,8 @@ export function ProjectGrid({ projects, variant = "index" }: ProjectGridProps) {
                     </p>
                   </div>
                   <div className="relative order-1 aspect-video overflow-hidden md:order-2 md:[grid-column:6/13]">
-                    <CloudinaryImage
-                      id={project.posterImageId}
-                      preset="thumbnail"
-                      alt={`${project.title}, ${project.category.toLowerCase()} for ${project.client}`}
-                      fill
+                    <ProjectThumb
+                      project={project}
                       className="scale-100 object-cover saturate-[.92] transition-[filter,transform] duration-[240ms] ease-shift group-hover:scale-[1.015] group-hover:saturate-100 group-focus-visible:scale-[1.015] group-focus-visible:saturate-100"
                     />
                   </div>

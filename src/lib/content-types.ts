@@ -5,7 +5,12 @@
  * judgment calls made where the wireframes and brief didn't fully agree.
  */
 
-export type VideoCategory = "Commercial" | "Music Video" | "Documentary" | "Brand Film";
+export type VideoCategory =
+  | "Commercial"
+  | "Music Video"
+  | "Documentary"
+  | "Brand Film"
+  | "Short Film";
 
 export interface Credit {
   /** [8–22 ch] e.g. "Direction", "Cinematography" */
@@ -39,10 +44,12 @@ export interface VideoProject {
   featured?: boolean;
   /** Bunny Stream video GUID */
   bunnyVideoId: string;
-  /** Cloudinary public id */
-  posterImageId: string;
-  /** Cloudinary public ids, 2–3 stills per the wireframes */
-  stillImageIds: string[];
+  /** Cloudinary public id. Omit if no real poster still exists yet — falls
+   * back to Bunny Stream's own auto-generated thumbnail (src/lib/media/bunny.ts). */
+  posterImageId?: string;
+  /** Cloudinary public ids, 2–3 stills per the wireframes. Omit/empty when no
+   * real production stills exist yet — the Stills section is hidden. */
+  stillImageIds?: string[];
 }
 
 export interface PhotoSeries {

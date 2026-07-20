@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
+import { bunnyThumbnailUrl } from "@/lib/media/bunny";
 
 type BunnyPlayerProps = {
   /** Bunny Stream video GUID */
@@ -46,9 +47,7 @@ export function BunnyPlayer({
 
   const pullZone = process.env.NEXT_PUBLIC_BUNNY_PULL_ZONE;
   const hlsSrc = pullZone ? `https://${pullZone}.b-cdn.net/${videoId}/playlist.m3u8` : undefined;
-  const bunnyThumbnail = pullZone
-    ? `https://${pullZone}.b-cdn.net/${videoId}/thumbnail.jpg`
-    : undefined;
+  const bunnyThumbnail = bunnyThumbnailUrl(videoId);
 
   useEffect(() => {
     const video = videoRef.current;

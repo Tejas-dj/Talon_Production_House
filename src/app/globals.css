@@ -353,6 +353,14 @@
   padding-inline: var(--margin-outer);
 }
 
+/* Header container: narrower than the page container so the bar doesn't
+   sprawl edge-to-edge on wide viewports. */
+@utility container-header {
+  max-width: calc(1400px + 2 * var(--margin-outer));
+  margin-inline: auto;
+  padding-inline: var(--margin-outer);
+}
+
 /* ==========================================================================
    BASE
    ========================================================================== */

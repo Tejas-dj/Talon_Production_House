@@ -4,6 +4,7 @@ import { BunnyPlayer } from "@/components/media/BunnyPlayer";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { ProjectGrid } from "@/components/work/ProjectGrid";
 import { getAllClientLogos, getAllProjects } from "@/lib/content";
+import { HERO_BUNNY_VIDEO_ID } from "@/lib/site";
 
 const DESCRIPTION =
   "Video production, photography, and studio rental in Bengaluru. Real work, real space, real rates.";
@@ -25,7 +26,6 @@ const STATEMENT =
 export default function HomePage() {
   const allProjects = getAllProjects();
   const featured = allProjects.filter((p) => p.featured);
-  const heroProject = featured[0] ?? allProjects[0];
   const clients = getAllClientLogos();
 
   return (
@@ -37,9 +37,8 @@ export default function HomePage() {
           value and reasoning). Autoplay muted/looping via BunnyPlayer. */}
       <section className="relative h-[82vh] w-full overflow-hidden [clip-path:polygon(0_0,100%_0,100%_100%,0_90%)]">
         <BunnyPlayer
-          videoId={heroProject.bunnyVideoId}
-          title={`${heroProject.title} — Talon Production House showreel`}
-          posterImageId={heroProject.posterImageId}
+          videoId={HERO_BUNNY_VIDEO_ID}
+          title="Talon Production House showreel"
           autoPlayMuted
           className="h-full w-full"
         />

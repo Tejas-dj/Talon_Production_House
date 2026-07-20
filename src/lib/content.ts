@@ -24,6 +24,7 @@ const VIDEO_CATEGORIES: VideoCategory[] = [
   "Music Video",
   "Documentary",
   "Brand Film",
+  "Short Film",
 ];
 
 function readJson(file: string): unknown {
@@ -67,17 +68,20 @@ function assertVideoProject(value: unknown, index: number): asserts value is Vid
     fail(file, index, `"${p.slug}" has invalid "category" ${JSON.stringify(p.category)}`);
   }
   if (!isNonEmptyString(p.bunnyVideoId)) fail(file, index, `"${p.slug}" is missing "bunnyVideoId"`);
-  if (!isNonEmptyString(p.posterImageId))
-    fail(file, index, `"${p.slug}" is missing "posterImageId"`);
+  if (p.posterImageId !== undefined && !isNonEmptyString(p.posterImageId)) {
+    fail(file, index, `"${p.slug}" has an invalid "posterImageId"`);
+  }
   if (!Array.isArray(p.credits) || p.credits.length === 0) {
     fail(file, index, `"${p.slug}" is missing "credits"`);
   }
   p.credits.forEach((c, i) => assertCredit(c, file, index, i));
-  if (!Array.isArray(p.stillImageIds) || p.stillImageIds.length === 0) {
-    fail(file, index, `"${p.slug}" is missing "stillImageIds"`);
-  }
-  if (!p.stillImageIds.every(isNonEmptyString)) {
-    fail(file, index, `"${p.slug}" has a non-string entry in "stillImageIds"`);
+  if (p.stillImageIds !== undefined) {
+    if (!Array.isArray(p.stillImageIds)) {
+      fail(file, index, `"${p.slug}" has an invalid "stillImageIds"`);
+    }
+    if (!p.stillImageIds.every(isNonEmptyString)) {
+      fail(file, index, `"${p.slug}" has a non-string entry in "stillImageIds"`);
+    }
   }
 }
 
