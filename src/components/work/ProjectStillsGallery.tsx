@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
+import { Reveal } from "@/components/motion/Reveal";
 import { useDialogBehavior } from "@/lib/use-dialog";
 
 type ProjectStillsGalleryProps = {
@@ -38,22 +39,23 @@ export function ProjectStillsGallery({ projectTitle, stillImageIds }: ProjectSti
           const ratio = slot === 1 ? "aspect-[4/3]" : "aspect-video";
 
           return (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setOpenIndex(i)}
-              className={`relative ${ratio} ${span} overflow-hidden text-left`}
-              aria-label={`Open still ${i + 1} of ${stillImageIds.length} from ${projectTitle}`}
-            >
-              <CloudinaryImage
-                id={id}
-                preset="gallery"
-                alt={`${projectTitle} — production still ${i + 1}`}
-                fill
-                loading="lazy"
-                className="object-cover"
-              />
-            </button>
+            <Reveal key={id} index={i} className={`relative ${ratio} ${span} overflow-hidden`}>
+              <button
+                type="button"
+                onClick={() => setOpenIndex(i)}
+                className="absolute inset-0 text-left"
+                aria-label={`Open still ${i + 1} of ${stillImageIds.length} from ${projectTitle}`}
+              >
+                <CloudinaryImage
+                  id={id}
+                  preset="gallery"
+                  alt={`${projectTitle} — production still ${i + 1}`}
+                  fill
+                  loading="lazy"
+                  className="object-cover"
+                />
+              </button>
+            </Reveal>
           );
         })}
       </div>

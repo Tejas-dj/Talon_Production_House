@@ -18,10 +18,18 @@ export const EASE = {
   veil: "easeOut" as const,
 };
 
-/* P1 — Rise: viewport entry, first entry only (viewport={{ once: true, amount: 0.2 }}). */
+/* P1 — Rise: viewport entry, first entry only (viewport={{ once: true, amount: 0.2 }}).
+   `visible` is a dynamic variant (function of the `custom` prop) so each
+   grouped item can carry its own stagger delay — Framer Motion's per-variant
+   transition takes priority over a transition passed via props, so the delay
+   has to live inside the variant itself, not alongside it. */
 export const rise: Variants = {
   hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: DURATION.rise, ease: EASE.rise } },
+  visible: (i: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: DURATION.rise, ease: EASE.rise, delay: staggerDelay(i) },
+  }),
 };
 
 /* P1 reduced-motion fallback: opacity only, 180ms linear. */

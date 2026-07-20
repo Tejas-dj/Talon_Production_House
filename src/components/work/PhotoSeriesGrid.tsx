@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { Lightbox } from "@/components/media/Lightbox";
+import { Reveal } from "@/components/motion/Reveal";
 
 type PhotoSeriesGridProps = {
   seriesTitle: string;
@@ -42,22 +43,23 @@ export function PhotoSeriesGrid({ seriesTitle, imageIds }: PhotoSeriesGridProps)
                   : "aspect-square";
 
           return (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setOpenIndex(i)}
-              className={`relative ${ratio} ${span} overflow-hidden text-left`}
-              aria-label={`Open photograph ${i + 1} of ${imageIds.length} from ${seriesTitle}`}
-            >
-              <CloudinaryImage
-                id={id}
-                preset="gallery"
-                alt={`${seriesTitle}, photograph ${i + 1}`}
-                fill
-                loading="lazy"
-                className="object-cover"
-              />
-            </button>
+            <Reveal key={id} index={i} className={`relative ${ratio} ${span} overflow-hidden`}>
+              <button
+                type="button"
+                onClick={() => setOpenIndex(i)}
+                className="absolute inset-0 text-left"
+                aria-label={`Open photograph ${i + 1} of ${imageIds.length} from ${seriesTitle}`}
+              >
+                <CloudinaryImage
+                  id={id}
+                  preset="gallery"
+                  alt={`${seriesTitle}, photograph ${i + 1}`}
+                  fill
+                  loading="lazy"
+                  className="object-cover"
+                />
+              </button>
+            </Reveal>
           );
         })}
       </div>

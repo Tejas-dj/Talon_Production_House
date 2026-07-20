@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { Lightbox } from "@/components/media/Lightbox";
+import { Reveal } from "@/components/motion/Reveal";
 
 type StudioGalleryProps = {
   studioName: string;
@@ -31,22 +32,27 @@ export function StudioGallery({ studioName, imageIds }: StudioGalleryProps) {
               : "md:[grid-column:10/13]";
 
         return (
-          <button
+          <Reveal
             key={id}
-            type="button"
-            onClick={() => setOpenIndex(i)}
-            className={`relative aspect-[4/3] ${span} overflow-hidden text-left`}
-            aria-label={`Open ${studioName} view ${i + 1} of ${imageIds.length}`}
+            index={i}
+            className={`relative aspect-[4/3] ${span} overflow-hidden`}
           >
-            <CloudinaryImage
-              id={id}
-              preset="gallery"
-              alt={`${studioName}, interior view ${i + 1}`}
-              fill
-              loading="lazy"
-              className="object-cover"
-            />
-          </button>
+            <button
+              type="button"
+              onClick={() => setOpenIndex(i)}
+              className="absolute inset-0 text-left"
+              aria-label={`Open ${studioName} view ${i + 1} of ${imageIds.length}`}
+            >
+              <CloudinaryImage
+                id={id}
+                preset="gallery"
+                alt={`${studioName}, interior view ${i + 1}`}
+                fill
+                loading="lazy"
+                className="object-cover"
+              />
+            </button>
+          </Reveal>
         );
       })}
 

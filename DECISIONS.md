@@ -417,3 +417,66 @@ every step's gate report names the exact swap points.
   of those defined steps. The derived monochrome wordmark assets (`talon-mark-{light,dark}.svg`,
   `scripts/generate-logo-assets.mjs`) are left in place, unused by Header — the script still
   generates the favicon set from the same source and shouldn't be deleted.
+
+## Motion system (Phase 4, Step 1)
+
+- **`rise`'s `visible` state became a dynamic (function-of-`custom`) variant** rather than a plain
+  object (`src/lib/motion.ts`). Framer Motion gives a variant's own inline `transition` priority
+  over a `transition` prop passed to the component, so a per-item stagger delay has nowhere to live
+  except inside the variant itself — the documented Framer Motion pattern for this is a variant
+  function receiving `custom`, which is what `rise` is now. `riseReduced` stays a static object
+  (no stagger under reduced motion — see below).
+- **New `src/components/motion/Reveal.tsx`** is the one implementation of P1 Rise for every
+  scroll-triggered reveal site the brief lists (Home featured cards + client logos, Video index
+  cards, Photography series headings + images, Project detail metadata/synopsis/stills, Studio
+  gallery/spec rows/rate rows, Contact links) — picks `rise` vs. `riseReduced` via Framer Motion's
+  `useReducedMotion`, fires once at 20% viewport visibility, threads `index` through as `custom`.
+  One implementation, matching the codebase's existing pattern of centralizing shared behavior
+  (`ProjectGrid`, `useDialogBehavior`, `Lightbox`).
+- **Applied reveals exactly to the brief's named list, not more.** Project detail's Credits list
+  and Home's statement paragraph/"Selected Work" heading are deliberately left un-revealed — not
+  named in the brief's explicit per-page list, and shaped like the "body text paragraphs don't
+  animate in" exclusion. Studio's "equipment section" and "rate card" are staggered per-row (not
+  as one block) because Bible §7 P1's own applies-to list names "rate rows" specifically, not "the
+  rate card" as a unit; spec rows and Contact's links follow the same per-row treatment for
+  consistency with every other repeated-list reveal on the site (index items, gallery images).
+- **Wrapping list rows in `Reveal` broke two components' reliance on `:first-child` CSS
+  (`first:pt-0` in `ProjectGrid.tsx`, `first:border-t-0` in `studio/page.tsx`'s `SpecRow`/
+  `RateRow`).** Nesting each row inside its own new wrapper div makes that row the sole/first child
+  of the wrapper regardless of its real position in the list, so the pseudo-class stopped
+  distinguishing "first card overall" from "every card." Fixed two different ways depending on
+  which component owns the DOM boundary: `ProjectGrid` explicitly checks `i === 0` in the class
+  string (the row itself, `<Link>`, is nested one level inside `Reveal`, so first-child can't reach
+  it); `SpecRow`/`RateRow` instead render `<Reveal>` itself as their outermost element (no added
+  wrapper), so they stay true siblings under `<dl>`/the rate container and `first:border-t-0`
+  keeps working unmodified. Verified both against the live DOM after the fix (row-by-row computed
+  `padding-top`/`border-top-width` check) rather than trusting the read alone.
+- **Home hero extracted into `src/components/home/Hero.tsx`** (new Client Component) purely to host
+  the scroll-linked scale (`useScroll` + `useTransform`, 1 to 1.08 across the hero's own scroll
+  range via `offset: ["start start", "end start"]`), gated to `undefined` (no transform at all)
+  under `useReducedMotion()`. This is scroll-linked, not duration/easing-driven, which is why the
+  brief lists "hero media motion" separately from "every animation uses one of the three
+  primitives" — it has no timing curve to conflict with Bible §7.
+- **Real bug found and fixed: `link-draw` and `btn` in `globals.css` had no touch-device hover
+  guard.** `ProjectGrid.tsx`'s `group-hover:` classes turned out to already be safe — confirmed by
+  inspecting the actual compiled CSS output, where Tailwind v4 wraps `group-hover` (like `hover`)
+  in `@media (hover: hover)` by default (shipped in Tailwind 3.4+, still true in v4). But
+  `link-draw`/`btn` are hand-written `&:hover` rules inside `@utility` blocks — raw nested CSS,
+  which Tailwind's automatic variant-level media guard does not reach. These two utilities are the
+  site's entire hover vocabulary (nav links, every button, filter chips, WhatsApp CTA, theme
+  toggle per Bible §7), so this was a real, sitewide "hover state sticks after a tap" bug, not a
+  hypothetical one. Fixed by splitting each `&:hover, &:focus-visible` block into a
+  `@media (hover: hover) { &:hover {...} }` block plus an unconditional `&:focus-visible {...}`
+  block — focus-visible must never be touch-gated, it's a keyboard/AT state. Verified against the
+  compiled CSS output directly (media-query-wrapped hover rule, unconditional focus-visible rule
+  both present and correctly split), not just by reading the source.
+- **Custom cursor: skipped**, per the brief's own instruction that a missing one is invisible while
+  a flawed one is the loudest thing on the page. Five simultaneous hard requirements (zero-lag,
+  fully touch-invisible, never blocking text selection/click targets, state-changes on every
+  interactive element, on-brand design) is real scope for a nice-to-have the brief explicitly
+  frames as skippable.
+- **`PageTransition.tsx`'s existing 320ms P3 Veil fade is unchanged**, despite the brief's "under
+  300ms" framing — 320ms is Bible §7's own locked P3 duration (a token, not a magic number), the
+  fade doesn't block interactivity or progressive image loading underneath it, and no loading
+  screen exists. Shortening a Bible-defined duration to satisfy a soft brief number would violate
+  "tokens, not values" for a 20ms difference with no user-perceptible cost.

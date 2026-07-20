@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BunnyPlayer } from "@/components/media/BunnyPlayer";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
+import { Hero } from "@/components/home/Hero";
+import { Reveal } from "@/components/motion/Reveal";
 import { ProjectGrid } from "@/components/work/ProjectGrid";
 import { getAllClientLogos, getAllProjects } from "@/lib/content";
-import { HERO_BUNNY_VIDEO_ID } from "@/lib/site";
 
 const DESCRIPTION =
   "Video production, photography, and studio rental in Bengaluru. Real work, real space, real rates.";
@@ -31,30 +31,13 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero — Bible §6.5: full-bleed video, 82vh, bottom edge clipped at
-          −13° (the one diagonal permitted on the site, Home hero only).
-          The clip is a percentage-based approximation of the angle, same
+          −13° (the one diagonal permitted on the site, Home hero only). The
+          clip is a percentage-based approximation of the angle, same
           precedent as Footer.tsx's wedge (see DECISIONS.md for the exact
-          value and reasoning). Autoplay muted/looping via BunnyPlayer. */}
-      <section className="relative h-[82vh] w-full overflow-hidden [clip-path:polygon(0_0,100%_0,100%_100%,0_90%)]">
-        <BunnyPlayer
-          videoId={HERO_BUNNY_VIDEO_ID}
-          title="Talon Production House showreel"
-          autoPlayMuted
-          className="h-full w-full"
-        />
-        {/* Flat scrim tint (not a gradient) for overlay text legibility */}
-        <div className="bg-scrim/30 pointer-events-none absolute inset-0" aria-hidden="true" />
-        <div className="pointer-events-none absolute inset-0">
-          <div className="container-site grid h-full grid-rows-[auto_1fr_auto] py-6 md:grid-cols-12">
-            <p className="type-meta text-hero-overlay text-right md:col-span-3 md:col-start-10">
-              Production House / Bengaluru
-            </p>
-            <h1 className="type-display text-hero-overlay row-start-3 md:col-span-9 md:row-start-3">
-              Talon
-            </h1>
-          </div>
-        </div>
-      </section>
+          value and reasoning). Autoplay muted/looping via BunnyPlayer;
+          subtle scroll-linked scale drift is Hero.tsx's own concern
+          (Phase 4 Step 1 "hero media motion"). */}
+      <Hero />
 
       {/* Statement — interstitial role (Bible §6.3): --space-7 top, --space-5
           bottom. Cols 1–6 intentionally empty (asymmetry rule 2). */}
@@ -81,7 +64,7 @@ export default function HomePage() {
           <div className="hairline" />
           <section className="container-site pt-6 pb-6">
             <h2 className="sr-only">Clients</h2>
-            <div className="flex flex-wrap items-center gap-8">
+            <Reveal className="flex flex-wrap items-center gap-8">
               {clients.map((c) => (
                 <CloudinaryImage
                   key={c.logoId}
@@ -93,7 +76,7 @@ export default function HomePage() {
                   className="h-8 w-auto object-contain grayscale"
                 />
               ))}
-            </div>
+            </Reveal>
           </section>
         </>
       )}

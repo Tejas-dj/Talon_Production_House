@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Reveal } from "@/components/motion/Reveal";
 import { CONTACT_LINKS, WHATSAPP_GENERAL_MESSAGE, waLink } from "@/lib/site";
 
 const DESCRIPTION =
@@ -21,14 +22,16 @@ function ContactRow({
   detail,
   href,
   external,
+  index,
 }: {
   label: string;
   detail: string;
   href: string;
   external?: boolean;
+  index: number;
 }) {
   return (
-    <div className="hairline">
+    <Reveal index={index} className="hairline">
       <a
         href={href}
         className="link-draw flex flex-col gap-2 py-6 sm:flex-row sm:items-baseline sm:justify-between"
@@ -37,7 +40,7 @@ function ContactRow({
         <span className="type-headline">{label} →</span>
         <span className="type-meta text-muted">{detail}</span>
       </a>
-    </div>
+    </Reveal>
   );
 }
 
@@ -52,9 +55,10 @@ export default function ContactPage() {
       </header>
 
       <div className="container-site pb-8">
-        {CONTACT_LINKS.map((item) => (
+        {CONTACT_LINKS.map((item, i) => (
           <ContactRow
             key={item.label}
+            index={i}
             label={item.label}
             detail={item.handle}
             href={item.href}
@@ -62,6 +66,7 @@ export default function ContactPage() {
           />
         ))}
         <ContactRow
+          index={CONTACT_LINKS.length}
           label="WhatsApp"
           detail="Message us directly"
           href={waLink(WHATSAPP_GENERAL_MESSAGE)}

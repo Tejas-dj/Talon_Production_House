@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BunnyPlayer } from "@/components/media/BunnyPlayer";
+import { Reveal } from "@/components/motion/Reveal";
 import { ProjectStillsGallery } from "@/components/work/ProjectStillsGallery";
 import { getAllProjects, getProjectBySlug } from "@/lib/content";
 import { bunnyThumbnailUrl } from "@/lib/media/bunny";
@@ -93,14 +94,16 @@ export default async function ProjectDetailPage({ params }: { params: Promise<Pa
           (documented in DECISIONS.md). */}
       <header className="container-site pt-8 pb-6">
         <h1 className="type-headline">{project.title}</h1>
-        <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3 lg:grid-cols-6">
-          <MetaField label="Client" value={project.client} />
-          <MetaField label="Year" value={String(project.year)} />
-          <MetaField label="Type" value={project.category} />
-          <MetaField label="Format" value={project.format} />
-          <MetaField label="Runtime" value={project.runtime} />
-          <MetaField label="Role" value={project.role} />
-        </dl>
+        <Reveal className="mt-6">
+          <dl className="grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3 lg:grid-cols-6">
+            <MetaField label="Client" value={project.client} />
+            <MetaField label="Year" value={String(project.year)} />
+            <MetaField label="Type" value={project.category} />
+            <MetaField label="Format" value={project.format} />
+            <MetaField label="Runtime" value={project.runtime} />
+            <MetaField label="Role" value={project.role} />
+          </dl>
+        </Reveal>
       </header>
 
       <div className="hairline" />
@@ -125,7 +128,9 @@ export default async function ProjectDetailPage({ params }: { params: Promise<Pa
         </div>
         <div className="md:[grid-column:7/13]">
           <h2 className="type-meta text-muted mb-3">Synopsis</h2>
-          <p className="type-body max-w-[70ch]">{project.synopsis}</p>
+          <Reveal>
+            <p className="type-body max-w-[70ch]">{project.synopsis}</p>
+          </Reveal>
         </div>
       </section>
 

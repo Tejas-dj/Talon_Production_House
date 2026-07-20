@@ -240,7 +240,16 @@
     transition: transform var(--duration-shift) var(--ease-shift);
   }
 
-  &:hover::after,
+  /* Hover is gated to devices that can actually hover (Bible §7 "on touch
+     devices, this hover state should not exist") — otherwise a tap leaves
+     the underline stuck drawn until the visitor taps elsewhere. Focus-visible
+     is never gated: it's a keyboard/AT-driven state, not a pointer one. */
+  @media (hover: hover) {
+    &:hover::after {
+      transform: scaleX(1);
+    }
+  }
+
   &:focus-visible::after {
     transform: scaleX(1);
   }
@@ -267,7 +276,15 @@
     color var(--duration-shift) var(--ease-shift),
     border-color var(--duration-shift) var(--ease-shift);
 
-  &:hover,
+  /* Hover gated to hover-capable devices — see link-draw above for why. */
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--text-primary);
+      color: var(--bg);
+      border-color: var(--text-primary);
+    }
+  }
+
   &:focus-visible {
     background-color: var(--text-primary);
     color: var(--bg);

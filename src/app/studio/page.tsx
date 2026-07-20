@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
+import { Reveal } from "@/components/motion/Reveal";
 import { StudioGallery } from "@/components/studio/StudioGallery";
 import { getStudioSpace } from "@/lib/content";
 import { WHATSAPP_STUDIO_MESSAGE, waLink } from "@/lib/site";
@@ -15,21 +16,35 @@ export const metadata: Metadata = {
   twitter: { title: "Studio — Talon Production House", description: DESCRIPTION },
 };
 
-function SpecRow({ label, children }: { label: string; children: React.ReactNode }) {
+function SpecRow({
+  label,
+  children,
+  index,
+}: {
+  label: string;
+  children: React.ReactNode;
+  index: number;
+}) {
   return (
-    <div className="hairline flex flex-col gap-2 p-4 first:border-t-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+    <Reveal
+      index={index}
+      className="hairline flex flex-col gap-2 p-4 first:border-t-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+    >
       <dt className="type-meta text-muted shrink-0 sm:w-[10rem]">{label}</dt>
       <dd className="type-body sm:text-right">{children}</dd>
-    </div>
+    </Reveal>
   );
 }
 
-function RateRow({ item, price }: { item: string; price: string }) {
+function RateRow({ item, price, index }: { item: string; price: string; index: number }) {
   return (
-    <div className="hairline flex items-baseline justify-between gap-4 p-4 first:border-t-0">
+    <Reveal
+      index={index}
+      className="hairline flex items-baseline justify-between gap-4 p-4 first:border-t-0"
+    >
       <span className="type-body">{item}</span>
       <span className="type-body shrink-0">{price}</span>
-    </div>
+    </Reveal>
   );
 }
 
@@ -69,18 +84,28 @@ export default function StudioPage() {
         </div>
         <div className="md:[grid-column:5/13]">
           <dl className="bg-surface">
-            <SpecRow label="Dimensions">{specs.dimensions}</SpecRow>
-            <SpecRow label="Cyc Wall">{specs.cycWall}</SpecRow>
-            <SpecRow label="Power">{specs.power}</SpecRow>
-            <SpecRow label="Sound">{specs.sound}</SpecRow>
-            <SpecRow label="Grip & Lighting">
+            <SpecRow index={0} label="Dimensions">
+              {specs.dimensions}
+            </SpecRow>
+            <SpecRow index={1} label="Cyc Wall">
+              {specs.cycWall}
+            </SpecRow>
+            <SpecRow index={2} label="Power">
+              {specs.power}
+            </SpecRow>
+            <SpecRow index={3} label="Sound">
+              {specs.sound}
+            </SpecRow>
+            <SpecRow index={4} label="Grip & Lighting">
               <ul className="flex flex-col gap-1">
                 {specs.gripAndLighting.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
             </SpecRow>
-            <SpecRow label="Amenities">{specs.amenities}</SpecRow>
+            <SpecRow index={5} label="Amenities">
+              {specs.amenities}
+            </SpecRow>
           </dl>
         </div>
       </section>
@@ -94,11 +119,11 @@ export default function StudioPage() {
         </div>
         <div className="md:[grid-column:5/13]">
           <div className="bg-surface">
-            <RateRow item={rates.hourly.item} price={rates.hourly.price} />
-            <RateRow item={rates.halfDay.item} price={rates.halfDay.price} />
-            <RateRow item={rates.fullDay.item} price={rates.fullDay.price} />
-            {rates.equipmentAddOns.map((row) => (
-              <RateRow key={row.item} item={row.item} price={row.price} />
+            <RateRow index={0} item={rates.hourly.item} price={rates.hourly.price} />
+            <RateRow index={1} item={rates.halfDay.item} price={rates.halfDay.price} />
+            <RateRow index={2} item={rates.fullDay.item} price={rates.fullDay.price} />
+            {rates.equipmentAddOns.map((row, i) => (
+              <RateRow key={row.item} index={3 + i} item={row.item} price={row.price} />
             ))}
           </div>
           <p className="type-small text-muted mt-4 max-w-[65ch]">{studio.terms}</p>
