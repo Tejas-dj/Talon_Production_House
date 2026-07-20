@@ -529,3 +529,52 @@ in-browser rather than by re-reading the source a second time:
 No gaps found requiring a code fix in this step — the audit confirmed Phase 3's accessibility work
 and Phase 4 Step 1's new motion components are all correctly wired, rather than turning up new
 defects.
+
+## Legal pages and completeness infrastructure (Phase 4, Step 3)
+
+- **Favicon set, web manifest, `robots.ts`, `sitemap.ts` were already complete from Phase 3.5** —
+  verified by reading all four rather than assuming; only change needed was adding `/privacy` and
+  `/terms` to the sitemap's static path list.
+- **Privacy policy and Terms live in the footer only**, next to the copyright line — not in
+  `NAV_ITEMS`/primary nav. They aren't among the Bible's six page templates, and footer small-print
+  placement is the standard pattern that doesn't compete with the four primary nav items for
+  attention.
+- **Privacy policy names Vercel Analytics specifically and states the site sets no cookies** — both
+  literally true given the Analytics choice below, so the "no cookie banner" call from earlier in
+  this file stays accurate rather than becoming a stale claim once Analytics actually shipped.
+- **Analytics: `@vercel/analytics`** (`npm install @vercel/analytics`, `<Analytics />` in
+  `layout.tsx`) — the brief's own explicit default when undecided, and the site is deployed on
+  Vercel per the brief's own stated premise. Verified in-browser: production builds load
+  `/_vercel/insights/script.js` same-origin (confirmed by reading the package's own
+  `getScriptSrc()` — the external `va.vercel-scripts.com/v1/script.debug.js` path is gated behind
+  `isDevelopment()` and only appears locally), so no separate CSP domain is needed for it.
+- **`error.tsx` (styled via the normal token system) vs. `global-error.tsx` (fully static, own
+  `<html>/<body>`, inline CSS with hardcoded hex + a `prefers-color-scheme` media query)** — built
+  both per the brief's explicit instruction to use "`error.tsx` and `global-error.tsx` conventions
+  appropriately." The former handles ordinary page-content errors (header/footer/theme system are
+  still intact around it, so it can safely use `container-site`/`type-*` utilities); the latter is
+  Next's fallback for when the root layout itself fails, so it can't depend on anything that might
+  be implicated in that failure — no import of `globals.css`, the token layer, or even
+  `src/lib/site.ts` (the contact email is hardcoded here, duplicating `site.ts`'s real value
+  intentionally, for total isolation from whatever broke).
+- **Security headers + CSP added to `next.config.ts`.** `script-src`/`style-src` both need
+  `'unsafe-inline'` — `script-src` for next-themes' blocking pre-hydration script (brief
+  pre-authorizes this exact case); `style-src` for `next/image`'s inline `style` attribute on every
+  `fill`-mode image, used throughout the gallery/poster/hero components — a real, self-discovered
+  necessity the brief didn't name, verified by checking the actual rendered `style` attribute on a
+  `fill` image and confirming Chrome logs no `style-src` violation for it. A nonce-based CSP would
+  need per-request middleware, forcing dynamic rendering across an otherwise fully static site —
+  out of scope for a hardening pass. `img-src`/`media-src`/`connect-src` all allow
+  `https://*.b-cdn.net` (covers both the Bunny pull-zone hostname and hls.js's own segment
+  fetches) plus `img-src`/`connect-src` allow `res.cloudinary.com`. Verified against live behavior,
+  not just written and assumed: loaded a real project detail page, clicked Play, and confirmed the
+  `<video>` element reached `readyState: 4` (HAVE_ENOUGH_DATA) with `error: null` — the CSP
+  correctly permits real Bunny HLS playback, not just a theoretical allowance. Checked every page
+  type's console for `Refused to...`/CSP violation messages; found none. One expected, harmless,
+  dev-only console error was left as-is: React's Fast Refresh uses `eval()` for its debugging
+  callstack reconstruction, which this CSP blocks (no `unsafe-eval`) — the error message itself
+  states "React will never use eval() in production mode," so adding `unsafe-eval` would weaken
+  production security to silence a development-only convenience message, not fix a real gap.
+- **404 (`not-found.tsx`)** uses the Bible's display type for a short line and a link home, nothing
+  else, per the brief. It renders through the normal root layout (Header/Footer/PageTransition all
+  apply automatically), so no chrome duplication was needed.

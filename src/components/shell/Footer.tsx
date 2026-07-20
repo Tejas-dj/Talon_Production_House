@@ -61,8 +61,16 @@ export function Footer() {
         </div>
 
         <div className="hairline mt-6 flex flex-wrap items-baseline justify-between gap-3 pt-3">
-          <p className="type-small text-muted">
-            © <CopyrightYear /> Talon Production House, Bengaluru
+          <p className="type-small text-muted flex flex-wrap items-baseline gap-x-4">
+            <span>
+              © <CopyrightYear /> Talon Production House, Bengaluru
+            </span>
+            <Link href="/privacy" className="link-draw">
+              Privacy
+            </Link>
+            <Link href="/terms" className="link-draw">
+              Terms
+            </Link>
           </p>
           <p className="type-small text-muted">
             Site by{" "}
