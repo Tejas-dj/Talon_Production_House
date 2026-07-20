@@ -181,3 +181,32 @@ every step's gate report names the exact swap points.
   grid (vs. stills' 1-up stack), matching the wireframe's own mobile Photography frame.
 - **Series titles render at `type-subhead`, not `type-headline`.** Bible §5.2's type-scale table
   explicitly assigns "Series titles" to `--type-subhead` — caught this before shipping it wrong.
+- **Studio is a single space, not three** (see top of this section) — `content/studio.json`
+  trimmed to one `StudioSpace` entry; `getStudioSpace()` added to `content.ts` returning it
+  directly rather than every caller reaching for `getAllStudioSpaces()[0]`.
+- **Significant sitewide bug found and fixed: `--spacing-0` was never defined.** `globals.css`'s
+  `@theme` block resets `--spacing-*: initial` and `--spacing: initial` (intentionally, to close
+  off Tailwind's default numeric scale and force the Bible's 8 named steps), then only redefines
+  `--spacing-1` through `--spacing-8`. Tailwind v4 compiles any "-0" utility (`top-0`, `inset-0`,
+  `bottom-0`, `left-0`, `right-0`, …) as `calc(var(--spacing) * 0)` unless a `--spacing-0` token
+  exists — with `--spacing` reset and no `--spacing-0`, every "-0" utility sitewide silently
+  resolved to an invalid/`auto` value instead of `0`. Found while building the Studio page's
+  sticky-bottom-bar WhatsApp CTA (`bottom-0`/`inset-x-0` had no effect at all); checking further,
+  **this meant `Header.tsx`'s `sticky top-0` was never actually sticky** (confirmed: after
+  scrolling 800px it moved off-screen with the page instead of pinning to `top: 0`) **and
+  `MobileNav.tsx`'s `fixed inset-0` scrim/panel may not have reliably covered the full viewport**
+  — both pre-existing Phase 2 code, unrelated to anything built in Phase 3 itself. Fixed by adding
+  `--spacing-0: 0px` alongside the existing 1–8 scale — a structural "zero," not a ninth scale
+  step, so it doesn't reopen arbitrary in-between spacing values (`p-7`, `mt-11`, …) the closed
+  scale exists to prevent. Verified after the fix: Header now correctly pins at `top: 0` through
+  scroll, MobileNav's overlay covers the full 0,0→viewport rect, and the Studio CTA sits flush at
+  the bottom of the mobile viewport.
+- **WhatsApp CTA is one link, not two.** The wireframe's mobile frame explicitly calls for a
+  sticky bottom bar and the desktop frame shows it inline after the rate rows; rendering it twice
+  (one per breakpoint) would violate Bible §1.3's "no content block exists twice in the DOM" rule,
+  so it's a single `<a>` whose position/sizing utilities switch entirely via the `md:` breakpoint
+  (`fixed` + `inset-x-0 bottom-0` at mobile → `static` + normal flow at desktop).
+- **Grip & lighting equipment renders as one row with a list value**, not 5–10 separate labeled
+  rows — the content type's "6–10 rows" comment describes the array's own length, and a
+  scannable bulleted list under one "Grip & Lighting" label reads better than repeating a near-
+  identical label 5 times; each item is still its own line.
