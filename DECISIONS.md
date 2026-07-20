@@ -480,3 +480,52 @@ every step's gate report names the exact swap points.
   fade doesn't block interactivity or progressive image loading underneath it, and no loading
   screen exists. Shortening a Bible-defined duration to satisfy a soft brief number would violate
   "tokens, not values" for a 20ms difference with no user-perceptible cost.
+
+## Accessibility audit (Phase 4, Step 2)
+
+Mostly a verification pass — Phase 3 had already built the real machinery (`useDialogBehavior`,
+`MobileNav`'s inline trap, the global focus-visible ring, `aria-label`s throughout). Verified live
+in-browser rather than by re-reading the source a second time:
+
+- **Keyboard tab order** (Home, desktop): skip link → wordmark → Work → Photography → Studio →
+  Contact → theme toggle → first project card. No gaps, matches DOM/visual order exactly (recorded
+  via a `focus` event listener across real synthetic Tab presses, not inferred).
+- **Skip link**: a synthetic `key: Return` press on the focused link didn't register as a real
+  activation in this automation environment (a tooling artifact — Tab-driven focus movement worked
+  correctly throughout), but a direct `.click()` confirmed the underlying behavior is correct:
+  navigates to `#main` and moves focus onto it (`tabIndex={-1}` correctly wired in `layout.tsx`).
+- **Lightbox focus trap** (Photography page): opens with focus on Close; Tab cycles
+  Close → Previous → Next → wraps to Close; Escape closes, restores focus to the photograph button
+  that opened it, and releases `document.body`'s scroll lock (`overflow: visible` confirmed).
+- **MobileNav focus trap**: at 375px, opening the menu cycles Close → Work → Photography → Studio →
+  Contact → wordmark → theme toggle → wraps to Close — confirming DECISIONS.md's existing note that
+  the trap spans the whole header plus the overlay, not just the overlay. Escape closes, restores
+  focus to the "Menu" trigger, flips `aria-expanded` back to `false`, restores `inert` on the panel,
+  and releases the body scroll lock.
+- **Accessible names**: re-audited every `<button>`/`<a>`/`<Link>` across `src/` (16 files) for a
+  discernible name — including `src/app/styleguide/page.tsx` and `FilterChipsDemo.tsx`, which the
+  brief doesn't explicitly exempt even though they're `noindex`/nav-excluded. No gaps found — every
+  icon-adjacent control already had a correct `aria-label` from Phase 3, and everything else
+  carries visible text.
+- **Color contrast, independently recomputed** (not just re-read from the Bible): pulled the live
+  `--bg`/`--surface`/`--text-muted`/`--text-primary`/`--accent` custom-property values from the
+  rendered page in both themes and ran the actual WCAG relative-luminance contrast formula against
+  them in-browser. Light: muted-on-bg 5.13, muted-on-surface 4.63, primary-on-bg 14.69,
+  accent-on-bg 5.28, accent-on-surface 4.77. Dark: muted-on-bg 5.73, muted-on-surface 5.37,
+  primary-on-bg 18.48, accent-on-bg 6.30, accent-on-surface 5.90. Matches the Bible's §4.4 measured
+  values exactly in both themes — confirms the token layer hasn't drifted from what was originally
+  measured, all pairings still clear the 4.5:1 normal-text AA floor.
+- **`aria-current="page"`** confirmed correctly reflecting the active route on the Work nav item
+  (checked both the desktop and mobile-overlay nav instances, which share the `aria-label="Primary"`
+  landmark name — not a duplicate-landmark bug, since they're mutually exclusive by breakpoint and
+  the closed `MobileNav` is `inert`, removing it from the accessibility tree entirely).
+- **Reduced motion**: this session's browser tools have no prefers-reduced-motion emulation control
+  (unlike Chrome DevTools' own media-emulation panel), so I could not do a live OS-level toggle
+  test. Verified instead by code-pattern audit: `Reveal.tsx` and `Hero.tsx` both use Framer Motion's
+  `useReducedMotion()` hook identically to the already-shipped, already-verified `PageTransition.tsx`
+  pattern from Phase 2, and the CSS-side blanket kill switch in `globals.css` (zeroing all
+  transition/animation durations under the media query) is untouched.
+
+No gaps found requiring a code fix in this step — the audit confirmed Phase 3's accessibility work
+and Phase 4 Step 1's new motion components are all correctly wired, rather than turning up new
+defects.
