@@ -149,6 +149,10 @@
   font-weight: 800;
   font-stretch: 125%;
   text-transform: uppercase;
+  /* Even at the minimum clamp, a single long word (e.g. "Photography") can
+     exceed a 320px column at this weight/width — allow a mid-word break
+     only when unavoidable, a no-op for words that already fit. */
+  overflow-wrap: break-word;
 }
 
 @utility type-headline {

@@ -116,14 +116,14 @@ export default async function ProjectDetailPage({ params }: { params: Promise<Pa
           className="link-draw block pb-1 md:[grid-column:1/6]"
         >
           <span className="type-meta text-muted mb-2 block">Previous</span>
-          <span className="type-display block break-words">{prevProject.title}</span>
+          <span className="type-display block">{prevProject.title}</span>
         </Link>
         <Link
           href={`/work/${nextProject.slug}`}
           className="link-draw block pb-1 md:[grid-column:8/13]"
         >
           <span className="type-meta text-muted mb-2 block">Next</span>
-          <span className="type-display block break-words">{nextProject.title}</span>
+          <span className="type-display block">{nextProject.title}</span>
         </Link>
       </nav>
     </article>

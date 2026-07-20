@@ -163,3 +163,21 @@ every step's gate report names the exact swap points.
   them (there's no visible section heading here, unlike Home's "Selected Work" head). Keeps
   `ProjectGrid`'s internal heading level (h3) consistent across both of its call sites rather than
   making it conditional.
+- **`overflow-wrap: break-word` added directly to the `type-display` `@utility`** in
+  `globals.css`, rather than an ad-hoc `break-words` at each call site. Found on the Photography
+  page: "Photography" alone, at the minimum display clamp (3.25rem, 800 weight, 125% width-
+  stretch), is 525px wide — wider than a 320px column's ~280px content width, with nowhere to
+  wrap. This is the same failure mode already fixed once in Step 1 (the Prev/Next project titles);
+  baking it into the utility fixes it everywhere `type-display` is used, present and future,
+  instead of relying on remembering a modifier class per call site. The Step 1 call sites' now-
+  redundant `break-words` classes were removed.
+- **`Lightbox` component (new, `src/components/media/Lightbox.tsx`)** is generic over a plain
+  `images: string[]` + `initialIndex`, not coupled to `PhotoSeries` — reusable wherever a scoped
+  image set needs prev/next/close, per the brief's "build it as reusable" instruction.
+- **`PhotoSeriesGrid` uses a 4-item repeating span/aspect-ratio pattern** (portrait 3:4 / wide
+  16:9 / ultra-wide 21:9 / square 1:1), deliberately different from Project Detail's 3-item,
+  narrower aspect-ratio range — satisfies the brief's "should feel distinctly different" gate on
+  both the pattern length and the actual shapes, not just the column math. Mobile is a plain 2-up
+  grid (vs. stills' 1-up stack), matching the wireframe's own mobile Photography frame.
+- **Series titles render at `type-subhead`, not `type-headline`.** Bible §5.2's type-scale table
+  explicitly assigns "Series titles" to `--type-subhead` — caught this before shipping it wrong.
