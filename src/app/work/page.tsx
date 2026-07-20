@@ -5,8 +5,15 @@ import { ProjectGrid } from "@/components/work/ProjectGrid";
 import { getAllProjects } from "@/lib/content";
 import type { VideoCategory } from "@/lib/content-types";
 
+const DESCRIPTION =
+  "Commercials, music videos, documentaries, and brand films shot by Talon Production House in Bengaluru.";
+
 export const metadata: Metadata = {
   title: "Video",
+  description: DESCRIPTION,
+  alternates: { canonical: "/work" },
+  openGraph: { title: "Video — Talon Production House", description: DESCRIPTION, url: "/work" },
+  twitter: { title: "Video — Talon Production House", description: DESCRIPTION },
 };
 
 type SearchParams = { category?: string };

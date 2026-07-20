@@ -1,8 +1,20 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { BunnyPlayer } from "@/components/media/BunnyPlayer";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { ProjectGrid } from "@/components/work/ProjectGrid";
 import { getAllClientLogos, getAllProjects } from "@/lib/content";
+
+const DESCRIPTION =
+  "Video production, photography, and studio rental in Bengaluru. Real work, real space, real rates.";
+
+export const metadata: Metadata = {
+  title: { absolute: "Talon Production House" },
+  description: DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: { title: "Talon Production House", description: DESCRIPTION, url: "/" },
+  twitter: { title: "Talon Production House", description: DESCRIPTION },
+};
 
 /* Positioning line — Bible §5.2 assigns "statement paragraphs on Home" to
    type-subhead, reusing the exact copy already established as this

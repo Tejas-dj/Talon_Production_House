@@ -244,3 +244,43 @@ every step's gate report names the exact swap points.
   `CONTACT_LINKS` array, since that array also drives `Footer.tsx`'s link list, and the Footer's
   own wireframe likewise shows only 4 links, no WhatsApp — keeping `CONTACT_LINKS` at 4 keeps the
   footer wireframe-faithful while the Contact page gets the brief's full 5-channel list.
+
+## Metadata & Open Graph (Step 7)
+
+- **Static pages (home/work/photography/studio/contact) use Next's `opengraph-image.tsx` file
+  convention** (`next/og`'s `ImageResponse`), rendering one shared, genuinely-designed 1200×630
+  card (`src/lib/og-image.tsx`) — token colors, the wedge motif from `Footer.tsx`'s clip-path,
+  heavy tracked caps — per page, not a screenshot. Font is system-ui rather than self-hosted
+  Archivo: Satori (the engine behind `ImageResponse`) needs raw font binary data, which
+  `next/font`'s build pipeline doesn't expose for reuse, and fetching a font file at request time
+  trades reliability for a marginal typographic gain on a share-preview card. The card always
+  renders the dark palette regardless of the viewer's site theme — a share card has no theme of
+  its own, and Satori has no access to the page's runtime `[data-theme]` anyway.
+- **Project detail pages skip `ImageResponse` entirely** and set `openGraph.images` directly to
+  `cloudinaryUrl(posterImageId, "ogImage", 1200)` — a real Cloudinary transform of each project's
+  own poster, per the brief's explicit instruction for this page type. New `ogImage` preset added
+  to `src/lib/media/presets.ts` (`c_fill,g_auto,ar_1200:630`).
+- **`generateMetadata` now calls `cloudinaryUrl()` at build time** (via `generateStaticParams`'s
+  SSG pass), which throws if `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` is unset — this extends the
+  existing "fail loudly on a missing credential" pattern from `cloudinary-loader.ts` /
+  `CloudinaryImage.tsx` from "images render broken" to "the build itself fails" for this one code
+  path, kept consistent with the rest of the codebase rather than special-cased with a fallback.
+  **`next build` now requires the Cloudinary env var to be set** — already true for correct
+  images generally, just newly load-bearing for the build to complete too. Flagging clearly since
+  the client confirmed no Cloudinary account exists yet (Step 7, Phase 2).
+- **Meta description truncation is word-boundary-aware** (`truncateDescription`, ≤155 chars) —
+  cuts at the last space before the limit rather than mid-word, appending "…".
+- **One known, unresolved 60-char title overage**: `Monsoon Sessions: Ep Collective Live — Talon
+  Production House` is 61 characters. That project's own title (37 chars) is within its stated
+  18–48ch content budget, but combined with the fixed `— Talon Production House` suffix (26
+  chars) it exceeds the SEO title budget by one character. This is a structural tension between
+  Phase 2's content-schema title budget and Phase 3's SEO title budget, not something fixable by
+  editing real project data or dropping the suffix (which would break the "consistent format"
+  requirement and cross-page brand consistency) — flagging honestly rather than silently
+  truncating a client-supplied title. Titles at the very top of the 48ch budget will always risk
+  this; worth a conversation with the client if it recurs with real content.
+- **`sitemap.ts` reads `SITE_URL` from `src/lib/site.ts`** (new shared constant) instead of
+  redefining `process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"` locally, and now also
+  lists every project detail URL — `robots.ts` does the same. `layout.tsx` gets a new
+  `metadataBase: new URL(SITE_URL)` so every page's relative canonical/OG `url` resolves to an
+  absolute URL correctly.

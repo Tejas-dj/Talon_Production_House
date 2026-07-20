@@ -2,8 +2,19 @@ import type { Metadata } from "next";
 import { PhotoSeriesGrid } from "@/components/work/PhotoSeriesGrid";
 import { getAllPhotoSeries } from "@/lib/content";
 
+const DESCRIPTION =
+  "Curated photography series from Talon Production House — portraits, urban studies, and available-light work from Bengaluru.";
+
 export const metadata: Metadata = {
   title: "Photography",
+  description: DESCRIPTION,
+  alternates: { canonical: "/photography" },
+  openGraph: {
+    title: "Photography — Talon Production House",
+    description: DESCRIPTION,
+    url: "/photography",
+  },
+  twitter: { title: "Photography — Talon Production House", description: DESCRIPTION },
 };
 
 export default function PhotographyPage() {

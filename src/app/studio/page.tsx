@@ -4,8 +4,15 @@ import { StudioGallery } from "@/components/studio/StudioGallery";
 import { getStudioSpace } from "@/lib/content";
 import { WHATSAPP_STUDIO_MESSAGE, waLink } from "@/lib/site";
 
+const DESCRIPTION =
+  "Rent Talon's Bengaluru studio floor by the hour, half day, or full day — specs, rates, and instant WhatsApp booking.";
+
 export const metadata: Metadata = {
   title: "Studio",
+  description: DESCRIPTION,
+  alternates: { canonical: "/studio" },
+  openGraph: { title: "Studio — Talon Production House", description: DESCRIPTION, url: "/studio" },
+  twitter: { title: "Studio — Talon Production House", description: DESCRIPTION },
 };
 
 function SpecRow({ label, children }: { label: string; children: React.ReactNode }) {

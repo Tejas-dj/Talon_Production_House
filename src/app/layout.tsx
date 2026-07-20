@@ -4,6 +4,7 @@ import { Footer } from "@/components/shell/Footer";
 import { Header } from "@/components/shell/Header";
 import { SkipLink } from "@/components/shell/SkipLink";
 import { ThemeProvider } from "@/components/shell/ThemeProvider";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 /* Bible §5.1-A / §5.3: Archivo variable (wght + wdth axes), single self-hosted
@@ -17,11 +18,20 @@ const archivo = Archivo({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Talon Production House",
     template: "%s — Talon Production House",
   },
   description: "Video production, photography, and studio rental in Bengaluru.",
+  openGraph: {
+    siteName: "Talon Production House",
+    type: "website",
+    locale: "en_IN",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({

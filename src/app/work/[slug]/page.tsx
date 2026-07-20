@@ -4,11 +4,19 @@ import { notFound } from "next/navigation";
 import { BunnyPlayer } from "@/components/media/BunnyPlayer";
 import { ProjectStillsGallery } from "@/components/work/ProjectStillsGallery";
 import { getAllProjects, getProjectBySlug } from "@/lib/content";
+import { cloudinaryUrl } from "@/lib/media/presets";
 
 type Params = { slug: string };
 
 export function generateStaticParams(): Params[] {
   return getAllProjects().map((p) => ({ slug: p.slug }));
+}
+
+/** Truncates at a word boundary, ≤155 chars, per the brief's meta-description budget. */
+function truncateDescription(text: string, maxLength = 155): string {
+  if (text.length <= maxLength) return text;
+  const cut = text.slice(0, maxLength - 1);
+  return `${cut.slice(0, cut.lastIndexOf(" "))}…`;
 }
 
 export async function generateMetadata({
@@ -18,7 +26,26 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
-  return { title: project?.title ?? "Project not found" };
+  if (!project) return { title: "Project not found" };
+
+  const description = truncateDescription(project.synopsis);
+  const ogTitle = `${project.title} — Talon Production House`;
+  // Project OG images use the poster image via a Cloudinary transform, per
+  // the brief, rather than the ImageResponse-based cards the static pages use.
+  const ogImage = cloudinaryUrl(project.posterImageId, "ogImage", 1200);
+
+  return {
+    title: project.title,
+    description,
+    alternates: { canonical: `/work/${project.slug}` },
+    openGraph: {
+      title: ogTitle,
+      description,
+      url: `/work/${project.slug}`,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: project.title }],
+    },
+    twitter: { title: ogTitle, description, images: [ogImage] },
+  };
 }
 
 function MetaField({ label, value }: { label: string; value: string }) {

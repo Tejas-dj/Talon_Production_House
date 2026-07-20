@@ -1,8 +1,19 @@
 import type { Metadata } from "next";
 import { CONTACT_LINKS, WHATSAPP_GENERAL_MESSAGE, waLink } from "@/lib/site";
 
+const DESCRIPTION =
+  "Reach Talon Production House directly — Instagram, YouTube, phone, email, or WhatsApp. No forms.";
+
 export const metadata: Metadata = {
   title: "Contact",
+  description: DESCRIPTION,
+  alternates: { canonical: "/contact" },
+  openGraph: {
+    title: "Contact — Talon Production House",
+    description: DESCRIPTION,
+    url: "/contact",
+  },
+  twitter: { title: "Contact — Talon Production House", description: DESCRIPTION },
 };
 
 function ContactRow({
