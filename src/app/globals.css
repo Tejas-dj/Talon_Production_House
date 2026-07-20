@@ -264,9 +264,16 @@
 }
 
 /* Buttons: rest = hairline border, transparent fill; hover/focus = inverted
-   fill (P2); selected = accent border + label (filters); disabled = inert. */
+   fill (P2); selected = accent border + label (filters); disabled = inert.
+   inline-flex + min-height ensures every btn-classed control (filter chips,
+   the mobile menu toggle, Lightbox close/prev/next, …) clears the 44px
+   touch-target floor even when the label is a single short line — measured
+   at 31px before this fix, well under the minimum on every one of them. */
 @utility btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
   border: 1px solid var(--rule);
   color: var(--text-primary);
   background-color: transparent;

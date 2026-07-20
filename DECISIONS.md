@@ -658,3 +658,82 @@ trees:
 No violations found requiring a fix - every item on the list was structurally guardrailed already
 (token resets) or had been correctly built in Phases 2-3; this pass's job was to verify Phase 4's
 own additions didn't quietly reintroduce one, which they didn't.
+
+## Final integration check (Phase 4, Step 6)
+
+- **Real bug found and fixed: every `.btn`-classed control with a single short line of text
+  measured 31px tall** - well under the 44x44px touch-target floor - confirmed on the mobile menu
+  toggle, all four filter chips, and the Lightbox's Close/Previous/Next buttons before the fix.
+  This was systemic (the `btn` utility itself, not any one call site), so the fix went into
+  `globals.css`'s single `@utility btn` definition: `display: inline-block` -> `inline-flex` +
+  `align-items/justify-content: center` + `min-height: 44px`. Verified after the fix: the mobile
+  menu toggle and every filter chip measure exactly 44px, the Lightbox's three buttons measure
+  44-47px, the WhatsApp CTA (already taller via its own `py-4`/`py-5`) is unaffected at 62px, and
+  the header row still measures exactly `--header-height` (104px) with room to spare - no clipping,
+  no new overflow at any breakpoint.
+- **Zero broken links.** All 19 real routes return HTTP 200 (checked directly, not inferred from
+  `<Link>` presence). Every external link (Instagram, YouTube, the WhatsApp deep link) carries
+  `target="_blank" rel="noopener noreferrer"`; `tel:`/`mailto:` links correctly carry neither. The
+  one known non-functional link, `CREDIT.href` ("#" for CobaltKite Creatives), is the same
+  documented, unresolved placeholder from Phase 3.5 - not a Phase 4 regression, still flagged as an
+  open item.
+- **Both themes** re-verified via the live toggle (not just reading tokens): light theme measures
+  `rgb(237, 231, 220)` background / `rgb(23, 22, 20)` text against the page, matching `#EDE7DC`/
+  `#171614` exactly; the theme-conditional logo swap (`display: block`/`none` pairing) flips
+  correctly on toggle.
+- **All five breakpoints** (320/768/1024/1440/1920) checked for horizontal overflow
+  (`document.documentElement.scrollWidth - clientWidth`) across Home, Work index, Photography,
+  Studio, a project detail page, and Contact - zero overflow anywhere, at every width. The
+  previously-documented pre-existing `Header.tsx` ~7px overflow at exactly 320px (flagged in the
+  "Page construction (Phase 3)" section above) **no longer reproduces** - re-measured at exactly
+  0px overflow at 320px on every page checked, most likely resolved as a side effect of the
+  "Header logo, revisited" height/layout changes made after that note was originally written. Not
+  re-flagging it as open.
+- **Media**: the hero video, project videos, and Cloudinary images all resolve and load correctly
+  under the new CSP (already verified in Step 3 - a real Bunny video reaching `readyState: 4`, a
+  Cloudinary `fill` image rendering with its inline `style` attribute intact). Placeholder-content
+  images that don't exist in the real Cloudinary account yet (e.g. the Studio hero image) still
+  404 from Cloudinary's own servers, exactly as documented since Phase 3.5 - a content-data gap,
+  not a Phase 4 regression.
+- **Build**: `next build` and `eslint` both clean after every change in this step, including the
+  touch-target fix.
+
+This phase's own verification tooling constraint, noted honestly rather than glossed over: this
+session's Browser pane tab reported `document.hidden === true` throughout (confirmed via
+`document.visibilityState`), which suspends Chromium's IntersectionObserver callbacks and
+scroll-linked `requestAnimationFrame` work for backgrounded pages - meaning the actual
+scroll-triggered *transition* of Step 1's `Reveal`/`Hero` components (opacity 0->1, the parallax
+scale advancing) could not be watched live playing out, and `computer{action:"screenshot"}` timed
+out for the same reason (no compositor frame to capture). What *was* verified live and is strong
+evidence the wiring is correct regardless: every `Reveal`-wrapped element correctly renders its
+`hidden` variant state pre-scroll (`opacity: 0`, `translateY(24px)`, confirmed via computed styles
+on Home, Photography, and Studio), the DOM structure survived the `Reveal`-wrapping refactor intact
+(the `first:pt-0`/`first:border-t-0` fixes, re-verified against live computed
+`padding-top`/`border-top-width`), and the underlying Framer Motion APIs used
+(`whileInView`/dynamic variants/`useScroll`+`useTransform`) are standard, well-documented patterns,
+not exotic usage. Flagging this rather than claiming a screenshot-verified animation that this
+session's tooling could not actually produce.
+
+## Phase 4 complete
+
+All six steps done. Summary against the brief's own checklist:
+- Motion: P1/P2/P3 all wired per the brief's page-by-page list; hero parallax; hover correctly
+  touch-guarded (one real bug found and fixed); custom cursor skipped and documented;
+  prefers-reduced-motion handled via the existing CSS kill switch plus `useReducedMotion()` in
+  every new Framer Motion component.
+- Accessibility: full keyboard/focus-trap audit passed live, zero gaps found; contrast
+  independently recomputed and matches the Bible in both themes.
+- Legal/completeness: privacy policy (DPDP Act), terms, 404, error/global-error, security headers +
+  CSP (verified against live console/network behavior, not just written), Vercel Analytics
+  installed, no cookie banner needed (genuinely cookie-free).
+- Structured data: LocalBusiness + VideoObject, both field-validated against Google's documented
+  rich-result requirements (could not reach the live Rich Results Test tool from a local dev
+  server - flagged honestly above).
+- AI-tell kill list: all 13 items checked, zero violations found.
+- Final integration: one real bug found and fixed (44px touch targets, sitewide, one-line fix);
+  zero broken links; both themes and all five breakpoints clean; build and lint clean.
+
+Open items carried forward, not introduced by Phase 4: `CREDIT.href` ("#" placeholder, no real
+CobaltKite Creatives URL supplied), and the placeholder Cloudinary/Bunny asset IDs in
+`content/*.json` that don't resolve against the real accounts yet - both pre-existing, both
+already documented in the Phase 3.5 section above.
