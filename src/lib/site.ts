@@ -1,6 +1,5 @@
 /* Single source for shell navigation and contact surfaces.
-   Contact hrefs are placeholders until real handles arrive (Phase 3 inputs);
-   swap them here and every surface updates. */
+   Real values as of Phase 3.5 — swap them here and every surface updates. */
 
 export const NAV_ITEMS = [
   { label: "Work", href: "/work" },
@@ -13,9 +12,9 @@ export const NAV_ITEMS = [
    robots.ts — one source instead of the fallback repeated in each file. */
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
-/* TODO: real WhatsApp business number, digits only (country code + number,
-   no "+" or spaces), e.g. "919876543210". Phase 3 input, not yet supplied. */
-export const WHATSAPP_NUMBER = "911234567890";
+/* Real WhatsApp business number, digits only (country code + number, no "+"
+   or spaces) — required format for wa.me deep links. */
+export const WHATSAPP_NUMBER = "919538025355";
 
 /** Builds a wa.me deep link with a correctly encoded prefilled message. */
 export function waLink(message: string): string {
@@ -35,10 +34,25 @@ export const WHATSAPP_GENERAL_MESSAGE =
    `external` drives target="_blank" rel="noopener noreferrer" on Footer and
    Contact links; mailto:/tel:/wa.me hrefs are same-tab. */
 export const CONTACT_LINKS = [
-  { label: "Instagram", handle: "@talonproductionhouse", href: "https://instagram.com/talonproductionhouse", external: true }, // TODO: real handle
-  { label: "YouTube", handle: "Talon Production House", href: "https://youtube.com/@talonproductionhouse", external: true }, // TODO: real channel
-  { label: "Phone", handle: "+91 12345 67890", href: "tel:+911234567890", external: false }, // TODO: real number
-  { label: "Email", handle: "hello@talonproductionhouse.com", href: "mailto:hello@talonproductionhouse.com", external: false }, // TODO: real address
+  {
+    label: "Instagram",
+    handle: "@talon_production_house",
+    href: "https://www.instagram.com/talon_production_house?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+    external: true,
+  },
+  {
+    label: "YouTube",
+    handle: "Talon Production House",
+    href: "https://www.youtube.com/@talonproductionhouse",
+    external: true,
+  },
+  { label: "Phone", handle: "+91 70759 81258", href: "tel:+917075981258", external: false },
+  {
+    label: "Email",
+    handle: "Talonproductionhouse@gmail.com",
+    href: "mailto:Talonproductionhouse@gmail.com",
+    external: false,
+  },
 ] as const;
 
 export const CREDIT = {

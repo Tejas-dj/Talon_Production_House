@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { CONTACT_LINKS, CREDIT, NAV_ITEMS } from "@/lib/site";
 import { CopyrightYear } from "@/components/shell/CopyrightYear";
@@ -10,15 +11,25 @@ export function Footer() {
     <footer className="hairline">
       <div className="container-site py-8">
         <div className="flex flex-col justify-between gap-7 md:flex-row md:items-end">
-          {/* Full-color lockup — typographic stand-in until the source vector
-              is supplied; wedge descends left-high to right-low (§2.1). */}
-          <div className="relative max-w-full overflow-hidden">
-            <div
-              className="absolute inset-0 bg-wedge [clip-path:polygon(0_22%,100%_62%,100%_86%,0_46%)]"
-              aria-hidden="true"
+          {/* Full-color lockup, at large scale — both theme variants render
+              in the DOM; CSS selects which paints (globals.css), no flash. */}
+          <div className="max-w-full">
+            <Image
+              src="/images/logo/TALON_Logo_LightTheme.svg"
+              alt="Talon Production House"
+              width={1050}
+              height={660}
+              unoptimized
+              className="theme-logo-light h-[clamp(4rem,10vw,8rem)] w-auto"
             />
-            <p className="type-display relative">Talon</p>
-            <p className="type-meta relative mt-2">Production House</p>
+            <Image
+              src="/images/logo/TALON_Logo_DarkTheme.svg"
+              alt="Talon Production House"
+              width={1050}
+              height={660}
+              unoptimized
+              className="theme-logo-dark h-[clamp(4rem,10vw,8rem)] w-auto"
+            />
           </div>
 
           <div className="flex gap-6 md:gap-7">
