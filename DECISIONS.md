@@ -144,3 +144,22 @@ every step's gate report names the exact swap points.
 - **Local-only `.env.local`** (already covered by the repo's blanket `.env*` gitignore rule) holds
   placeholder `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`/`NEXT_PUBLIC_BUNNY_PULL_ZONE` values so pages
   render without the loader's "not set" throw during my own visual verification. Never committed.
+- **`<CloudinaryImage>` needed `"use client"` added.** It builds a per-instance `loader` closure
+  and passes it to `next/image`, which only works when the component itself renders on the
+  client — a Server Component can't serialize a function prop across the RSC boundary. This was
+  latent since Phase 2 (the styleguide never actually rendered `<CloudinaryImage>`, and Step 1's
+  two usages were both already inside Client Components); it surfaced immediately when
+  `ProjectGrid` — a Server Component, for the SSR'd/filtered Video index — rendered it directly.
+  Fixed at the component itself, not by pushing `"use client"` up into `ProjectGrid` or the page,
+  so server-side filtering stays server-side.
+- **Video index filtering is plain `<Link>` elements, zero client JS.** `WorkPage` is an async
+  Server Component reading `searchParams.category` directly and filtering server-side;
+  `FilterBar` is a Server Component too (App Router's own client-side `<Link>` navigation already
+  avoids a full reload and keeps the URL shareable, and the existing `btn` utility's
+  `[aria-current]` styling handles the active state) — no manual pushState/shallow-routing code,
+  and no "use client" boundary needed at all for the filtering feature itself.
+- **Added `<h2 className="sr-only">Projects</h2>`** before the grid on the Video index — the
+  page's h1 ("Video") was followed directly by `ProjectGrid`'s h3 card titles with no h2 between
+  them (there's no visible section heading here, unlike Home's "Selected Work" head). Keeps
+  `ProjectGrid`'s internal heading level (h3) consistent across both of its call sites rather than
+  making it conditional.

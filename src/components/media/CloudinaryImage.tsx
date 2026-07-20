@@ -1,3 +1,5 @@
+"use client";
+
 import Image, { type ImageProps } from "next/image";
 import { CLOUDINARY_PRESETS, type CloudinaryPresetName } from "@/lib/media/presets";
 
