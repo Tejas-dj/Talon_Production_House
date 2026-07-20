@@ -210,3 +210,31 @@ every step's gate report names the exact swap points.
   rows — the content type's "6–10 rows" comment describes the array's own length, and a
   scannable bulleted list under one "Grip & Lighting" label reads better than repeating a near-
   identical label 5 times; each item is still its own line.
+- **Home is 3 content sections, not the wireframe's 4** — a genuine contradiction between
+  `wireframes.html` (Hero → Selected Work → Photography teaser → Studio teaser → Footer) and this
+  phase's own brief text, which is explicit and repeated as a hard gate criterion ("no more than
+  three content sections above the footer... resist the urge to add more sections... three
+  sections... is the entire page"). Resolved in favor of the brief's explicit, current, gate-
+  enforced instruction over the older low-fidelity wireframe — dropped the Photography and Studio
+  teaser blocks entirely. Noting this here per the top-level instruction to flag Bible/wireframe
+  contradictions rather than silently pick a side.
+- **Hero overlay text sits on a flat `--scrim/30` tint, not a gradient or text-shadow** (both
+  guardrail violations) — a uniform-opacity color layer is neither. Paired with a new,
+  deliberately theme-invariant `--hero-overlay-fg` token (`#F4F0E8`, the same value as dark
+  theme's `--text-primary`) since the hero is always scrimmed toward black regardless of the
+  site's active theme, so the overlay text needs one constant light color, not one that flips.
+- **Hero diagonal clip is `polygon(0 0, 100% 0, 100% 100%, 0 90%)`**, a percentage approximation
+  of Bible §2.2's locked −13° wedge angle, not a literal trigonometric −13° cut. A true 13° angle
+  computed across a full 100vw-wide, ~80vh-tall box would drop roughly half the box height across
+  its width (tan(13°) × a ~1900px viewport run ≈ 440px, on an ~800–900px-tall hero) — wildly more
+  aggressive than the logo-scale mark the angle is drawn from. `Footer.tsx`'s existing wedge
+  already treats this angle as a percentage-based approximation rather than a computed one; this
+  follows the same precedent at hero scale (a 10-percentage-point drop across the full width).
+- **Hero video is the first `featured` project's `bunnyVideoId`/`posterImageId`** — no dedicated
+  "showreel" asset exists in the content schema, and Bible §6.5 is explicit the hero is a video
+  block (not optional, unlike the phase brief's looser "video or image" phrasing). Reusing a real
+  featured project keeps this data-driven rather than inventing a new content concept; array order
+  decides which one leads, consistent with the `featured` flag's own ordering rule.
+- **Home's statement paragraph reuses the exact placeholder line already shipped in
+  `styleguide/page.tsx`** as the type-subhead demo copy, rather than drafting new filler text —
+  keeps one canonical placeholder positioning line instead of two slightly different ones.

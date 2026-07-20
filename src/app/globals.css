@@ -24,6 +24,14 @@
   --disabled-bg: #e3dccf; /* disabled fills share surface */
   --logo-wedge: #ee8322; /* brand asset, footer lockup only, both themes */
 
+  /* ---- Home hero (Bible silent; see DECISIONS.md) ----
+     Text overlaid on the Home hero video sits on a flat scrim tint (not a
+     gradient/shadow — those are guardrail violations), which darkens the
+     video toward near-black regardless of site theme. This token is
+     deliberately theme-invariant (same value in both [data-theme] blocks —
+     in fact never overridden) since the surface it sits on is always dark. */
+  --hero-overlay-fg: #f4f0e8; /* = dark theme's --text-primary value */
+
   /* ---- Grid — Bible §6.1 ---- */
   --margin-outer: 20px; /* below 768px */
   --gutter: 16px; /* below 768px */
@@ -107,6 +115,7 @@
   --color-disabled: var(--disabled-fg);
   --color-disabled-bg: var(--disabled-bg);
   --color-wedge: var(--logo-wedge);
+  --color-hero-overlay: var(--hero-overlay-fg);
 
   /* Spacing — Bible §6.2: eight named values, nothing between them.
      --spacing-0 is a structural zero (top-0, inset-0, border-0, etc.), not a
