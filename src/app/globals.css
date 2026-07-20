@@ -37,7 +37,7 @@
   --gutter: 16px; /* below 768px */
 
   /* ---- Shell (Bible silent; see DECISIONS.md) ---- */
-  --header-height: 56px;
+  --header-height: 104px;
 
   /* ---- Motion — Bible §7 ---- */
   --duration-rise: 640ms;
