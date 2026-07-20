@@ -238,3 +238,9 @@ every step's gate report names the exact swap points.
 - **Home's statement paragraph reuses the exact placeholder line already shipped in
   `styleguide/page.tsx`** as the type-subhead demo copy, rather than drafting new filler text —
   keeps one canonical placeholder positioning line instead of two slightly different ones.
+- **Contact page renders 5 link rows, not the wireframe's 4** — the wireframe's greybox only
+  shows Instagram/YouTube/Phone/Email, but the brief's Step 6 text explicitly lists WhatsApp as a
+  required contact channel too. Added as its own row rather than extending the shared
+  `CONTACT_LINKS` array, since that array also drives `Footer.tsx`'s link list, and the Footer's
+  own wireframe likewise shows only 4 links, no WhatsApp — keeping `CONTACT_LINKS` at 4 keeps the
+  footer wireframe-faithful while the Contact page gets the brief's full 5-channel list.
