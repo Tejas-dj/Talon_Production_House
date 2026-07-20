@@ -5,23 +5,15 @@
  * Not part of the build — run manually (`node scripts/generate-logo-assets.mjs`)
  * whenever the source logo files change. Produces:
  *
- *  - public/images/logo/talon-wordmark-{light,dark}.svg
- *    Monochrome, wordmark-only, no wedge (Design Bible §2.3 header treatment)
- *    — mechanically derived from the supplied full lockup: the wedge is
- *    exported as its own fill color crossing behind/through the letter
- *    strokes (not merely in the inter-letter gaps), so deleting those paths
- *    leaves a diagonal bite out of otherwise-solid strokes. Recoloring the
- *    wedge-hex paths to the file's own dominant letter-ink color (not
- *    deleting them) reunites the stroke into one solid tone — still only
- *    colors already present in the source, no invented hex — then the
- *    result is cropped to the TALON-only band (excludes the "PRODUCTION
- *    HOUSE" subordinate line). Every element in the source files is one
- *    shape per line with its own explicit `fill`, so a line-level replace on
- *    the known wedge hex values is exact, not a redraw.
+ *  - public/images/logo/talon-mark-{light,dark}.svg
+ *    Full-color TALON + wedge (no "PRODUCTION HOUSE" subtext — illegible at
+ *    header/favicon scale), tightly cropped from the supplied full lockup.
+ *    Used by the Header (small scale) and as the source for the favicon set
+ *    below — the wedge is the mark's most recognizable feature, so it stays
+ *    in every size, not just the large Footer lockup.
  *  - public/favicon-{16x16,32x32,dark-16x16,dark-32x32}.png,
  *    public/apple-touch-icon.png, public/icon-192.png, public/icon-512.png
- *    Full-color TALON + wedge mark (no subtext — illegible at these sizes),
- *    cropped square-ish from the same source. Light-source used for the
+ *    Rendered from the same talon-mark SVGs. Light-source used for the
  *    default/light-chrome favicon, dark-source for the
  *    prefers-color-scheme:dark variant and apple-touch-icon (solid bg).
  *  - src/app/favicon.ico
@@ -34,15 +26,6 @@ import path from "path";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-const WEDGE_HEX = [
-  "EF7F1A",
-  "EE7F1A",
-  "EE7F1B",
-  "EF801C",
-  "EF801D",
-  "ED7D19",
-  "E7832B",
-];
 // TALON-word band in the shared 1050x660 source viewBox (excludes the
 // "PRODUCTION HOUSE" subordinate line, which starts ~y404) — see DECISIONS.md.
 const WORDMARK_BAND = { x: 0, y: 170, w: 1050, h: 225 };
@@ -65,21 +48,6 @@ function withViewBox(svg, box) {
   return out;
 }
 
-/** Most frequent non-wedge fill hex in the file — the letterform ink color. */
-function dominantLetterFill(svg) {
-  const counts = new Map();
-  for (const m of svg.matchAll(/fill="#([A-Fa-f0-9]{6})"/g)) {
-    const hex = m[1].toUpperCase();
-    if (WEDGE_HEX.includes(hex)) continue;
-    counts.set(hex, (counts.get(hex) ?? 0) + 1);
-  }
-  return [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
-}
-
-function recolorWedge(svg, targetHex) {
-  return svg.replace(new RegExp(`fill="#(${WEDGE_HEX.join("|")})"`, "gi"), `fill="#${targetHex}"`);
-}
-
 async function trimmedViewBox(svgBuffer, base) {
   // No density override: sharp/librsvg's default (72dpi) is what makes a
   // bare unitless width/height map 1 raster px = 1 SVG user unit, so the
@@ -98,30 +66,18 @@ async function trimmedViewBox(svgBuffer, base) {
   };
 }
 
-async function buildWordmark(themeName, sourceFile) {
+async function buildMark(themeName, sourceFile) {
   const source = readSvg(sourceFile);
-  const inkHex = dominantLetterFill(source);
-  const mono = recolorWedge(withViewBox(source, WORDMARK_BAND), inkHex);
-  const box = await trimmedViewBox(Buffer.from(mono), WORDMARK_BAND);
-  const monoTight = withViewBox(recolorWedge(withViewBox(source, WORDMARK_BAND), inkHex), box);
-  writeOut(`public/images/logo/talon-wordmark-${themeName}.svg`, monoTight);
-  return box;
+  const banded = withViewBox(source, WORDMARK_BAND);
+  const box = await trimmedViewBox(Buffer.from(banded), WORDMARK_BAND);
+  const tight = withViewBox(source, box);
+  writeOut(`public/images/logo/talon-mark-${themeName}.svg`, tight);
+  return { box, svg: tight };
 }
 
-async function buildFavicons() {
-  const lightFull = readSvg("TALON_Logo_LightTheme.svg");
-  const darkFull = readSvg("TALON_Logo_DarkTheme.svg");
-
-  // Full-color TALON + wedge (no subtext), tightly trimmed, per theme.
-  async function markBuffer(source) {
-    const banded = withViewBox(source, WORDMARK_BAND);
-    const box = await trimmedViewBox(Buffer.from(banded), WORDMARK_BAND);
-    const tight = withViewBox(source, box);
-    return Buffer.from(tight);
-  }
-
-  const lightMark = await markBuffer(lightFull);
-  const darkMark = await markBuffer(darkFull);
+async function buildFavicons(lightMarkSvg, darkMarkSvg) {
+  const lightMark = Buffer.from(lightMarkSvg);
+  const darkMark = Buffer.from(darkMarkSvg);
 
   async function squarePng(buf, size, background) {
     return sharp(buf, { density: 600 })
@@ -197,8 +153,8 @@ async function buildFavicons() {
   writeOut("src/app/favicon.ico", ico);
 }
 
-const lightBox = await buildWordmark("light", "TALON_Logo_LightTheme.svg");
-const darkBox = await buildWordmark("dark", "TALON_Logo_DarkTheme.svg");
-console.log("wordmark viewBoxes", { lightBox, darkBox });
-await buildFavicons();
+const light = await buildMark("light", "TALON_Logo_LightTheme.svg");
+const dark = await buildMark("dark", "TALON_Logo_DarkTheme.svg");
+console.log("mark viewBoxes", { light: light.box, dark: dark.box });
+await buildFavicons(light.svg, dark.svg);
 console.log("done");
