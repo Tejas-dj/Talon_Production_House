@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, useState, useSyncExternalStore } from "react";
@@ -40,8 +41,28 @@ export function Header() {
         }`}
       >
         <div className="container-site flex h-(--header-height) items-center justify-between">
-          <Link href="/" className="wordmark" aria-label="Talon Production House — home">
-            Talon
+          <Link href="/" className="flex items-center" aria-label="Talon Production House — home">
+            {/* Monochrome, wordmark-only, no wedge (Bible §2.3 header
+                treatment) — both theme variants render in the DOM; CSS
+                selects which paints (globals.css), so there is no flash. */}
+            <Image
+              src="/images/logo/talon-wordmark-light.svg"
+              alt=""
+              width={828}
+              height={189}
+              unoptimized
+              priority
+              className="theme-logo-light h-4 w-auto"
+            />
+            <Image
+              src="/images/logo/talon-wordmark-dark.svg"
+              alt=""
+              width={830}
+              height={195}
+              unoptimized
+              priority
+              className="theme-logo-dark h-4 w-auto"
+            />
           </Link>
 
           <div className="flex items-center gap-4 md:gap-5">

@@ -32,6 +32,29 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
   },
+  /* Favicon set generated from the client-supplied logo
+     (scripts/generate-logo-assets.mjs) — light-source icon is the default
+     (reads well on light browser chrome), dark-source variant swaps in via
+     prefers-color-scheme for dark browser chrome. */
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      {
+        url: "/favicon-16x16-dark.png",
+        sizes: "16x16",
+        type: "image/png",
+        media: "(prefers-color-scheme: dark)",
+      },
+      {
+        url: "/favicon-32x32-dark.png",
+        sizes: "32x32",
+        type: "image/png",
+        media: "(prefers-color-scheme: dark)",
+      },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({

@@ -310,3 +310,88 @@ every step's gate report names the exact swap points.
 - Verified via a full `next build`: zero TypeScript errors, zero lint errors, all 19 routes
   generate successfully (5 static pages + 5 matching `opengraph-image` routes + 3 SSG project
   detail pages + sitemap/robots/styleguide/not-found).
+
+## Content population (Phase 3.5)
+
+- **Logo assets arrived on `master` one commit ahead of this branch's base** (`add talon logo
+  assets`, adding `public/images/logo/TALON_Logo_{Light,Dark}Theme.svg`) — cherry-picked directly
+  rather than merging, since `git merge-base` confirmed that commit sits cleanly on top of this
+  branch's tip with no divergence.
+- **Both supplied SVGs are the full color lockup (wordmark + PRODUCTION HOUSE + wedge), one per
+  theme — no separate monochrome or wordmark-only cut was supplied.** Bible §2.3 calls for two
+  distinct treatments (header: monochrome, wordmark-only, no wedge; footer: full-color lockup,
+  large scale, wedge included) using assets that didn't exist until now. Footer uses the supplied
+  files directly, unmodified. Header needed a derived asset — see below.
+- **`scripts/generate-logo-assets.mjs` (new, dev-only, not part of the build)** mechanically
+  derives the header's monochrome/no-wedge wordmark from the supplied full lockup: crops to the
+  TALON-only band (excludes "PRODUCTION HOUSE", which sits ~y404+ in the shared 1050×660 source
+  and would fuzz at header scale per §2.3's <90px floor anyway) and recolors the wedge-hex paths
+  to the file's own dominant letterform ink color. Uses `sharp`, already present as a transitive
+  `next` dependency — no new package added. Also generates the favicon set and web manifest icons
+  from the same source (full-color TALON+wedge crop — the wedge is the mark's most distinctive
+  feature and favicons are browser chrome, not on-page content, so §4.3's "wedge: footer lockup
+  only" rule doesn't reach them; `og-image.tsx` already treats the wedge the same way for share
+  cards, so this isn't a new exception). Re-run manually if the source logo files ever change.
+- **Bug found and fixed during that script's development: deleting the wedge-hex paths (instead of
+  recoloring them) left a diagonal bite out of otherwise-solid letter strokes.** The source file
+  doesn't draw the wedge only in the gaps *between* letters — where the wedge crosses a letter's
+  own stroke, that overlapping region is exported as a separate orange-filled sub-path rather than
+  layered on top of a complete letter shape, so simply deleting orange elements left true holes
+  (confirmed by rendering onto a flattened background and seeing the letters visibly missing a
+  diagonal chunk, not just showing background through natural counters/gaps). Recoloring those
+  paths to the surrounding letterform's own ink color (mode of the file's non-wedge fill hexes)
+  reunites the stroke into one solid tone instead.
+- **Bug found and fixed in the same script: `sharp`'s SVG rasterizer defaults to 72dpi for a bare
+  unitless width/height, not 96.** An explicit `density: 96` on the trim-bounding-box render (to
+  get a "retina" result) silently rescaled the raster by 96/72 = 1.33× before `trim()` measured
+  it, so the reported trim offsets were off by that same factor when mapped back onto the SVG's
+  own viewBox units — the derived crop overshot the source canvas (`x:145,w:1105` inside a
+  1050-wide band). Fixed by leaving `density` unset (or `72`) specifically for the trim-detection
+  render, which keeps 1 raster px = 1 SVG user unit; the final high-res PNG renders still use a
+  higher density, just not the measurement step.
+- **Theme-conditional logo swap (Header, Footer) renders both variants in the DOM and lets CSS
+  (`.theme-logo-light`/`.theme-logo-dark` + `[data-theme="dark"]`, globals.css) decide which
+  paints**, rather than reading `next-themes`' `resolvedTheme` in JS and conditionally rendering
+  one `<Image>`. The latter would be `undefined` until mount (next-themes can't know the visitor's
+  stored/system preference during SSR) and either flash the wrong variant or require a mount-gated
+  render, both explicitly ruled out by the brief. Since next-themes already sets `data-theme` via
+  a blocking pre-hydration script (`ThemeProvider.tsx`, pre-existing), the CSS-only approach paints
+  correctly on first frame with zero client JS and zero hydration mismatch (server and client markup
+  are identical — theme is a paint-time decision, not a render-time one). The old `.wordmark`
+  `@utility` (a typographic stand-in, per Step 5) is removed now that Header renders the real
+  asset. Both `<Image>` instances use `unoptimized` (required — `next.config.ts`'s global custom
+  Cloudinary loader would otherwise prepend a `res.cloudinary.com` URL onto a local static path)
+  with explicit `width`/`height` matching each cropped asset's real aspect ratio, sized via CSS
+  (`h-4`/`h-[clamp(...)]`) so there's no layout shift and no distortion between the two variants
+  (light/dark trims differ by ~2% in aspect — visually negligible, not worth forcing identical).
+- **Favicon delivered as PNG + a hand-built ICO container (ICONDIR header + raw 16/32px PNG
+  payloads, "PNG-in-ICO"), not a redrawn/simplified glyph-only mark.** All current browsers
+  support PNG-in-ICO; no icon-conversion package was added. `metadata.icons` in `layout.tsx` lists
+  explicit 16/32px PNGs plus a `media: "(prefers-color-scheme: dark)"` pair (the dark-source
+  render reads better on a dark tab bar) — this is a different axis from the site's own light/dark
+  toggle (OS/browser chrome vs. page content), so it's driven by a media query, not `[data-theme]`.
+- **`src/app/manifest.ts` (new)** — Next's manifest file convention, referencing the generated
+  192/512px icons; `theme_color`/`background_color` taken directly from Bible §4.3's light-theme
+  tokens (`--text-primary` / `--bg`) rather than inventing new values.
+- **Contact/WhatsApp values centralized entirely in `src/lib/site.ts`**, per its own existing
+  "one file to update" design from Step 5 — no other file needed a change for phone, email,
+  Instagram, YouTube, or either WhatsApp number. Phone (`+91 70759 81258`) and WhatsApp
+  (`+91 95380 25355`) are different numbers, kept distinct (`tel:` href vs. `WHATSAPP_NUMBER`).
+  Instagram href kept exactly as supplied, tracking parameters included — not truncated to a bare
+  profile URL, since altering a client-supplied credential value wasn't asked for. `CREDIT.href`
+  (CobaltKite Creatives) is left as `"#"`: no real URL was supplied for it, and inventing one would
+  violate the brief's "do not invent fake real data" instruction — flagged in the final report as
+  a still-open item, not silently left broken.
+- **`content/{projects,photography,studio}.json` and `content/clients.json` were not modified.**
+  Every entry across all three populated files references fictional clients/films and Cloudinary
+  public ids / Bunny video GUIDs that don't match the real `Talon_Production_House` Cloudinary
+  folder or library `708480` (verified directly: fetching one placeholder poster URL against the
+  now-real cloud name `dhahzowek` returns Cloudinary's own `404` with header
+  `x-cld-error: Resource not found - talon/projects/monsoon-sessions/poster` — proving the cloud
+  name itself is valid/reachable and the specific asset simply doesn't exist there yet). No real
+  Bunny video GUID was supplied anywhere in this phase's brief (only the account-level library id
+  and pull-zone hostname), so the Home hero — which already sources its video from the first
+  `featured` project's `bunnyVideoId` per the existing Step-5 design — cannot point at a real
+  video yet either; the pipeline is fully wired to real infrastructure and will resolve correctly
+  the moment real ids are added to `content/projects.json`, with no further code change needed.
+  Full punch list of placeholder entries is in the phase completion report, not duplicated here.

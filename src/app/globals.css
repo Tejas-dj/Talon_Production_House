@@ -314,18 +314,23 @@
     outline-color var(--duration-veil) var(--ease-veil) !important;
 }
 
-/* Header wordmark — Bible §2.3: monochrome, letters in --text-primary,
-   no wedge, wordmark-only. Typographic stand-in scaled above the 90px
-   floor until the source vector is supplied. */
-@utility wordmark {
-  font-size: 1.375rem;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  font-weight: 800;
-  font-stretch: 125%;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  text-decoration: none;
+/* Theme-conditional logo swap (Header wordmark, Footer lockup) — both
+   variants render in the DOM so server/client markup is identical (no
+   hydration mismatch); [data-theme] alone decides which paints. next-themes
+   sets that attribute via a blocking pre-hydration script
+   (ThemeProvider.tsx), so the correct variant already shows at first paint
+   — no flash, no client-side gating. */
+.theme-logo-light {
+  display: block;
+}
+.theme-logo-dark {
+  display: none;
+}
+[data-theme="dark"] .theme-logo-light {
+  display: none;
+}
+[data-theme="dark"] .theme-logo-dark {
+  display: block;
 }
 
 /* Hairline rule — Bible §4.4: the only divider device on the site */
