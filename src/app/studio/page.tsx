@@ -4,6 +4,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { StudioGallery } from "@/components/studio/StudioGallery";
 import { getStudioSpace } from "@/lib/content";
 import { WHATSAPP_STUDIO_MESSAGE, waLink } from "@/lib/site";
+import { buildLocalBusinessSchema } from "@/lib/structured-data";
 
 const DESCRIPTION =
   "Rent Talon's Bengaluru studio floor by the hour, half day, or full day — specs, rates, and instant WhatsApp booking.";
@@ -51,9 +52,14 @@ function RateRow({ item, price, index }: { item: string; price: string; index: n
 export default function StudioPage() {
   const studio = getStudioSpace();
   const { specs, rates } = studio;
+  const localBusinessSchema = buildLocalBusinessSchema();
 
   return (
     <div className="pb-7 md:pb-0">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+      />
       {/* Page title — statement role (Bible §6.3) */}
       <header className="container-site pt-8 pb-6">
         <h1 className="type-display">Studio</h1>

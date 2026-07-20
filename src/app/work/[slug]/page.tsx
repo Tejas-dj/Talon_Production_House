@@ -7,6 +7,7 @@ import { ProjectStillsGallery } from "@/components/work/ProjectStillsGallery";
 import { getAllProjects, getProjectBySlug } from "@/lib/content";
 import { bunnyThumbnailUrl } from "@/lib/media/bunny";
 import { cloudinaryUrl } from "@/lib/media/presets";
+import { buildVideoObjectSchema } from "@/lib/structured-data";
 
 type Params = { slug: string };
 
@@ -72,9 +73,14 @@ export default async function ProjectDetailPage({ params }: { params: Promise<Pa
   const currentIndex = projects.findIndex((p) => p.slug === project.slug);
   const prevProject = projects[(currentIndex - 1 + projects.length) % projects.length];
   const nextProject = projects[(currentIndex + 1) % projects.length];
+  const videoObjectSchema = buildVideoObjectSchema(project);
 
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(videoObjectSchema) }}
+      />
       {/* Hero / player — full bleed, singular media element (asymmetry rule 3).
           Cinematic ratio = 16:9 (DECISIONS.md: matches the poster preset and
           each project's own `format` field). Poster→player transition lives

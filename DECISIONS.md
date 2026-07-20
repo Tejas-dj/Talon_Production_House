@@ -578,3 +578,34 @@ defects.
 - **404 (`not-found.tsx`)** uses the Bible's display type for a short line and a link home, nothing
   else, per the brief. It renders through the normal root layout (Header/Footer/PageTransition all
   apply automatically), so no chrome duplication was needed.
+
+## Structured data (Phase 4, Step 4)
+
+- **New `src/lib/structured-data.ts`** builds both schemas, following the same "one place builds
+  this" convention as `media/presets.ts`/`site.ts`. `LocalBusiness` on the Studio page,
+  `VideoObject` on every project detail page, both embedded via a plain
+  `<script type="application/ld+json" dangerouslySetInnerHTML={...}>` in the page component.
+- **`LocalBusiness` uses `@type: "LocalBusiness"`**, not a more specific type like
+  `PhotographyBusiness` — Talon's primary offering is video production, photography is secondary,
+  and `LocalBusiness` is the safe, always-valid schema.org type that doesn't misrepresent the
+  business. Address is `locality`/`region`/`country` only (no street/pincode exist in content — not
+  invented). No `openingHoursSpecification` — no real hours exist anywhere in content or `site.ts`.
+- **New `runtimeToIso8601()` helper** parses the content schema's `"MM:SS"`/`"H:MM:SS"` runtime
+  strings into ISO 8601 durations (`"09:45"` → `"PT9M45S"`, `"00:14"` → `"PT14S"`) for
+  `VideoObject.duration`. `uploadDate` is `${project.year}-01-01` — only year-granularity data
+  exists in content, so this is a documented approximation, not a fabricated exact date.
+- **`contentUrl`/`embedUrl` are only included when `NEXT_PUBLIC_BUNNY_PULL_ZONE` is set**, mirroring
+  `bunnyThumbnailUrl()`'s existing graceful-omission pattern (return `undefined`/omit the field)
+  rather than the `cloudinaryUrl()`-style throw used elsewhere — Google's video rich-result
+  requirements list `contentUrl`/`embedUrl` as recommended, not required, so omitting them when
+  genuinely unavailable is more honest than throwing a build error over an optional field.
+- **Validation**: both schemas were checked live against the rendered `<script>` tag output — valid
+  JSON (`JSON.parse` succeeds), every field Google's Video/LocalBusiness rich-result documentation
+  lists as required or recommended is present with a correctly-typed value (parseable
+  `uploadDate`, ISO-8601-pattern `duration`), tested against both a project with a real poster +
+  full-length runtime and one using the Bunny-thumbnail fallback with a sub-minute runtime
+  (`"00:14"` → `"PT14S"`, confirming no spurious `0M`/`0H` tokens). Could not submit to Google's
+  Rich Results Test or the schema.org validator directly, since both require a publicly reachable
+  URL and this was checked against the local dev server — flagging honestly rather than claiming
+  external validation that didn't happen; the manual field-by-field check against the documented
+  requirements is the strongest verification available pre-deploy.
