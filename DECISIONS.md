@@ -284,3 +284,29 @@ every step's gate report names the exact swap points.
   lists every project detail URL — `robots.ts` does the same. `layout.tsx` gets a new
   `metadataBase: new URL(SITE_URL)` so every page's relative canonical/OG `url` resolves to an
   absolute URL correctly.
+
+## Final verification pass
+
+- **Two more instances of the `--spacing` bug** (see "Studio page" section above) found during the
+  final breakpoint sweep, both on the Studio page: `pb-20` (intended clearance under the mobile
+  sticky CTA so it wouldn't cover the terms text) and `w-40` (the spec-table label column width) —
+  neither "20" nor "40" is a defined `--spacing-N` step, so both silently resolved to nothing.
+  Fixed with `pb-7` (a real scale step, 104px — comfortably clears the ~62px CTA bar) and
+  `w-[10rem]` (arbitrary value, since a label-column width isn't really a "spacing" choice in the
+  Bible's sense). Re-audited every `.tsx` file afterward for any other spacing/sizing utility
+  using a number outside 0–8 or already-bracketed arbitrary syntax — none remain anywhere in the
+  codebase, Phase 2 or Phase 3.
+- **Full guardrail audit via source grep**, not just visual spot-checks: no `rounded`/`gradient`/
+  `shadow`/`purple`/`indigo`/`violet` utility usage anywhere in `src/`; the only raw hex values
+  outside the token layer are the three in `src/lib/og-image.tsx` (Satori can't read CSS custom
+  properties, already documented); no icon-library imports; the only `grid-cols-3` usage is the
+  project-detail metadata `<dl>` (a data table, not a card grid — the guardrail targets uniform
+  *card* grids specifically); `outline-none` appears exactly once, on the pre-existing Phase 2
+  skip-link target (`<main>`), not on any interactive control; `alt=""` appears exactly once, on
+  `BunnyPlayer`'s decorative poster overlay, correctly paired with `aria-hidden="true"`.
+- **Full breakpoint × page overflow sweep** (320/768/1024/1440/1920, all six templates) via
+  `document.body.scrollWidth` vs. `clientWidth` checks — zero overflow anywhere except the
+  pre-existing, out-of-scope `Header.tsx` ~7px case already documented above.
+- Verified via a full `next build`: zero TypeScript errors, zero lint errors, all 19 routes
+  generate successfully (5 static pages + 5 matching `opengraph-image` routes + 3 SSG project
+  detail pages + sitemap/robots/styleguide/not-found).

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 function SpecRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="hairline flex flex-col gap-2 p-4 first:border-t-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-      <dt className="type-meta text-muted shrink-0 sm:w-40">{label}</dt>
+      <dt className="type-meta text-muted shrink-0 sm:w-[10rem]">{label}</dt>
       <dd className="type-body sm:text-right">{children}</dd>
     </div>
   );
@@ -38,7 +38,7 @@ export default function StudioPage() {
   const { specs, rates } = studio;
 
   return (
-    <div className="pb-20 md:pb-0">
+    <div className="pb-7 md:pb-0">
       {/* Page title — statement role (Bible §6.3) */}
       <header className="container-site pt-8 pb-6">
         <h1 className="type-display">Studio</h1>
