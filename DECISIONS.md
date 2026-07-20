@@ -395,3 +395,25 @@ every step's gate report names the exact swap points.
   video yet either; the pipeline is fully wired to real infrastructure and will resolve correctly
   the moment real ids are added to `content/projects.json`, with no further code change needed.
   Full punch list of placeholder entries is in the phase completion report, not duplicated here.
+
+## Header logo, revisited (post-Phase 3.5)
+
+- **Header now renders the full-color lockup (`TALON_Logo_{Light,Dark}Theme.svg` — TALON +
+  "PRODUCTION HOUSE" + wedge) at `h-6` (64px, ≈102px wide, the Bible §6.2 spacing-scale token —
+  no arbitrary value needed), not the cropped monochrome/no-wedge wordmark described above.** This
+  is an explicit client override of Bible §2.3's header treatment (monochrome, wordmark-only, no
+  wedge, sized well under the 90px full-lockup floor) — the client was shown the size/legibility
+  tradeoff (at the old 56px-tall header, "PRODUCTION HOUSE" renders unreadably small) and chose
+  full color + subtext + a taller header anyway. `h-6` was picked specifically because it clears
+  §2.3's own 90px-wide floor for when the subordinate line is legible (`h-5`/40px only reaches
+  ~64px wide, still below that floor — tried first, rejected once measured). `--header-height`
+  raised from `56px` to `104px` (the matching `--spacing-7` token) to give the taller lockup clear
+  space without cramping against the hairline; nothing else reads `56px` literally
+  (`MobileNav.tsx` and `studio/page.tsx`'s sticky offsets both reference the `--header-height`
+  token, so they follow automatically). Caught one bug getting here: this repo resets Tailwind's
+  default spacing scale to the Bible's own 8-value one (`--spacing-*: initial`, globals.css) — an
+  arbitrary class like `h-11` silently resolves to nothing (confirmed via a zero-constrained
+  649×408px render) since only `--spacing-0` through `--spacing-8` exist; sizing had to land on one
+  of those defined steps. The derived monochrome wordmark assets (`talon-mark-{light,dark}.svg`,
+  `scripts/generate-logo-assets.mjs`) are left in place, unused by Header — the script still
+  generates the favicon set from the same source and shouldn't be deleted.

@@ -42,27 +42,26 @@ export function Header() {
       >
         <div className="container-site flex h-(--header-height) items-center justify-between">
           <Link href="/" className="flex items-center" aria-label="Talon Production House — home">
-            {/* Full-color TALON + wedge, wordmark-only (no "PRODUCTION
-                HOUSE" subtext, illegible at this scale) — both theme
-                variants render in the DOM; CSS selects which paints
+            {/* Full-color lockup (TALON + PRODUCTION HOUSE + wedge) — both
+                theme variants render in the DOM; CSS selects which paints
                 (globals.css), so there is no flash. */}
             <Image
-              src="/images/logo/talon-mark-light.svg"
+              src="/images/logo/TALON_Logo_LightTheme.svg"
               alt=""
-              width={828}
-              height={189}
+              width={1050}
+              height={660}
               unoptimized
               priority
-              className="theme-logo-light h-4 w-auto"
+              className="theme-logo-light h-6 w-auto"
             />
             <Image
-              src="/images/logo/talon-mark-dark.svg"
+              src="/images/logo/TALON_Logo_DarkTheme.svg"
               alt=""
-              width={830}
-              height={195}
+              width={1050}
+              height={660}
               unoptimized
               priority
-              className="theme-logo-dark h-4 w-auto"
+              className="theme-logo-dark h-6 w-auto"
             />
           </Link>
 
