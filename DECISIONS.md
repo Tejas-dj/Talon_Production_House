@@ -609,3 +609,52 @@ defects.
   URL and this was checked against the local dev server — flagging honestly rather than claiming
   external validation that didn't happen; the manual field-by-field check against the documented
   requirements is the strongest verification available pre-deploy.
+
+## AI-tell kill list (Phase 4, Step 5)
+
+Full 13-point pass, re-run after every code change in Steps 1-4 (the additions themselves are the
+main risk of introducing a violation) plus one final sweep across the whole `src/` and `content/`
+trees:
+
+1. **Uniform border radius - not found.** `--radius-*: initial` in `@theme` structurally forbids
+   any `rounded-*` utility from resolving to anything; grep for `rounded` across `src/` returns
+   zero matches.
+2. **Decorative gradients - not found.** Zero `gradient` utility usage; the only source hit is a
+   comment in `Hero.tsx` explicitly noting the hero scrim is a flat tint, not a gradient.
+3. **Purple/indigo/violet - not found.** Zero matches anywhere in `src/`, including every file
+   added this phase.
+4. **Symmetrical three-column card grids - not found.** `ProjectGrid`, `PhotoSeriesGrid`,
+   `ProjectStillsGallery`, `StudioGallery` all still use their Phase 3 asymmetric repeating-span
+   patterns, re-confirmed by re-reading each. The only `grid-cols-3` hits are the project-detail
+   metadata `<dl>` (a data table, not a card grid - same exemption Phase 3 already established) and
+   a sample layout inside the internal, `noindex`'d styleguide.
+5. **Identical vertical padding - not found.** Every page still follows Bible §6.3's three padding
+   roles (statement `space-8`, working `space-6`, interstitial `space-7`/`space-5`); the new
+   404/error pages use the statement role (`pt-8 pb-8`) consistent with the rest of the site.
+6. **Uniform stagger timing - not found.** `Reveal`'s underlying `rise` variant uses the Bible's
+   irregular 0/70/160/220/330ms sequence by construction, not a per-item fixed delay.
+7. **Emoji as icons - not found.** Grepped `src/` and `content/*.json` against the emoji Unicode
+   ranges directly (not just eyeballing) - zero matches.
+8. **Generic icon-library icons - not found.** `package.json` carries no icon-library dependency
+   (checked again after this phase's one new dependency, `@vercel/analytics`, which draws no icons).
+9. **Everything center-aligned - one instance, not a violation.** The only `text-center` hit
+   sitewide is the WhatsApp CTA button's own label text on the Studio page's mobile sticky bar - a
+   single button's internal text alignment, not a section/page-layout pattern the guardrail
+   targets. No fix needed.
+10. **Glassmorphism - not found.** Zero `backdrop-blur`/`backdrop-filter` usage anywhere.
+11. **Uniform drop shadows - not found.** `--shadow-*`/`--inset-shadow-*`/`--drop-shadow-*`/
+    `--text-shadow-*` are all reset to `initial`; zero surviving `shadow` utility usage.
+12. **AI-slop copy - not found.** Grepped the full banned-word list across `content/*.json` and
+    every `.tsx` file, including all copy written in Steps 3-4 (privacy, terms, 404, error pages)
+    before it shipped, not just after. The only "elevat-" hits are the legitimate design-vocabulary
+    use of "elevated"/"elevation" describing the `--surface` token's z-axis role (Bible's own
+    language), not the banned marketing verb.
+13. **Stock-photo energy - not found**, per the in-browser walkthrough folded into Step 6: the four
+    gallery/grid components each use a genuinely different repeating aspect-ratio and span pattern
+    (asymmetric 7/5 alternating for project cards, 4-slot portrait/wide/ultrawide/square for
+    photography, 3-slot patterns with different ratios for stills and studio), a deliberate Phase 3
+    choice re-confirmed still intact.
+
+No violations found requiring a fix - every item on the list was structurally guardrailed already
+(token resets) or had been correctly built in Phases 2-3; this pass's job was to verify Phase 4's
+own additions didn't quietly reintroduce one, which they didn't.
