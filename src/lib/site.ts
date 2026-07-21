@@ -2,6 +2,7 @@
    Real values as of Phase 3.5 — swap them here and every surface updates. */
 
 export const NAV_ITEMS = [
+  { label: "Home", href: "/" },
   { label: "Work", href: "/work" },
   { label: "Photography", href: "/photography" },
   { label: "Studio", href: "/studio" },
