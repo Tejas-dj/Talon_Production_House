@@ -1,9 +1,11 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Archivo } from "next/font/google";
+import { CustomCursor } from "@/components/shell/CustomCursor";
 import { Footer } from "@/components/shell/Footer";
 import { Header } from "@/components/shell/Header";
 import { SkipLink } from "@/components/shell/SkipLink";
+import { SplashScreen } from "@/components/shell/SplashScreen";
 import { ThemeProvider } from "@/components/shell/ThemeProvider";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -66,11 +68,13 @@ export default function RootLayout({
   return (
     // suppressHydrationWarning: next-themes sets data-theme pre-hydration
     <html lang="en" className={archivo.variable} suppressHydrationWarning>
-      <body className="flex min-h-svh flex-col">
+      <body className="flex min-h-svh flex-col" suppressHydrationWarning>
         <ThemeProvider>
+          <SplashScreen />
+          <CustomCursor />
           <SkipLink />
           <Header />
-          <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
+          <main id="main" tabIndex={-1} className="flex-1 focus:outline-none -mt-(--header-height) pt-(--header-height)">
             {children}
           </main>
           <Footer />
