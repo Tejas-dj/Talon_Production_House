@@ -26,7 +26,7 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative h-[82vh] w-full overflow-hidden [clip-path:polygon(0_0,100%_0,100%_100%,0_90%)]"
+      className="relative h-[100vh] w-full overflow-hidden [clip-path:polygon(0_0,100%_0,100%_100%,0_90%)] -mt-(--header-height)"
     >
       <motion.div className="h-full w-full" style={reducedMotion ? undefined : { scale }}>
         <BunnyPlayer
@@ -39,15 +39,15 @@ export function Hero() {
       {/* Flat scrim tint (not a gradient) for overlay text legibility */}
       <div className="bg-scrim/30 pointer-events-none absolute inset-0" aria-hidden="true" />
       <div className="pointer-events-none absolute inset-0">
-        <div className="container-site grid h-full grid-rows-[auto_1fr_auto] py-6 md:grid-cols-12">
+        <div className="container-site grid h-full grid-rows-[auto_1fr_auto] pt-(--header-height) pb-6 md:grid-cols-12">
           <p className="type-meta text-hero-overlay text-right md:col-span-3 md:col-start-10">
             Production House / Bengaluru
           </p>
-          <h1 className="type-display text-hero-overlay row-start-3 md:col-span-9 md:row-start-3">
-            Talon
-          </h1>
         </div>
       </div>
+      <h1 className="type-display text-hero-overlay pointer-events-none absolute bottom-[10%] left-0 pl-4">
+        Talon
+      </h1>
     </section>
   );
 }
