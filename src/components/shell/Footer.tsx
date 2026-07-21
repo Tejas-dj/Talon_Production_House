@@ -2,17 +2,28 @@ import Image from "next/image";
 import Link from "next/link";
 import { CONTACT_LINKS, CREDIT, NAV_ITEMS } from "@/lib/site";
 import { CopyrightYear } from "@/components/shell/CopyrightYear";
+import { Marquee } from "@/components/motion/Marquee";
 
-/* Footer — Bible §2.3: the full-color lockup with the orange wedge appears
-   here and only here, at display scale, as the closing brand moment.
-   Statement-role section (§6.3): --space-8 vertical padding. */
+const MARQUEE_TEXT = "Production House · Bengaluru";
+const MARQUEE_SEPARATOR = "   /   ";
+
 export function Footer() {
   return (
     <footer className="hairline">
+      {/* Running text marquee — inspired by Pure Cinema's "EVERY INDUSTRY. EVERY PLATFORM." strip */}
+      <Marquee speed={50} className="py-3 opacity-40">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <span key={i} className="type-meta text-muted whitespace-nowrap px-4">
+            {MARQUEE_TEXT}
+            {MARQUEE_SEPARATOR}
+          </span>
+        ))}
+      </Marquee>
+
+      <div className="hairline" aria-hidden="true" />
+
       <div className="container-site py-8">
         <div className="flex flex-col justify-between gap-7 md:flex-row md:items-end">
-          {/* Full-color lockup, at large scale — both theme variants render
-              in the DOM; CSS selects which paints (globals.css), no flash. */}
           <div className="max-w-full">
             <Image
               src="/images/logo/TALON_Logo_LightTheme.svg"
