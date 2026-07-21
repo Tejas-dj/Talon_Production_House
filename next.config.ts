@@ -9,15 +9,20 @@ import type { NextConfig } from "next";
  *   A nonce-based CSP would require per-request middleware, forcing dynamic
  *   rendering across a site that's otherwise fully static — out of scope
  *   for a hardening pass.
+ * - script-src 'unsafe-eval' is added in development only: React/Turbopack
+ *   use eval() in dev to reconstruct server error stacks in the browser.
+ *   Neither React nor Next.js use eval() in production.
  * - img-src/media-src/connect-src allow Cloudinary and Bunny's CDN
  *   (`*.b-cdn.net` covers both the pull-zone hostname used for HLS
  *   playback/thumbnails and hls.js's own segment fetches).
  * - Vercel Analytics is served same-origin (`/_vercel/insights/*`), so it
  *   needs no separate CSP domain.
  */
+const isDev = process.env.NODE_ENV === "development";
+
 const CSP = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' https://res.cloudinary.com https://*.b-cdn.net",
   "media-src 'self' https://*.b-cdn.net",
