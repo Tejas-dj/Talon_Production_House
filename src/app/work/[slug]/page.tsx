@@ -15,7 +15,6 @@ export function generateStaticParams(): Params[] {
   return getAllProjects().map((p) => ({ slug: p.slug }));
 }
 
-/** Truncates at a word boundary, ≤155 chars, per the brief's meta-description budget. */
 function truncateDescription(text: string, maxLength = 155): string {
   if (text.length <= maxLength) return text;
   const cut = text.slice(0, maxLength - 1);
@@ -33,10 +32,6 @@ export async function generateMetadata({
 
   const description = truncateDescription(project.synopsis);
   const ogTitle = `${project.title} — Talon Production House`;
-  // Project OG images use the poster image via a Cloudinary transform, per
-  // the brief, rather than the ImageResponse-based cards the static pages use.
-  // Falls back to Bunny Stream's own thumbnail when no Cloudinary poster
-  // exists yet — still a real image, not a broken/invented one.
   const ogImage = project.posterImageId
     ? cloudinaryUrl(project.posterImageId, "ogImage", 1200)
     : (bunnyThumbnailUrl(project.bunnyVideoId) ?? "");
@@ -81,10 +76,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<Pa
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(videoObjectSchema) }}
       />
-      {/* Hero / player — full bleed, singular media element (asymmetry rule 3).
-          Cinematic ratio = 16:9 (DECISIONS.md: matches the poster preset and
-          each project's own `format` field). Poster→player transition lives
-          inside BunnyPlayer (P3 Veil crossfade on actual playback start). */}
+
       <div className="aspect-video w-full">
         <BunnyPlayer
           videoId={project.bunnyVideoId}
@@ -94,12 +86,26 @@ export default async function ProjectDetailPage({ params }: { params: Promise<Pa
         />
       </div>
 
-      {/* Title + data-plate metadata block — statement role (Bible §6.3),
-          the page's title block. Six fields per the brief; the wireframe's
-          simplified 4-field meta line is expanded to the brief's fuller list
-          (documented in DECISIONS.md). */}
       <header className="container-site pt-8 pb-6">
-        <h1 className="type-headline">{project.title}</h1>
+        {/* Category tags — inspired by Pure Cinema's "Documentary / Branded Content / Campaign" treatment */}
+        <div className="mb-4 flex flex-wrap items-center gap-2">
+          <span className="type-meta text-muted">{project.category}</span>
+          <span className="type-meta text-muted opacity-40">/</span>
+          <span className="type-meta text-muted">{project.format}</span>
+          <span className="type-meta text-muted opacity-40">/</span>
+          <span className="type-meta text-muted">{String(project.year)}</span>
+        </div>
+
+        {/* Client name as large headline */}
+        <p className="type-meta text-muted mb-2">{project.client}</p>
+
+        {/* Quote-style project title — inspired by Pure Cinema's large quoted subtitle */}
+        <h1 className="type-headline flex items-baseline gap-2">
+          <span className="text-muted opacity-30" aria-hidden="true">&ldquo;</span>
+          {project.title}
+          <span className="text-muted opacity-30" aria-hidden="true">&rdquo;</span>
+        </h1>
+
         <Reveal className="mt-6">
           <dl className="grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3 lg:grid-cols-6">
             <MetaField label="Client" value={project.client} />
@@ -114,12 +120,10 @@ export default async function ProjectDetailPage({ params }: { params: Promise<Pa
 
       <div className="hairline" />
 
-      {/* Credits + synopsis — working role. Cols 5–6 intentionally empty at
-          desktop (asymmetry rule 2: text anchors left, media/whitespace
-          drifts right). */}
+      {/* Credits + Synopsis — structured layout inspired by Pure Cinema's "/ About the project" + "/ Credits" sections */}
       <section className="container-site grid grid-cols-1 gap-8 pt-6 pb-6 md:grid-cols-12 md:gap-gutter">
         <div className="md:[grid-column:1/5]">
-          <h2 className="type-meta text-muted mb-3">Credits</h2>
+          <h2 className="type-meta text-muted mb-3">/ Credits</h2>
           <ul className="flex flex-col">
             {project.credits.map((c) => (
               <li
@@ -133,17 +137,13 @@ export default async function ProjectDetailPage({ params }: { params: Promise<Pa
           </ul>
         </div>
         <div className="md:[grid-column:7/13]">
-          <h2 className="type-meta text-muted mb-3">Synopsis</h2>
+          <h2 className="type-meta text-muted mb-3">/ About the Project</h2>
           <Reveal>
             <p className="type-body max-w-[70ch]">{project.synopsis}</p>
           </Reveal>
         </div>
       </section>
 
-      {/* Stills gallery — continues the working section (no rule needed
-          between same-role blocks per Bible §6.3). Hidden entirely when no
-          real production stills exist yet, rather than showing an empty
-          "Stills" heading. */}
       {project.stillImageIds && project.stillImageIds.length > 0 && (
         <section className="container-site pb-6">
           <ProjectStillsGallery
@@ -155,8 +155,6 @@ export default async function ProjectDetailPage({ params }: { params: Promise<Pa
 
       <div className="hairline" />
 
-      {/* Previous / Next — statement role, wraps at both ends. Bible §5.2
-          names "next-project link" as a type-display use case explicitly. */}
       <nav
         aria-label="More projects"
         className="container-site grid grid-cols-1 gap-8 pt-8 pb-8 md:grid-cols-12 md:gap-gutter"
