@@ -13,37 +13,28 @@ type BunnyPlayerProps = {
   posterImageId?: string;
   /** Hero use: silent, looping, autoplaying background video. Default: tap-to-play with sound. */
   autoPlayMuted?: boolean;
+  /** Start playback from this many seconds into the video */
+  startTime?: number;
+  /** External play/pause control — when true the video plays, when false it pauses. */
+  active?: boolean;
   className?: string;
 };
 
-/**
- * Bunny Stream HLS player on the Volume network, skinned to Talon's tokens
- * (no native browser chrome — a minimal custom play affordance instead).
- * Poster-first: nothing loads until the video element mounts with a poster
- * already in place. `playsInline` + `muted` are required together for
- * autoplay to be permitted on iOS Safari (Bible §7 media pipeline note).
- *
- * hls.js drives playback on browsers without native HLS (Chrome, Firefox,
- * Edge, Android); Safari/iOS get native `<video src>` HLS support directly,
- * since layering hls.js on top of a browser that already plays HLS natively
- * only adds a dependency for no benefit.
- *
- * Poster→player transition (Phase 3): when `posterImageId` is given, a
- * `<CloudinaryImage>` sits above the video and crossfades out (P3 Veil,
- * 320ms) once the video actually starts rendering frames (`onPlaying`) —
- * not merely on click/autoplay-intent — so there is never a gap between the
- * poster disappearing and the stream having a frame ready to show.
- */
 export function BunnyPlayer({
   videoId,
   title,
   posterImageId,
   autoPlayMuted = false,
+  startTime,
+  active,
   className,
 }: BunnyPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(autoPlayMuted);
   const [videoPlaying, setVideoPlaying] = useState(false);
+  const startTimeApplied = useRef(false);
+
+  const shouldAutoPlay = active != null ? active : autoPlayMuted;
 
   const pullZone = process.env.NEXT_PUBLIC_BUNNY_PULL_ZONE;
   const hlsSrc = pullZone ? `https://${pullZone}.b-cdn.net/${videoId}/playlist.m3u8` : undefined;
@@ -70,7 +61,6 @@ export function BunnyPlayer({
         hls.loadSource(hlsSrc);
         hls.attachMedia(video);
       } else {
-        // Last-resort fallback: attempt native playback anyway.
         video.src = hlsSrc;
       }
     });
@@ -80,6 +70,36 @@ export function BunnyPlayer({
       hls?.destroy();
     };
   }, [hlsSrc, playing, autoPlayMuted]);
+
+  useEffect(() => {
+    if (startTime == null || startTimeApplied.current) return;
+    const video = videoRef.current;
+    if (!video) return;
+    const onLoadedMetadata = () => {
+      video.currentTime = startTime;
+      startTimeApplied.current = true;
+    };
+    video.addEventListener("loadedmetadata", onLoadedMetadata);
+    return () => video.removeEventListener("loadedmetadata", onLoadedMetadata);
+  }, [startTime]);
+
+  // Respond to external active prop changes.
+  useEffect(() => {
+    if (active == null) return;
+    const video = videoRef.current;
+    if (!video) return;
+    if (active) {
+      const tryPlay = () => video.play().catch(() => {});
+      if (video.readyState >= 2) {
+        tryPlay();
+      } else {
+        video.addEventListener("canplay", tryPlay, { once: true });
+        return () => video.removeEventListener("canplay", tryPlay);
+      }
+    } else {
+      video.pause();
+    }
+  }, [active]);
 
   if (!pullZone) {
     return (
@@ -100,7 +120,7 @@ export function BunnyPlayer({
         playsInline
         muted={autoPlayMuted}
         loop={autoPlayMuted}
-        autoPlay={autoPlayMuted}
+        autoPlay={shouldAutoPlay}
         onPlaying={() => setVideoPlaying(true)}
         aria-label={title}
         className="h-full w-full object-cover"

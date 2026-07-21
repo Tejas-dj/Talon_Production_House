@@ -357,6 +357,17 @@
   display: block;
 }
 
+[data-theme="light"] .header-veil[data-home] .theme-logo-light {
+  opacity: var(--header-opacity);
+}
+[data-theme="light"] .header-veil[data-home] .theme-logo-dark {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: calc(1 - var(--header-opacity));
+}
+
 /* Hairline rule — Bible §4.4: the only divider device on the site */
 @utility hairline {
   border-top: 1px solid var(--rule);
@@ -377,18 +388,169 @@
   padding-inline: var(--margin-outer);
 }
 
-/* Header container: narrower than the page container so the bar doesn't
-   sprawl edge-to-edge on wide viewports. */
 @utility container-header {
-  max-width: calc(1400px + 2 * var(--margin-outer));
-  margin-inline: auto;
+  width: 100%;
   padding-inline: var(--margin-outer);
+}
+
+.header-veil {
+  --header-opacity: 0;
+  position: relative;
+}
+
+.header-veil::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--color-page);
+  border-bottom: 1px solid var(--rule);
+  opacity: var(--header-opacity);
+  pointer-events: none;
+}
+
+.header-veil[data-menu-open]::before {
+  opacity: 1;
+}
+
+[data-theme="light"] .header-veil[data-home] .link-draw {
+  color: color-mix(in srgb, var(--text-primary) calc(var(--header-opacity) * 100%), white);
+}
+
+[data-theme="light"] .header-veil[data-home] .link-draw[aria-current] {
+  color: color-mix(in srgb, var(--accent) calc(var(--header-opacity) * 100%), white);
+}
+
+[data-theme="light"] .header-veil[data-home] .btn.type-meta {
+  color: color-mix(in srgb, var(--text-primary) calc(var(--header-opacity) * 100%), white);
+  border-color: color-mix(in srgb, var(--rule) calc(var(--header-opacity) * 100%), rgba(255,255,255,0.4));
+}
+
+/* ==========================================================================
+   CLAPPERBOARD THEME TOGGLE
+   ========================================================================== */
+
+.clap-toggle {
+  display: inline-flex;
+  flex-direction: column;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  min-height: 44px;
+  justify-content: center;
+  outline-offset: 4px;
+}
+
+.clap-top {
+  height: 12px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--text-primary) 0 6px,
+    var(--bg) 6px 12px
+  );
+  border: 1px solid var(--text-primary);
+  border-bottom: none;
+  transform-origin: bottom left;
+  transform: rotate(0deg);
+  transition: transform var(--duration-shift) var(--ease-rise);
+}
+
+.clap-body {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--text-primary);
+  color: var(--bg);
+  padding: 6px 16px 7px;
+  border: 1px solid var(--text-primary);
+}
+
+.clap-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.clap-label {
+  font-size: 7px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  line-height: 1;
+  margin-bottom: 1px;
+}
+
+.clap-value {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  line-height: 1.2;
+  min-width: 2.5em;
+}
+
+.clap-divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--bg);
+  opacity: 0.2;
+}
+
+@media (hover: hover) {
+  .clap-toggle:not(.is-clapping):hover .clap-top {
+    transform: rotate(-15deg);
+  }
+}
+
+.clap-toggle:not(.is-clapping):focus-visible .clap-top {
+  transform: rotate(-15deg);
+}
+
+@keyframes clap-slam {
+  0%   { transform: rotate(0deg); }
+  18%  { transform: rotate(-22deg); }
+  48%  { transform: rotate(3deg); }
+  65%  { transform: rotate(-2deg); }
+  80%  { transform: rotate(1deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.clap-toggle.is-clapping .clap-top {
+  animation: clap-slam 450ms var(--ease-shift) forwards;
+}
+
+/* ==========================================================================
+   MARQUEE — infinite horizontal scroll, respects reduced-motion
+   ========================================================================== */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marquee-scroll 20s linear infinite;
+}
+
+@media (hover: hover) {
+  .marquee-hover-pause:hover {
+    animation-play-state: paused;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
 }
 
 /* ==========================================================================
    BASE
    ========================================================================== */
 @layer base {
+  @media (hover: hover) and (pointer: fine) {
+    *, *::before, *::after { cursor: none !important; }
+  }
+
   body {
     background-color: var(--bg);
     color: var(--text-primary);
@@ -417,5 +579,62 @@
       transition-duration: 0ms !important;
       animation-duration: 0ms !important;
     }
+  }
+
+  /* ── Splash screen ── */
+  .splash-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
+  .splash-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .splash-fill {
+    fill: var(--bg);
+  }
+
+  .splash-title {
+    font-family: var(--font-archivo), Arial, "Helvetica Neue", sans-serif;
+    font-weight: 800;
+    font-stretch: 125%;
+    font-size: 42px;
+    letter-spacing: -0.02em;
+  }
+
+  .splash-subtitle {
+    font-family: var(--font-archivo), Arial, "Helvetica Neue", sans-serif;
+    font-weight: 600;
+    font-size: 6px;
+    letter-spacing: 0.14em;
+  }
+
+  .splash-letters {
+    transform-origin: 500px 300px;
+    will-change: transform;
+  }
+
+  .splash-zoom .splash-letters {
+    animation: splashScale 4000ms cubic-bezier(0.6, 0.1, 0.1, 0.1) forwards;
+  }
+
+  .splash-zoom {
+    animation: splashFade 80ms ease-out 4000ms forwards;
+  }
+
+  @keyframes splashScale {
+    from { transform: scale(1); }
+    to { transform: scale(250); }
+  }
+
+  @keyframes splashFade {
+    from { opacity: 1; }
+    to { opacity: 0; }
   }
 }
