@@ -1,14 +1,84 @@
 "use client";
 
-import { ThemeProvider as NextThemesProvider } from "next-themes";
+import Script from "next/script";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useSyncExternalStore } from "react";
 
-/* next-themes injects a blocking inline script before hydration, so the
-   stored (or system) theme paints on first render with no flash.
-   attribute="data-theme" matches the token layer's [data-theme="dark"]. */
+type Theme = "light" | "dark" | "system";
+
+interface ThemeContextValue {
+  theme: Theme;
+  resolvedTheme: "light" | "dark";
+  setTheme: (theme: Theme) => void;
+}
+
+const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
+
+const STORAGE_KEY = "theme";
+const ATTRIBUTE = "data-theme";
+
+const emptySubscribe = () => () => {};
+
+function getSystemTheme(): "light" | "dark" {
+  if (typeof window === "undefined") return "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function resolveTheme(theme: Theme): "light" | "dark" {
+  return theme === "system" ? getSystemTheme() : theme;
+}
+
+const themeScript = `(function(){try{var t=localStorage.getItem("${STORAGE_KEY}")||"system";var r=t==="system"?window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":t;document.documentElement.setAttribute("${ATTRIBUTE}",r)}catch(e){}})()`;
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  return (
-    <NextThemesProvider attribute="data-theme" defaultTheme="system" enableSystem>
-      {children}
-    </NextThemesProvider>
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
   );
+
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof window === "undefined") return "system";
+    return (localStorage.getItem(STORAGE_KEY) as Theme) || "system";
+  });
+
+  const resolvedTheme = mounted ? resolveTheme(theme) : "light";
+
+  const setTheme = useCallback((next: Theme) => {
+    setThemeState(next);
+    localStorage.setItem(STORAGE_KEY, next);
+    document.documentElement.setAttribute(ATTRIBUTE, resolveTheme(next));
+  }, []);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(prefers-color-scheme: dark)");
+    const handler = () => {
+      if (theme === "system") {
+        document.documentElement.setAttribute(ATTRIBUTE, getSystemTheme());
+        setThemeState("system");
+      }
+    };
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, [theme]);
+
+  const value = useMemo(
+    () => ({ theme, resolvedTheme, setTheme }),
+    [theme, resolvedTheme, setTheme],
+  );
+
+  return (
+    <ThemeContext value={value}>
+      <Script id="theme-script" strategy="beforeInteractive">
+        {themeScript}
+      </Script>
+      {children}
+    </ThemeContext>
+  );
+}
+
+export function useTheme() {
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error("useTheme must be used within ThemeProvider");
+  return ctx;
 }

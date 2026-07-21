@@ -1,14 +1,10 @@
 "use client";
 
-import { useTheme } from "next-themes";
-import { useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
+import { useTheme } from "@/components/shell/ThemeProvider";
 
 const emptySubscribe = () => () => {};
 
-/* Theme switcher: keyboard operable, designed focus ring via the global
-   :focus-visible rule, typographic label (no icon glyphs — guardrails).
-   The theme name only renders after mount because the server cannot know
-   the visitor's stored/system preference. */
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
   const mounted = useSyncExternalStore(
@@ -16,30 +12,44 @@ export function ThemeToggle() {
     () => true,
     () => false,
   );
+  const [isClapping, setIsClapping] = useState(false);
 
   function toggle() {
-    const next = resolvedTheme === "dark" ? "light" : "dark";
-    // P3 Veil: crossfade colors sitewide for one beat, then release.
-    // The prefers-reduced-motion block zeroes this to an instant cut.
-    document.documentElement.classList.add("theme-veil");
-    window.setTimeout(() => {
-      document.documentElement.classList.remove("theme-veil");
-    }, 400);
-    setTheme(next);
+    if (isClapping) return;
+    setIsClapping(true);
+
+    setTimeout(() => {
+      const next = resolvedTheme === "dark" ? "light" : "dark";
+      document.documentElement.classList.add("theme-veil");
+      window.setTimeout(() => {
+        document.documentElement.classList.remove("theme-veil");
+      }, 400);
+      setTheme(next);
+    }, 200);
+
+    setTimeout(() => setIsClapping(false), 500);
   }
+
+  const isDark = mounted && resolvedTheme === "dark";
 
   return (
     <button
       type="button"
       onClick={toggle}
-      className="btn type-meta px-4 py-2"
+      className={`clap-toggle${isClapping ? " is-clapping" : ""}`}
       aria-label={
         mounted
-          ? `Switch to ${resolvedTheme === "dark" ? "light" : "dark"} theme`
+          ? `Switch to ${isDark ? "light" : "dark"} theme`
           : "Toggle color theme"
       }
     >
-      Theme{mounted ? `: ${resolvedTheme}` : ""}
+      <span className="clap-top" aria-hidden="true" />
+      <span className="clap-body">
+        <span className="clap-field">
+          <span className="clap-label">Theme</span>
+          <span className="clap-value">{mounted ? (isDark ? "Dark" : "Light") : ""}</span>
+        </span>
+      </span>
     </button>
   );
 }
