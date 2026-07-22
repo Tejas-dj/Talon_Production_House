@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CONTACT_LINKS, CREDIT, NAV_ITEMS } from "@/lib/site";
+import { CREDIT, NAV_ITEMS } from "@/lib/site";
 import { CopyrightYear } from "@/components/shell/CopyrightYear";
 import { Marquee } from "@/components/motion/Marquee";
 
@@ -43,32 +43,17 @@ export function Footer() {
             />
           </div>
 
-          <div className="flex gap-6 md:gap-7">
-            <nav aria-label="Footer">
-              <ul className="flex flex-col gap-2">
-                {NAV_ITEMS.map((item) => (
-                  <li key={item.href}>
-                    <Link href={item.href} className="link-draw type-meta">
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+          <nav aria-label="Footer">
             <ul className="flex flex-col gap-2">
-              {CONTACT_LINKS.map((item) => (
-                <li key={item.label}>
-                  <a
-                    href={item.href}
-                    className="link-draw type-meta"
-                    {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  >
+              {NAV_ITEMS.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="link-draw type-meta">
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
         </div>
 
         <div className="hairline mt-6 flex flex-wrap items-baseline justify-between gap-3 pt-3">
