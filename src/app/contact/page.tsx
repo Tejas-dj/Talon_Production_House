@@ -1,6 +1,16 @@
 import type { Metadata } from "next";
+import { FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
+import { FiPhone, FiMail } from "react-icons/fi";
 import { Reveal } from "@/components/motion/Reveal";
 import { CONTACT_LINKS, WHATSAPP_GENERAL_MESSAGE, waLink } from "@/lib/site";
+
+const CONTACT_ICONS: Record<string, React.ReactNode> = {
+  Instagram: <FaInstagram size={24} />,
+  YouTube: <FaYoutube size={24} />,
+  Phone: <FiPhone size={24} />,
+  Email: <FiMail size={24} />,
+  WhatsApp: <FaWhatsapp size={24} />,
+};
 
 const DESCRIPTION =
   "Reach Talon Production House directly — Instagram, YouTube, phone, email, or WhatsApp. No forms.";
@@ -34,10 +44,13 @@ function ContactRow({
     <Reveal index={index} className="hairline">
       <a
         href={href}
-        className="link-draw flex flex-col gap-2 py-6 sm:flex-row sm:items-baseline sm:justify-between"
+        className="link-draw flex flex-col gap-2 py-6 sm:flex-row sm:items-center sm:justify-between"
         {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       >
-        <span className="type-headline">{label} →</span>
+        <span className="type-headline flex items-center gap-3">
+          {CONTACT_ICONS[label]}
+          {label} →
+        </span>
         <span className="type-meta text-muted">{detail}</span>
       </a>
     </Reveal>

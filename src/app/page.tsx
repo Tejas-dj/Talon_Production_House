@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
+import { FiPhone, FiMail } from "react-icons/fi";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { Hero } from "@/components/home/Hero";
 import { Reveal } from "@/components/motion/Reveal";
@@ -8,8 +10,16 @@ import { ProjectGrid } from "@/components/work/ProjectGrid";
 import { getAllClientLogos, getAllProjects } from "@/lib/content";
 import { CONTACT_LINKS, waLink, WHATSAPP_GENERAL_MESSAGE } from "@/lib/site";
 
+const CONTACT_ICONS: Record<string, React.ReactNode> = {
+  Instagram: <FaInstagram size={16} />,
+  YouTube: <FaYoutube size={16} />,
+  Phone: <FiPhone size={16} />,
+  Email: <FiMail size={16} />,
+  WhatsApp: <FaWhatsapp size={16} />,
+};
+
 const DESCRIPTION =
-  "Video production, photography, and studio rental in Bengaluru. Real work, real space, real rates.";
+  "Motion production, stills, and studio rental in Bengaluru. Real work, real space, real rates.";
 
 export const metadata: Metadata = {
   title: { absolute: "Talon Production House" },
@@ -31,7 +41,7 @@ const CAPABILITIES = {
     items: [
       "Direction",
       "Cinematography",
-      "Photography",
+      "Stills",
       "Audio Production",
       "Art Direction",
       "Logistics",
@@ -105,8 +115,8 @@ export default function HomePage() {
           <span className="type-meta text-muted">{featured.length} Projects</span>
         </div>
         <ProjectGrid projects={featured} variant="featured" />
-        <Link href="/work" className="link-draw type-meta mt-6 inline-block">
-          All video projects →
+        <Link href="/work/motion" className="link-draw type-meta mt-6 inline-block">
+          All motion projects →
         </Link>
       </section>
 
@@ -199,18 +209,24 @@ export default function HomePage() {
                 <a
                   key={link.label}
                   href={link.href}
-                  className="link-draw type-meta flex items-baseline justify-between gap-4 py-2 hairline-b"
+                  className="link-draw type-meta flex items-center justify-between gap-4 py-2 hairline-b"
                   {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 >
-                  <span>{link.label}</span>
+                  <span className="flex items-center gap-2">
+                    {CONTACT_ICONS[link.label]}
+                    {link.label}
+                  </span>
                   <span className="text-muted">{link.handle}</span>
                 </a>
               ))}
               <a
                 href={waLink(WHATSAPP_GENERAL_MESSAGE)}
-                className="link-draw type-meta flex items-baseline justify-between gap-4 py-2 hairline-b"
+                className="link-draw type-meta flex items-center justify-between gap-4 py-2 hairline-b"
               >
-                <span>WhatsApp</span>
+                <span className="flex items-center gap-2">
+                  {CONTACT_ICONS.WhatsApp}
+                  WhatsApp
+                </span>
                 <span className="text-muted">Message us directly</span>
               </a>
             </div>
