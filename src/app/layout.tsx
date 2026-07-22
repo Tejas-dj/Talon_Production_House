@@ -68,6 +68,13 @@ export default function RootLayout({
   return (
     // suppressHydrationWarning: next-themes sets data-theme pre-hydration
     <html lang="en" className={archivo.variable} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("theme")||"system";var r=t==="system"?window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":t;document.documentElement.setAttribute("data-theme",r)}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body className="flex min-h-svh flex-col" suppressHydrationWarning>
         <ThemeProvider>
           <SplashScreen />

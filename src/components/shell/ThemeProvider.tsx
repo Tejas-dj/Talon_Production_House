@@ -1,6 +1,5 @@
 "use client";
 
-import Script from "next/script";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSyncExternalStore } from "react";
 
@@ -27,8 +26,6 @@ function getSystemTheme(): "light" | "dark" {
 function resolveTheme(theme: Theme): "light" | "dark" {
   return theme === "system" ? getSystemTheme() : theme;
 }
-
-const themeScript = `(function(){try{var t=localStorage.getItem("${STORAGE_KEY}")||"system";var r=t==="system"?window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":t;document.documentElement.setAttribute("${ATTRIBUTE}",r)}catch(e){}})()`;
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const mounted = useSyncExternalStore(
@@ -69,9 +66,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeContext value={value}>
-      <Script id="theme-script" strategy="beforeInteractive">
-        {themeScript}
-      </Script>
       {children}
     </ThemeContext>
   );
