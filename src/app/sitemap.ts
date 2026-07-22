@@ -6,13 +6,14 @@ import { SITE_URL } from "@/lib/site";
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPaths = [
     "",
-    "/work",
-    "/photography",
+    "/work/motion",
+    "/work/stills",
     "/studio",
+    "/team",
     "/contact",
     "/privacy",
     "/terms",
   ].map((path) => ({ url: `${SITE_URL}${path}` }));
-  const projectPaths = getAllProjects().map((p) => ({ url: `${SITE_URL}/work/${p.slug}` }));
+  const projectPaths = getAllProjects().map((p) => ({ url: `${SITE_URL}/work/motion/${p.slug}` }));
   return [...staticPaths, ...projectPaths];
 }

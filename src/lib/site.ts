@@ -4,7 +4,7 @@
 export const NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "Work", href: "/work" },
-  { label: "Photography", href: "/photography" },
+  { label: "The Team", href: "/team" },
   { label: "Studio", href: "/studio" },
   { label: "Contact", href: "/contact" },
 ] as const;
@@ -66,3 +66,8 @@ export const CREDIT = {
    from `featured` projects: it's a reel, not a client project with a
    client/synopsis/credits, so it shouldn't also render as a Work grid card. */
 export const HERO_BUNNY_VIDEO_ID = "80b37aa9-bd62-4afe-a447-175a609f7695";
+
+/* Work overlay — right-hand panel plays this when "Motion" is hovered.
+   PLACEHOLDER: reusing an existing featured project's clip until a
+   purpose-shot preview is provided. */
+export const WORK_OVERLAY_MOTION_PREVIEW_BUNNY_VIDEO_ID = "69681521-f62b-454a-9309-ab97ccd96365";
