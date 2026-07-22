@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Talon Production House",
     short_name: "Talon",
-    description: "Video production, photography, and studio rental in Bengaluru.",
+    description: "Motion production, stills, and studio rental in Bengaluru.",
     start_url: "/",
     display: "standalone",
     background_color: "#EDE7DC",

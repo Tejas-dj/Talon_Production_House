@@ -111,7 +111,7 @@ export function ProjectGrid({ projects, variant = "index" }: ProjectGridProps) {
                 >
                   {thumbFirst ? (
                     <>
-                      <Link href={`/work/${project.slug}`} className="md:[grid-column:1/8]">
+                      <Link href={`/work/motion/${project.slug}`} className="md:[grid-column:1/8]">
                         <VideoWithOverlay project={project} />
                       </Link>
                       <div className="flex flex-col gap-1 self-start md:[grid-column:8/13]">
@@ -131,7 +131,7 @@ export function ProjectGrid({ projects, variant = "index" }: ProjectGridProps) {
                           {project.client} · {project.year} · {project.category}
                         </p>
                       </div>
-                      <Link href={`/work/${project.slug}`} className="order-1 md:order-2 md:[grid-column:6/13]">
+                      <Link href={`/work/motion/${project.slug}`} className="order-1 md:order-2 md:[grid-column:6/13]">
                         <VideoWithOverlay project={project} />
                       </Link>
                     </>
@@ -147,7 +147,7 @@ export function ProjectGrid({ projects, variant = "index" }: ProjectGridProps) {
             {i > 0 && <div className="hairline" aria-hidden="true" />}
             <Reveal index={i}>
               <Link
-                href={`/work/${project.slug}`}
+                href={`/work/motion/${project.slug}`}
                 className={`group grid grid-cols-1 gap-3 py-4 md:grid-cols-12 md:gap-gutter ${
                   i === 0 ? "pt-0" : ""
                 } ${thumbFirst ? "" : "md:mt-5"}`}

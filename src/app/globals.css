@@ -527,8 +527,21 @@
   to   { transform: translateX(-50%); }
 }
 
+@keyframes marquee-scroll-vertical {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+
 .marquee-track {
   animation: marquee-scroll 20s linear infinite;
+}
+
+.marquee-track-vertical {
+  animation-name: marquee-scroll-vertical;
+}
+
+.marquee-track-reverse {
+  animation-direction: reverse;
 }
 
 @media (hover: hover) {

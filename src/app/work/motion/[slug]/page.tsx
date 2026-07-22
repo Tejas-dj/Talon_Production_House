@@ -39,11 +39,11 @@ export async function generateMetadata({
   return {
     title: project.title,
     description,
-    alternates: { canonical: `/work/${project.slug}` },
+    alternates: { canonical: `/work/motion/${project.slug}` },
     openGraph: {
       title: ogTitle,
       description,
-      url: `/work/${project.slug}`,
+      url: `/work/motion/${project.slug}`,
       images: [{ url: ogImage, width: 1200, height: 630, alt: project.title }],
     },
     twitter: { title: ogTitle, description, images: [ogImage] },
@@ -160,14 +160,14 @@ export default async function ProjectDetailPage({ params }: { params: Promise<Pa
         className="container-site grid grid-cols-1 gap-8 pt-8 pb-8 md:grid-cols-12 md:gap-gutter"
       >
         <Link
-          href={`/work/${prevProject.slug}`}
+          href={`/work/motion/${prevProject.slug}`}
           className="link-draw block pb-1 md:[grid-column:1/6]"
         >
           <span className="type-meta text-muted mb-2 block">Previous</span>
           <span className="type-display block">{prevProject.title}</span>
         </Link>
         <Link
-          href={`/work/${nextProject.slug}`}
+          href={`/work/motion/${nextProject.slug}`}
           className="link-draw block pb-1 md:[grid-column:8/13]"
         >
           <span className="type-meta text-muted mb-2 block">Next</span>

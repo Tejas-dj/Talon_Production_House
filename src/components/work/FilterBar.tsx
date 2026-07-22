@@ -19,7 +19,7 @@ export function FilterBar({ categories, active }: FilterBarProps) {
       <ul className="flex flex-wrap gap-2">
         <li>
           <Link
-            href="/work"
+            href="/work/motion"
             className="btn type-meta px-4 py-2"
             aria-current={!active ? "true" : undefined}
           >
@@ -29,7 +29,7 @@ export function FilterBar({ categories, active }: FilterBarProps) {
         {categories.map((category) => (
           <li key={category}>
             <Link
-              href={`/work?category=${encodeURIComponent(category)}`}
+              href={`/work/motion?category=${encodeURIComponent(category)}`}
               className="btn type-meta px-4 py-2"
               aria-current={active === category ? "true" : undefined}
             >

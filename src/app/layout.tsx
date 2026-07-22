@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     default: "Talon Production House",
     template: "%s — Talon Production House",
   },
-  description: "Video production, photography, and studio rental in Bengaluru.",
+  description: "Motion production, stills, and studio rental in Bengaluru.",
   openGraph: {
     siteName: "Talon Production House",
     type: "website",

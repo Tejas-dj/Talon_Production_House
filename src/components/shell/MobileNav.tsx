@@ -13,11 +13,21 @@ type MobileNavProps = {
   headerRef: RefObject<HTMLElement | null>;
   triggerRef: RefObject<HTMLButtonElement | null>;
   isCurrent: (href: string) => boolean;
+  /** Opens the full-screen Stills/Motion overlay instead of navigating. */
+  onWorkClick: () => void;
 };
 
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export function MobileNav({ id, open, onClose, headerRef, triggerRef, isCurrent }: MobileNavProps) {
+export function MobileNav({
+  id,
+  open,
+  onClose,
+  headerRef,
+  triggerRef,
+  isCurrent,
+  onWorkClick,
+}: MobileNavProps) {
   /* Focus trap + escape + body scroll lock while open — cleaned up on close. */
   useEffect(() => {
     if (!open) return;
@@ -92,14 +102,26 @@ export function MobileNav({ id, open, onClose, headerRef, triggerRef, isCurrent 
         <ul className="container-site flex flex-col py-5">
           {NAV_ITEMS.map((item) => (
             <li key={item.href} className="hairline first:border-t-0">
-              <Link
-                href={item.href}
-                className="link-draw type-headline inline-block py-3"
-                aria-current={isCurrent(item.href) ? "page" : undefined}
-                onClick={onClose}
-              >
-                {item.label}
-              </Link>
+              {item.href === "/work" ? (
+                <button
+                  type="button"
+                  className="link-draw type-headline inline-block py-3"
+                  aria-current={isCurrent(item.href) ? "page" : undefined}
+                  aria-haspopup="dialog"
+                  onClick={onWorkClick}
+                >
+                  {item.label}
+                </button>
+              ) : (
+                <Link
+                  href={item.href}
+                  className="link-draw type-headline inline-block py-3"
+                  aria-current={isCurrent(item.href) ? "page" : undefined}
+                  onClick={onClose}
+                >
+                  {item.label}
+                </Link>
+              )}
             </li>
           ))}
         </ul>

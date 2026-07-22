@@ -7,12 +7,14 @@ import { useEffect, useRef, useState } from "react";
 import { NAV_ITEMS } from "@/lib/site";
 import { ThemeToggle } from "@/components/shell/ThemeToggle";
 import { MobileNav } from "@/components/shell/MobileNav";
+import { WorkOverlay } from "@/components/shell/WorkOverlay";
 
 const SCROLL_THRESHOLD = 300;
 
 export function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [workOverlayOpen, setWorkOverlayOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const veilRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -68,17 +70,33 @@ export function Header() {
           <div className="flex items-center gap-4 md:gap-5">
             <nav aria-label="Primary" className="hidden md:block">
               <ul className="flex items-center gap-5">
-                {NAV_ITEMS.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className="link-draw type-meta"
-                      aria-current={isCurrent(item.href) ? "page" : undefined}
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
+                {NAV_ITEMS.map((item) =>
+                  item.href === "/work" ? (
+                    <li key={item.href}>
+                      <button
+                        type="button"
+                        className="link-draw type-meta"
+                        aria-current={isCurrent(item.href) ? "page" : undefined}
+                        aria-haspopup="dialog"
+                        aria-expanded={workOverlayOpen}
+                        aria-controls="work-overlay"
+                        onClick={() => setWorkOverlayOpen(true)}
+                      >
+                        {item.label}
+                      </button>
+                    </li>
+                  ) : (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        className="link-draw type-meta"
+                        aria-current={isCurrent(item.href) ? "page" : undefined}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ),
+                )}
               </ul>
             </nav>
 
@@ -105,6 +123,16 @@ export function Header() {
         headerRef={headerRef}
         triggerRef={menuButtonRef}
         isCurrent={isCurrent}
+        onWorkClick={() => {
+          setMenuOpen(false);
+          setWorkOverlayOpen(true);
+        }}
+      />
+
+      <WorkOverlay
+        id="work-overlay"
+        open={workOverlayOpen}
+        onClose={() => setWorkOverlayOpen(false)}
       />
     </header>
   );

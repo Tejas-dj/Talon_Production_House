@@ -4,28 +4,28 @@ import { PhotoSeriesGrid } from "@/components/work/PhotoSeriesGrid";
 import { getAllPhotoSeries } from "@/lib/content";
 
 const DESCRIPTION =
-  "Curated photography series from Talon Production House — portraits, urban studies, and available-light work from Bengaluru.";
+  "Curated stills series from Talon Production House — portraits, urban studies, and available-light work from Bengaluru.";
 
 export const metadata: Metadata = {
-  title: "Photography",
+  title: "Stills",
   description: DESCRIPTION,
-  alternates: { canonical: "/photography" },
+  alternates: { canonical: "/work/stills" },
   openGraph: {
-    title: "Photography — Talon Production House",
+    title: "Stills — Talon Production House",
     description: DESCRIPTION,
-    url: "/photography",
+    url: "/work/stills",
   },
-  twitter: { title: "Photography — Talon Production House", description: DESCRIPTION },
+  twitter: { title: "Stills — Talon Production House", description: DESCRIPTION },
 };
 
-export default function PhotographyPage() {
+export default function StillsPage() {
   const series = getAllPhotoSeries();
 
   return (
     <div>
       {/* Page title — statement role (Bible §6.3) */}
       <header className="container-site pt-8 pb-6">
-        <h1 className="type-display">Photography</h1>
+        <h1 className="type-display">Stills</h1>
       </header>
 
       <div className="hairline" />
