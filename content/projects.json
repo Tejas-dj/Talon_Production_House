@@ -42,58 +42,6 @@
     "bunnyVideoId": "05a4f958-1efa-44fd-af17-671daab058ff"
   },
   {
-    "slug": "metal-mohana",
-    "title": "Metal Mohana",
-    "client": "Shutterspace Films",
-    "year": 2026,
-    "format": "4:3 · 1080p",
-    "runtime": "02:46",
-    "role": "Not yet specified",
-    "credits": [{ "role": "Production", "name": "Talon Production House" }],
-    "synopsis": "Official music video for Aditya Rajaram & Prerna Venkataramanan, produced with Shutterspace Films. Talon's exact role, full credits, and synopsis are pending confirmation from the client.",
-    "category": "Music Video",
-    "bunnyVideoId": "4ac5cbc5-db34-46e8-93be-e7392c12b02b"
-  },
-  {
-    "slug": "o-belake",
-    "title": "O Belake",
-    "client": "Daali Pictures",
-    "year": 2026,
-    "format": "16:9 · 1080p",
-    "runtime": "03:13",
-    "role": "Not yet specified",
-    "credits": [{ "role": "Production", "name": "Talon Production House" }],
-    "synopsis": "Music video \"Mother Promise\", featuring Daali Dhananjaya and Poorna Mysore, produced with Daali Pictures. Talon's exact role, full credits, and synopsis are pending confirmation from the client.",
-    "category": "Music Video",
-    "bunnyVideoId": "0a6adc9e-1d96-4e4e-84f6-a6faac927d01"
-  },
-  {
-    "slug": "nasheya-gungale",
-    "title": "Nasheya Gungale",
-    "client": "Sony Music South",
-    "year": 2026,
-    "format": "4:3 · 1080p",
-    "runtime": "03:25",
-    "role": "Not yet specified",
-    "credits": [{ "role": "Production", "name": "Talon Production House" }],
-    "synopsis": "Kannada indie music video by Tanmay Gururaj featuring Jerusha Christopher, released via Sony Music South. Talon's exact role, full credits, and synopsis are pending confirmation from the client.",
-    "category": "Music Video",
-    "bunnyVideoId": "9141196d-4594-4471-93ee-2a375e90661a"
-  },
-  {
-    "slug": "sees-kaddi-trailer",
-    "title": "Sees Kaddi — Trailer",
-    "client": "Rathan Gangadhar K C",
-    "year": 2026,
-    "format": "16:9 · 1080p",
-    "runtime": "03:15",
-    "role": "Not yet specified",
-    "credits": [{ "role": "Production", "name": "Talon Production House" }],
-    "synopsis": "Trailer for the film Sees Kaddi, directed by Rathan Gangadhar K C. Talon's exact role, full credits, and synopsis are pending confirmation from the client.",
-    "category": "Short Film",
-    "bunnyVideoId": "3dacb2f7-a3a7-4615-afa4-40e18d2983bd"
-  },
-  {
     "slug": "jewellery-ad",
     "title": "Jewellery Ad",
     "client": "Client pending confirmation",

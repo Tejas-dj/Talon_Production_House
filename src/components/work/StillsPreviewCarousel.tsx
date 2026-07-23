@@ -1,31 +1,27 @@
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { Marquee } from "@/components/motion/Marquee";
 
-/* PLACEHOLDER curation: a spread of existing series images, forced to a
-   portrait crop via the "portraitCard" preset regardless of source
-   orientation (no orientation metadata exists in content/photography.json
-   to filter by) — swap for a hand-picked portrait set later. */
-const COLUMNS: string[][] = [
+export const STILLS_CAROUSEL_IDS: string[][] = [
   [
-    "VInita_Portfolio-7_rb9miz",
-    "IMG_9807_wrnsba",
-    "shradha_team-15_jsvin2",
-    "VInita_Portfolio-2_ugewxw",
-    "shradha_team-04_qz0cib",
+    "VInita_Portfolio-7_n4zde7",
+    "IMG_9807_cmlxe0",
+    "shradha_team-15_m65ytx",
+    "VInita_Portfolio-2_tpuqzu",
+    "shradha_team-04_oqfoyr",
   ],
   [
-    "INDYVARNA_MAY_OUTFIT-35_hdrvqn",
-    "INDYVARNA_MAY_OUTFIT-32_t267zb",
-    "INDYVARNA_MAY_OUTFIT-3_cmjnvr",
-    "INDYVARNA_MAY_OUTFIT-29_wza4jx",
-    "INDYVARNA_MAY_OUTFIT-26_ymtouc",
+    "INDYVARNA_MAY_OUTFIT-35_uitdki",
+    "INDYVARNA_MAY_OUTFIT-32_e0so2k",
+    "INDYVARNA_MAY_OUTFIT-3_iebzbv",
+    "INDYVARNA_MAY_OUTFIT-29_qbas1k",
+    "INDYVARNA_MAY_OUTFIT-26_c3pgbu",
   ],
   [
-    "DSC01254_mvwkgx",
-    "DSC00950_sh6vfq",
-    "BEACH_1-19_kppm1e",
-    "BEACH_1-15_oytack",
-    "BEACH_1-12_tslzqz",
+    "DSC01254_s11rej",
+    "DSC00950_ddrpto",
+    "BEACH_1-19_hxysdl",
+    "BEACH_1-15_xffqol",
+    "BEACH_1-12_jaxcxw",
   ],
 ];
 
@@ -34,7 +30,7 @@ const SPEEDS = [65, 50, 80];
 export function StillsPreviewCarousel() {
   return (
     <div className="grid h-full grid-cols-3 gap-2 p-2" aria-hidden="true">
-      {COLUMNS.map((ids, col) => (
+      {STILLS_CAROUSEL_IDS.map((ids, col) => (
         <Marquee
           key={col}
           direction="vertical"

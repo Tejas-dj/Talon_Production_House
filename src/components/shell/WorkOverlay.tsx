@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { BunnyPlayer } from "@/components/media/BunnyPlayer";
-import { StillsPreviewCarousel } from "@/components/work/StillsPreviewCarousel";
+import { StillsPreviewCarousel, STILLS_CAROUSEL_IDS } from "@/components/work/StillsPreviewCarousel";
 import { ThemeToggle } from "@/components/shell/ThemeToggle";
 import { useDialogBehavior } from "@/lib/use-dialog";
 import { HERO_BUNNY_VIDEO_ID, WORK_OVERLAY_MOTION_PREVIEW_BUNNY_VIDEO_ID } from "@/lib/site";
+import { CLOUDINARY_PRESETS } from "@/lib/media/presets";
 
 type WorkOverlayProps = {
   id: string;
@@ -25,6 +26,22 @@ export function WorkOverlay({ id, open, onClose }: WorkOverlayProps) {
   useEffect(() => {
     if (!open) setHovered(null);
   }, [open]);
+
+  useEffect(() => {
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    if (!cloudName) return;
+    const { transform } = CLOUDINARY_PRESETS.portraitCard;
+    const links: HTMLLinkElement[] = [];
+    for (const id of STILLS_CAROUSEL_IDS.flat()) {
+      const link = document.createElement("link");
+      link.rel = "prefetch";
+      link.as = "image";
+      link.href = `https://res.cloudinary.com/${cloudName}/image/upload/${transform},q_auto,w_640/${id}`;
+      document.head.appendChild(link);
+      links.push(link);
+    }
+    return () => links.forEach((l) => l.remove());
+  }, []);
 
   return (
     <div

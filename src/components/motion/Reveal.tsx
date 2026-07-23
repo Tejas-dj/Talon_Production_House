@@ -8,6 +8,7 @@ type RevealProps = {
   /** Position within a staggered group — feeds Bible §7's irregular stagger sequence. */
   index?: number;
   className?: string;
+  style?: React.CSSProperties;
 };
 
 /**
@@ -18,12 +19,13 @@ type RevealProps = {
  * as Framer Motion's `custom` so `rise`'s dynamic variant can compute this
  * item's stagger delay (see src/lib/motion.ts).
  */
-export function Reveal({ children, index = 0, className }: RevealProps) {
+export function Reveal({ children, index = 0, className, style }: RevealProps) {
   const reducedMotion = useReducedMotion();
 
   return (
     <motion.div
       className={className}
+      style={style}
       custom={index}
       initial="hidden"
       whileInView="visible"
