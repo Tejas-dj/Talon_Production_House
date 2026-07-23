@@ -11,27 +11,6 @@ type SplitTextProps = {
   charDelay?: number;
 };
 
-const charVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: DURATION.rise,
-      ease: EASE.rise as unknown as number[],
-      delay: i * 0.04,
-    },
-  }),
-};
-
-const charVariantsReduced = {
-  hidden: { opacity: 0 },
-  visible: (i: number) => ({
-    opacity: 1,
-    transition: { duration: DURATION.riseReduced, ease: "linear" as const, delay: i * 0.02 },
-  }),
-};
-
 export function SplitText({
   children,
   as: Tag = "h1",
@@ -58,7 +37,7 @@ export function SplitText({
           y: 0,
           transition: {
             duration: DURATION.rise,
-            ease: EASE.rise as unknown as number[],
+            ease: EASE.rise,
             delay: i * charDelay,
           },
         }),
