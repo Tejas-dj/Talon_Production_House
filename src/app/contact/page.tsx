@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
 import { FiPhone, FiMail } from "react-icons/fi";
 import { Reveal } from "@/components/motion/Reveal";
+import { SplitText } from "@/components/motion/SplitText";
 import { CONTACT_LINKS, WHATSAPP_GENERAL_MESSAGE, waLink } from "@/lib/site";
 
 const CONTACT_ICONS: Record<string, React.ReactNode> = {
@@ -64,7 +65,7 @@ export default function ContactPage() {
   return (
     <div>
       <header className="container-site pt-8 pb-6">
-        <h1 className="type-display">Contact</h1>
+        <SplitText as="h1" className="type-display">Contact</SplitText>
       </header>
 
       <div className="container-site pb-8">

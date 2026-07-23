@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/motion/Reveal";
+import { SplitText } from "@/components/motion/SplitText";
+import { TiltCard } from "@/components/motion/TiltCard";
 
 const DESCRIPTION =
   "Meet the team behind Talon Production House — the people shaping every frame, every project, every decision.";
@@ -38,7 +40,7 @@ export default function TeamPage() {
   return (
     <div>
       <header className="container-site pt-8 pb-6">
-        <h1 className="type-display">The Team</h1>
+        <SplitText as="h1" className="type-display">The Team</SplitText>
         <Reveal>
           <p className="type-subhead text-muted mt-4 max-w-[55ch]">
             The people behind the lens, the decisions, and the standard.
@@ -51,22 +53,25 @@ export default function TeamPage() {
       {LEADERS.map((leader, i) => (
         <section key={leader.name}>
           <div className="container-site grid grid-cols-1 gap-6 py-7 md:grid-cols-12 md:gap-gutter">
-            {/* Portrait area */}
-            <Reveal
-              index={0}
-              className={`aspect-[3/4] overflow-hidden md:col-span-5 ${
+            {/* Portrait area with 3D tilt */}
+            <div
+              className={`md:col-span-5 ${
                 i % 2 === 1 ? "md:col-start-8 md:row-start-1" : ""
               }`}
             >
-              <div className="flex h-full w-full items-center justify-center bg-surface">
-                <span
-                  className="select-none text-muted opacity-20"
-                  style={{ fontSize: "clamp(4rem, 10vw, 8rem)", fontWeight: 800, fontStretch: "125%", letterSpacing: "-0.02em" }}
-                >
-                  {leader.portraitPlaceholder}
-                </span>
-              </div>
-            </Reveal>
+              <TiltCard className="aspect-[3/4] overflow-hidden">
+                <Reveal index={0} className="h-full w-full">
+                  <div className="flex h-full w-full items-center justify-center bg-surface" data-tilt-portrait>
+                    <span
+                      className="select-none text-muted opacity-20"
+                      style={{ fontSize: "clamp(4rem, 10vw, 8rem)", fontWeight: 800, fontStretch: "125%", letterSpacing: "-0.02em" }}
+                    >
+                      {leader.portraitPlaceholder}
+                    </span>
+                  </div>
+                </Reveal>
+              </TiltCard>
+            </div>
 
             {/* Text block */}
             <div

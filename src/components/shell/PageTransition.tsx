@@ -1,19 +1,19 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { DURATION, EASE } from "@/lib/motion";
 
-/* Page transition wrapper — P3 Veil: incoming route fades in through the page
-   background, 320ms ease-out. Rendered from app/template.tsx, which remounts
-   per navigation. Reduced motion: instant cut. */
 export function PageTransition({ children }: { children: React.ReactNode }) {
   const reducedMotion = useReducedMotion();
 
+  if (reducedMotion) {
+    return <>{children}</>;
+  }
+
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={reducedMotion ? { duration: 0 } : { duration: DURATION.veil, ease: EASE.veil }}
+      initial={{ clipPath: "inset(100% 0 0 0)" }}
+      animate={{ clipPath: "inset(0% 0 0 0)" }}
+      transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.div>

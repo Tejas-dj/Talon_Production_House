@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SplitText } from "@/components/motion/SplitText";
 import { FilterBar } from "@/components/work/FilterBar";
 import { ProjectGrid } from "@/components/work/ProjectGrid";
 import { getAllProjects } from "@/lib/content";
@@ -32,7 +33,7 @@ export default async function MotionPage({
     <div>
       {/* Page title — statement role (Bible §6.3) */}
       <header className="container-site pt-8 pb-6">
-        <h1 className="type-display">Motion</h1>
+        <SplitText as="h1" className="type-display">Motion</SplitText>
         <p className="type-meta text-muted mt-2">
           {allProjects.length} {allProjects.length === 1 ? "Project" : "Projects"}
         </p>

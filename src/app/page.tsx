@@ -5,6 +5,7 @@ import { FiPhone, FiMail } from "react-icons/fi";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { Hero } from "@/components/home/Hero";
 import { Reveal } from "@/components/motion/Reveal";
+import { ScrollRevealText } from "@/components/motion/ScrollRevealText";
 import { Marquee } from "@/components/motion/Marquee";
 import { ProjectGrid } from "@/components/work/ProjectGrid";
 import { Testimonials } from "@/components/home/Testimonials";
@@ -83,11 +84,13 @@ export default function HomePage() {
       {/* ── Hero ── */}
       <Hero />
 
-      {/* ── Philosophy statement — centered, bigger typographic moment ── */}
+      {/* ── Philosophy statement — scroll-driven word-by-word color reveal ── */}
       <section className="container-site grid grid-cols-1 pt-7 pb-6 md:grid-cols-12">
-        <Reveal className="md:col-span-8 md:col-start-3">
-          <p className="type-headline text-center">{STATEMENT}</p>
-        </Reveal>
+        <div className="md:col-span-8 md:col-start-3">
+          <ScrollRevealText as="p" className="type-headline text-center">
+            {STATEMENT}
+          </ScrollRevealText>
+        </div>
       </section>
 
       <div className="hairline" />

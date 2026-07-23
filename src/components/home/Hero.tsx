@@ -3,6 +3,7 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { BunnyPlayer } from "@/components/media/BunnyPlayer";
+import { SplitText } from "@/components/motion/SplitText";
 import { HERO_BUNNY_VIDEO_ID } from "@/lib/site";
 
 /**
@@ -45,9 +46,9 @@ export function Hero() {
           </p>
         </div>
       </div>
-      <h1 className="type-display text-hero-overlay pointer-events-none absolute bottom-[10%] left-0 pl-4">
+      <SplitText as="h1" className="type-display text-hero-overlay pointer-events-none absolute bottom-[10%] left-0 pl-4">
         Talon
-      </h1>
+      </SplitText>
     </section>
   );
 }

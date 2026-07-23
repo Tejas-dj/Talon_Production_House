@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
+import { MagneticElement } from "@/components/motion/MagneticElement";
 import { Reveal } from "@/components/motion/Reveal";
+import { SplitText } from "@/components/motion/SplitText";
 import { StudioGallery } from "@/components/studio/StudioGallery";
 import { getStudioSpace } from "@/lib/content";
 import { WHATSAPP_STUDIO_MESSAGE, waLink } from "@/lib/site";
@@ -62,7 +64,7 @@ export default function StudioPage() {
       />
       {/* Page title — statement role (Bible §6.3) */}
       <header className="container-site pt-8 pb-6">
-        <h1 className="type-display">Studio</h1>
+        <SplitText as="h1" className="type-display">Studio</SplitText>
         <p className="type-meta text-muted mt-2">{studio.location}</p>
       </header>
 
@@ -136,11 +138,21 @@ export default function StudioPage() {
 
           {/* Desktop: inline prominent CTA. Mobile: fixed bottom bar, thumb
               reach (wireframe explicitly calls this out for mobile only). */}
+          <MagneticElement radius={80} strength={0.2} className="hidden md:block md:mt-6">
+            <a
+              href={waLink(WHATSAPP_STUDIO_MESSAGE)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-cta type-meta flex items-center justify-center px-6 py-5 text-center"
+            >
+              {studio.whatsappCtaText}
+            </a>
+          </MagneticElement>
           <a
             href={waLink(WHATSAPP_STUDIO_MESSAGE)}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-cta type-meta fixed inset-x-0 bottom-0 z-30 flex items-center justify-center border-x-0 border-b-0 px-4 py-4 text-center md:static md:z-auto md:mt-6 md:px-6 md:py-5"
+            className="btn btn-cta type-meta fixed inset-x-0 bottom-0 z-30 flex items-center justify-center border-x-0 border-b-0 px-4 py-4 text-center md:hidden"
           >
             {studio.whatsappCtaText}
           </a>

@@ -520,6 +520,22 @@
 }
 
 /* ==========================================================================
+   WORK OVERLAY — mobile image cards
+   ========================================================================== */
+.work-card {
+  border-radius: 2px;
+}
+
+.work-card-scrim {
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.25) 50%,
+    rgba(0, 0, 0, 0.10) 100%
+  );
+}
+
+/* ==========================================================================
    MARQUEE — infinite horizontal scroll, respects reduced-motion
    ========================================================================== */
 @keyframes marquee-scroll {
