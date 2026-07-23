@@ -5,6 +5,7 @@ import type {
   Credit,
   PhotoSeries,
   StudioSpace,
+  Testimonial,
   VideoCategory,
   VideoProject,
 } from "./content-types";
@@ -142,6 +143,18 @@ function assertStudioSpace(value: unknown, index: number): asserts value is Stud
     fail(file, index, `"${s.slug}" is missing "whatsappCtaText"`);
 }
 
+function assertTestimonial(value: unknown, index: number): asserts value is Testimonial {
+  const file = "testimonials.json";
+  const t = value as Partial<Testimonial> | null;
+  if (!t || typeof t !== "object") fail(file, index, "is not an object");
+  if (!isNonEmptyString(t.quote)) fail(file, index, 'is missing "quote"');
+  if (!isNonEmptyString(t.name)) fail(file, index, 'is missing "name"');
+  if (!isNonEmptyString(t.role)) fail(file, index, 'is missing "role"');
+  if (t.company !== undefined && !isNonEmptyString(t.company)) {
+    fail(file, index, `"${t.name}" has an invalid "company"`);
+  }
+}
+
 function assertClientLogo(value: unknown, index: number): asserts value is ClientLogo {
   const file = "clients.json";
   const c = value as Partial<ClientLogo> | null;
@@ -167,6 +180,7 @@ function loadAndValidate<T>(
 const projects = loadAndValidate("projects.json", assertVideoProject);
 const photography = loadAndValidate("photography.json", assertPhotoSeries);
 const studioSpaces = loadAndValidate("studio.json", assertStudioSpace);
+const testimonials = loadAndValidate("testimonials.json", assertTestimonial);
 const clientLogos = loadAndValidate("clients.json", assertClientLogo);
 
 export function getAllProjects(): VideoProject[] {
@@ -198,6 +212,10 @@ export function getStudioSpace(): StudioSpace {
   const space = studioSpaces[0];
   if (!space) throw new Error("content/studio.json: no studio space defined");
   return space;
+}
+
+export function getAllTestimonials(): Testimonial[] {
+  return testimonials;
 }
 
 export function getAllClientLogos(): ClientLogo[] {

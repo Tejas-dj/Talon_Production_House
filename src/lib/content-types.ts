@@ -84,6 +84,17 @@ export interface StudioSpaceSpecs {
   amenities: string;
 }
 
+export interface Testimonial {
+  /** [40–200 ch] */
+  quote: string;
+  /** [4–32 ch] */
+  name: string;
+  /** [6–40 ch] */
+  role: string;
+  /** [4–32 ch] */
+  company?: string;
+}
+
 export interface ClientLogo {
   /** [4–24 ch], used as alt text */
   name: string;

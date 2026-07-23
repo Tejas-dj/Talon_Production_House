@@ -7,7 +7,8 @@ import { Hero } from "@/components/home/Hero";
 import { Reveal } from "@/components/motion/Reveal";
 import { Marquee } from "@/components/motion/Marquee";
 import { ProjectGrid } from "@/components/work/ProjectGrid";
-import { getAllClientLogos, getAllProjects } from "@/lib/content";
+import { Testimonials } from "@/components/home/Testimonials";
+import { getAllClientLogos, getAllProjects, getAllTestimonials } from "@/lib/content";
 import { CONTACT_LINKS, waLink, WHATSAPP_GENERAL_MESSAGE } from "@/lib/site";
 
 const CONTACT_ICONS: Record<string, React.ReactNode> = {
@@ -71,28 +72,11 @@ const CAPABILITIES = {
   },
 } as const;
 
-const PILLARS = [
-  {
-    num: "01",
-    title: "Craft First",
-    body: "Every frame, every cut, every grade — built to a finishing standard, not a deadline.",
-  },
-  {
-    num: "02",
-    title: "Real Space",
-    body: "A studio floor you can walk into tomorrow. Equipment, crew, cyclorama — no middlemen.",
-  },
-  {
-    num: "03",
-    title: "Fair Rates",
-    body: "Transparent pricing for production and rental. No surprise line items, no inflated day rates.",
-  },
-] as const;
-
 export default function HomePage() {
   const allProjects = getAllProjects();
   const featured = allProjects.filter((p) => p.featured);
   const clients = getAllClientLogos();
+  const testimonials = getAllTestimonials();
 
   return (
     <div>
@@ -145,6 +129,11 @@ export default function HomePage() {
 
       <div className="hairline" />
 
+      {/* ── Testimonials — rolling credits wall ── */}
+      {testimonials.length > 0 && <Testimonials testimonials={testimonials} />}
+
+      <div className="hairline" />
+
       {/* ── Capabilities — three-column breakdown ── */}
       <section className="container-site pt-6 pb-6">
         <div className="mb-6">
@@ -166,25 +155,6 @@ export default function HomePage() {
                     <li key={item} className="type-body">{item}</li>
                   ))}
                 </ul>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      <div className="hairline" />
-
-      {/* ── Core values as numbered pillars ── */}
-      <section className="container-site pt-6 pb-6">
-        <p className="type-meta text-muted mb-2">What Drives Us</p>
-        <h2 className="type-headline mb-6">Core Pillars</h2>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-gutter">
-          {PILLARS.map((p) => (
-            <Reveal key={p.num}>
-              <div className="hairline pt-4">
-                <span className="type-display text-muted opacity-15">{p.num}</span>
-                <h3 className="type-subhead mt-2">{p.title}</h3>
-                <p className="type-body mt-2 text-muted">{p.body}</p>
               </div>
             </Reveal>
           ))}
