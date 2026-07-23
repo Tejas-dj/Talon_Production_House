@@ -737,3 +737,63 @@ Open items carried forward, not introduced by Phase 4: `CREDIT.href` ("#" placeh
 CobaltKite Creatives URL supplied), and the placeholder Cloudinary/Bunny asset IDs in
 `content/*.json` that don't resolve against the real accounts yet - both pre-existing, both
 already documented in the Phase 3.5 section above.
+
+## Contact page interaction pass (post-Phase 4)
+
+Four hover/feedback effects added to `ContactRow` (extracted from `contact/page.tsx` into
+`src/components/contact/ContactRow.tsx`, now a Client Component so it can hold copy-to-clipboard
+state — the page itself stays a Server Component for its `metadata` export). Before building,
+checked this request against `docs/TALON_DESIGN_BIBLE.md` §7's "three motion primitives, a fourth
+is a bug" and the guardrail against gradients/off-palette color — but a grep across `src/` first
+showed the project's own later work (`MagneticElement.tsx`, `TiltCard.tsx`, gradients in
+`Testimonials.tsx` and the clapperboard theme toggle) had already moved past those original Phase 1
+guardrails without a DECISIONS.md entry recording it. Treated that shipped, undocumented precedent
+as the real current baseline rather than the archived Bible text, and built accordingly:
+
+- **Row magnetic pull reuses `MagneticElement` verbatim** (`radius={80} strength={0.15}`, matching
+  the values already shipped on the Studio page's WhatsApp CTA) wrapping each row in a `div` — no
+  new magnetic-hover implementation, the existing component already handles the
+  `(hover: hover) and (pointer: fine)` capability check and `prefers-reduced-motion` bail-out
+  internally.
+- **Icon hover feedback (scale 110% + `--accent` color) reuses the exact `group-hover`/
+  `group-focus-visible` + `duration-[240ms] ease-shift` mechanism already used for project-card
+  thumbnails in `ProjectGrid.tsx`** — same Shift duration/easing tokens, same accent-as-one-
+  interaction-state rule (Bible §2.2 rule 4), just applied to an icon instead of a thumbnail.
+- **The cursor-tracked spotlight is a `radial-gradient` built from the `--surface` token** (not an
+  arbitrary color), positioned via two CSS custom properties (`--spot-x`/`--spot-y`) set directly
+  on a ref in `onMouseMove` — no React state/re-render per mouse move. Gated behind
+  `group-hover:opacity-100`/`group-focus-visible:opacity-100`, so Tailwind's automatic
+  `@media (hover: hover)` wrapping keeps it touch-invisible without a manual guard. Uses a real
+  gradient because the project's own later work (Testimonials fade masks, the clapperboard stripe,
+  the mobile work-card scrim) already does the same, well past the Phase 4 "no gradient" AI-tell
+  finding recorded above — not re-litigated here, just followed.
+- **Phone/Email rows get click-to-copy + a "Copied" confirmation**, swapping the detail text via
+  `AnimatePresence` + the `veil` variants already exported from `src/lib/motion.ts` (P3, 320ms) —
+  first real consumer of that export; every other P3 use on the site (`PageTransition.tsx`) rolled
+  its own transition instead. `navigator.clipboard.writeText()` is wrapped in a bare `.catch(() =>
+  {})`: clipboard access is a real system-boundary call that can be denied by permissions policy,
+  and a denial should be a silent no-op (the row's native `mailto:`/`tel:` href still fires
+  regardless), not a thrown error.
+- **Icon rotation was dropped** from the original "morph/bounce" ask — scale + accent color alone
+  matches the site's existing Shift vocabulary; rotation isn't used anywhere else as hover feedback
+  (only as the clapperboard's own state-change animation), and adding it here would be inventing a
+  new gesture rather than reusing one.
+
+**Verification limitation, same as the Phase 4 Step 6 finding above**: this session's Browser pane
+again reported `document.hidden === true` throughout, which explains a cluster of otherwise-
+confusing results — `computer{action:"screenshot"}` timed out (no compositor frame), ref/coordinate-
+based `hover`/`click` repeatedly resolved to the same stale point regardless of which ref was
+requested (`elementFromPoint` at that point returned `<main>` itself, not any row), and
+`getComputedStyle` under a script-forced `:focus-visible` state showed the matched rule's custom
+properties resolving correctly (`--tw-scale-x`/`--tw-scale-y: 110%`) while the derived `scale`/
+`opacity` "used values" did not — consistent with style/paint recalculation being throttled for a
+backgrounded tab, not a selector or cascade bug (`.matches()` on the exact compiled selector
+returned `true` in every case checked). Real signal that *is* trustworthy from this session:
+`text-accent` (a property that doesn't depend on the same derived-value path) visibly applied
+under the forced focus state; a direct, unrelated `navigator.clipboard.writeText()` call from the
+console reached the real browser Clipboard API and came back `NotAllowedError: Write permission
+denied` (proving the click handler's code path is correct and the missing "Copied" toast is a
+permissions/backgrounded-tab artifact, not a logic bug); `tsc --noEmit` and `eslint` both pass
+clean; zero console errors/warnings from React or this component. Flagging honestly, per this
+file's own established practice, rather than claiming a live-interaction verification this
+session's tooling could not actually produce.

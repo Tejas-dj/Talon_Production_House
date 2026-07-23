@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
 import { FiPhone, FiMail } from "react-icons/fi";
-import { Reveal } from "@/components/motion/Reveal";
+import { ContactRow } from "@/components/contact/ContactRow";
 import { SplitText } from "@/components/motion/SplitText";
 import { CONTACT_LINKS, WHATSAPP_GENERAL_MESSAGE, waLink } from "@/lib/site";
 
@@ -28,36 +28,6 @@ export const metadata: Metadata = {
   twitter: { title: "Contact — Talon Production House", description: DESCRIPTION },
 };
 
-function ContactRow({
-  label,
-  detail,
-  href,
-  external,
-  index,
-}: {
-  label: string;
-  detail: string;
-  href: string;
-  external?: boolean;
-  index: number;
-}) {
-  return (
-    <Reveal index={index} className="hairline">
-      <a
-        href={href}
-        className="link-draw flex flex-col gap-2 py-6 sm:flex-row sm:items-center sm:justify-between"
-        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      >
-        <span className="type-headline flex items-center gap-3">
-          {CONTACT_ICONS[label]}
-          {label} →
-        </span>
-        <span className="type-meta text-muted">{detail}</span>
-      </a>
-    </Reveal>
-  );
-}
-
 /* Blunt, typography-forward, no form (Bible §3.4: "Four links and nothing
    else. Its emptiness is the confidence.") — five links here since the
    brief also requires a WhatsApp channel the wireframe's greybox omits. */
@@ -77,6 +47,8 @@ export default function ContactPage() {
             detail={item.handle}
             href={item.href}
             external={item.external}
+            icon={CONTACT_ICONS[item.label]}
+            copyable={item.label === "Phone" || item.label === "Email"}
           />
         ))}
         <ContactRow
@@ -85,6 +57,7 @@ export default function ContactPage() {
           detail="Message us directly"
           href={waLink(WHATSAPP_GENERAL_MESSAGE)}
           external
+          icon={CONTACT_ICONS.WhatsApp}
         />
         <div className="hairline" aria-hidden="true" />
       </div>
