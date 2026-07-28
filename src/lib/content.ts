@@ -121,7 +121,7 @@ function assertStudioSpace(value: unknown, index: number): asserts value is Stud
   }
   const specs = s.specs as Partial<StudioSpace["specs"]> | undefined;
   if (!specs) fail(file, index, `"${s.slug}" is missing "specs"`);
-  for (const key of ["dimensions", "cycWall", "power", "sound", "amenities"] as const) {
+  for (const key of ["backdrops", "power", "amenities"] as const) {
     if (!isNonEmptyString(specs[key])) fail(file, index, `"${s.slug}" specs.${key} is missing`);
   }
   if (!Array.isArray(specs.gripAndLighting) || specs.gripAndLighting.length === 0) {

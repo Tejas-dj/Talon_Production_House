@@ -71,13 +71,9 @@ export interface StudioRateRow {
 
 export interface StudioSpaceSpecs {
   /** [20–40 ch] */
-  dimensions: string;
-  /** [20–40 ch] */
-  cycWall: string;
+  backdrops: string;
   /** [20–40 ch] */
   power: string;
-  /** [20–40 ch] */
-  sound: string;
   /** 6–10 rows, each [20–44 ch] */
   gripAndLighting: string[];
   /** [20–44 ch] */

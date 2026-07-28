@@ -92,26 +92,20 @@ export default function StudioPage() {
         </div>
         <div className="md:[grid-column:5/13]">
           <dl className="bg-surface">
-            <SpecRow index={0} label="Dimensions">
-              {specs.dimensions}
+            <SpecRow index={0} label="Backdrops">
+              {specs.backdrops}
             </SpecRow>
-            <SpecRow index={1} label="Cyc Wall">
-              {specs.cycWall}
-            </SpecRow>
-            <SpecRow index={2} label="Power">
+            <SpecRow index={1} label="Power">
               {specs.power}
             </SpecRow>
-            <SpecRow index={3} label="Sound">
-              {specs.sound}
-            </SpecRow>
-            <SpecRow index={4} label="Grip & Lighting">
+            <SpecRow index={2} label="Grip & Lighting">
               <ul className="flex flex-col gap-1">
                 {specs.gripAndLighting.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
             </SpecRow>
-            <SpecRow index={5} label="Amenities">
+            <SpecRow index={3} label="Amenities">
               {specs.amenities}
             </SpecRow>
           </dl>

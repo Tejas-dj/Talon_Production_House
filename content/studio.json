@@ -1,8 +1,8 @@
 [
   {
-    "slug": "cyclorama-studio",
-    "name": "Cyclorama Studio",
-    "location": "Indiranagar, Bengaluru",
+    "slug": "talon-studio",
+    "name": "Talon Studio",
+    "location": "J. P. Nagar, Bengaluru",
     "heroImageId": "shradha_team-15_m65ytx",
     "galleryImageIds": [
       "shradha_team-08_lcf38j",
@@ -10,29 +10,31 @@
       "shradha_team-05_ou9kvc"
     ],
     "specs": {
-      "dimensions": "40ft × 30ft, 16ft ceiling height",
-      "cycWall": "Seamless white cyclorama, 12ft radius",
-      "power": "3-phase supply, 63A with full distro",
-      "sound": "Acoustically treated, street-isolated",
+      "backdrops": "White & black paper roll backdrops",
+      "power": "Power backup, extension cables & power board",
       "gripAndLighting": [
-        "4x Aputure 600d Pro fresnel kits",
-        "2x 6ft x 6ft bounce and floppy set",
-        "Full grip package: C-stands, flags, nets",
-        "Overhead truss with 12 rigging points",
-        "Fog and haze machine on request"
+        "Nantu 500W LED Light with Octabox (x2)",
+        "Godox AD600 Pro with Octabox",
+        "Godox AD200 Pro with Octabox (x2)",
+        "Godox XPro Trigger",
+        "Heavy-duty C-Stands",
+        "Boom Arm & Arm Rods"
       ],
-      "amenities": "Green room, styling area, parking for 6 cars"
+      "amenities": "Free Wi-Fi, changing room, makeup area"
     },
     "rates": {
-      "hourly": { "item": "Hourly rate", "price": "₹3,500" },
-      "halfDay": { "item": "Half day (5 hrs)", "price": "₹14,000" },
-      "fullDay": { "item": "Full day (10 hrs)", "price": "₹24,000" },
+      "hourly": { "item": "1 hour", "price": "₹1,500" },
+      "halfDay": { "item": "Half day (4 hrs)", "price": "₹5,000" },
+      "fullDay": { "item": "Full day (9 AM–6 PM)", "price": "₹10,000" },
       "equipmentAddOns": [
-        { "item": "Grip & lighting package", "price": "₹6,000" },
-        { "item": "Camera package (body + lens)", "price": "₹8,500" }
+        { "item": "Double-sided studio wall", "price": "₹1,000 / day" },
+        { "item": "Pink paper roll", "price": "₹500 / day" },
+        { "item": "Sony A7 IV camera body", "price": "₹1,500 / day" },
+        { "item": "Sigma 35mm f/1.4 lens", "price": "₹700 / day" },
+        { "item": "DJI RS 3 gimbal", "price": "₹1,000 / day" }
       ]
     },
-    "terms": "Rates exclude GST. 50% advance confirms the booking; balance due on the shoot day.",
+    "terms": "Rates exclude tax. Camera, lens & gimbal rented per day, subject to availability — reserve in advance. Damage charged as per actuals.",
     "whatsappCtaText": "Message us with your date"
   }
 ]
