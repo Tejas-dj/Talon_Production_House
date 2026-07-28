@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { Reveal } from "@/components/motion/Reveal";
 import { SplitText } from "@/components/motion/SplitText";
 import { TiltCard } from "@/components/motion/TiltCard";
@@ -27,12 +28,14 @@ const LEADERS = [
     title: "Founder, CEO & Managing Director",
     bio: "Pratham founded Talon Production House with a singular vision — build a production company where craft comes before convenience. From concept through final delivery, he oversees every project with the conviction that the work itself is the only portfolio that matters.",
     portraitPlaceholder: "PRU",
+    portraitId: undefined as string | undefined,
   },
   {
     name: "Vikram Adithya Reddy",
     title: "Chief Operating Officer",
     bio: "Vikram brings operational clarity to the creative process. He ensures that every shoot runs on time, every rental is seamless, and every client interaction reflects the standard the studio was built on — no shortcuts, no surprises.",
     portraitPlaceholder: "VAR",
+    portraitId: "Vikram_Headshot_zfutqe",
   },
 ] as const;
 
@@ -61,13 +64,24 @@ export default function TeamPage() {
             >
               <TiltCard className="aspect-[3/4] overflow-hidden">
                 <Reveal index={0} className="h-full w-full">
-                  <div className="flex h-full w-full items-center justify-center bg-surface" data-tilt-portrait>
-                    <span
-                      className="select-none text-muted opacity-20"
-                      style={{ fontSize: "clamp(4rem, 10vw, 8rem)", fontWeight: 800, fontStretch: "125%", letterSpacing: "-0.02em" }}
-                    >
-                      {leader.portraitPlaceholder}
-                    </span>
+                  <div className="relative flex h-full w-full items-center justify-center bg-surface" data-tilt-portrait>
+                    {leader.portraitId ? (
+                      <CloudinaryImage
+                        id={leader.portraitId}
+                        preset="portraitCard"
+                        alt={`${leader.name} portrait`}
+                        fill
+                        sizes="(min-width: 768px) 40vw, 100vw"
+                        className="object-cover"
+                      />
+                    ) : (
+                      <span
+                        className="select-none text-muted opacity-20"
+                        style={{ fontSize: "clamp(4rem, 10vw, 8rem)", fontWeight: 800, fontStretch: "125%", letterSpacing: "-0.02em" }}
+                      >
+                        {leader.portraitPlaceholder}
+                      </span>
+                    )}
                   </div>
                 </Reveal>
               </TiltCard>
