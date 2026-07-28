@@ -58,8 +58,8 @@ export default function TeamPage() {
           <div className="container-site grid grid-cols-1 gap-6 py-7 md:grid-cols-12 md:gap-gutter">
             {/* Portrait area with 3D tilt */}
             <div
-              className={`md:col-span-5 ${
-                i % 2 === 1 ? "md:col-start-8 md:row-start-1" : ""
+              className={`md:col-span-5 md:w-[420px] ${
+                i % 2 === 1 ? "md:col-start-8 md:row-start-1 md:ml-auto" : ""
               }`}
             >
               <TiltCard className="aspect-[3/4] overflow-hidden">
@@ -71,7 +71,7 @@ export default function TeamPage() {
                         preset="portraitCard"
                         alt={`${leader.name} portrait`}
                         fill
-                        sizes="(min-width: 768px) 40vw, 100vw"
+                        sizes="(min-width: 768px) 420px, 100vw"
                         className="object-cover"
                       />
                     ) : (
