@@ -6,9 +6,6 @@ type CursorLabel = "" | "View" | "Open" | "nav";
 
 export function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
-  const pos = useRef({ x: 0, y: 0 });
-  const smoothPos = useRef({ x: 0, y: 0 });
-  const raf = useRef(0);
   const visibleRef = useRef(false);
   const [expanded, setExpanded] = useState(false);
   const [label, setLabel] = useState<CursorLabel>("");
@@ -39,8 +36,10 @@ export function CustomCursor() {
     if (!canHover) return;
 
     const onMouseMove = (e: MouseEvent) => {
-      pos.current.x = e.clientX;
-      pos.current.y = e.clientY;
+      const dot = dotRef.current;
+      if (dot) {
+        dot.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+      }
       if (!visibleRef.current) {
         visibleRef.current = true;
         setVisible(true);
@@ -76,22 +75,6 @@ export function CustomCursor() {
       document.documentElement.removeEventListener("mouseenter", onMouseEnter);
     };
   }, [canHover, getLabel]);
-
-  useEffect(() => {
-    if (!canHover) return;
-
-    const tick = () => {
-      smoothPos.current.x += (pos.current.x - smoothPos.current.x) * 0.15;
-      smoothPos.current.y += (pos.current.y - smoothPos.current.y) * 0.15;
-      const dot = dotRef.current;
-      if (dot) {
-        dot.style.transform = `translate(${smoothPos.current.x}px, ${smoothPos.current.y}px) translate(-50%, -50%)`;
-      }
-      raf.current = requestAnimationFrame(tick);
-    };
-    raf.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf.current);
-  }, [canHover]);
 
   if (!canHover) return null;
 
