@@ -102,7 +102,7 @@ export interface StudioSpace {
   slug: string;
   /** [12–24 ch] */
   name: string;
-  /** [16–32 ch], e.g. "Indiranagar, Bengaluru" */
+  /** [16–32 ch], e.g. "J. P. Nagar, Bengaluru" */
   location: string;
   heroImageId: string;
   galleryImageIds: string[];
