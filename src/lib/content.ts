@@ -149,7 +149,6 @@ function assertTestimonial(value: unknown, index: number): asserts value is Test
   if (!t || typeof t !== "object") fail(file, index, "is not an object");
   if (!isNonEmptyString(t.quote)) fail(file, index, 'is missing "quote"');
   if (!isNonEmptyString(t.name)) fail(file, index, 'is missing "name"');
-  if (!isNonEmptyString(t.role)) fail(file, index, 'is missing "role"');
   if (t.company !== undefined && !isNonEmptyString(t.company)) {
     fail(file, index, `"${t.name}" has an invalid "company"`);
   }

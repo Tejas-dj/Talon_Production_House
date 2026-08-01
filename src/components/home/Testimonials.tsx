@@ -77,10 +77,9 @@ export function Testimonials({ testimonials }: Props) {
                       &ldquo;{t.quote}&rdquo;
                     </p>
                     <p className="type-meta text-accent mt-2">{t.name}</p>
-                    <p className="type-small text-muted">
-                      {t.role}
-                      {t.company ? ` — ${t.company}` : ""}
-                    </p>
+                    {t.company && (
+                      <p className="type-small text-muted">{t.company}</p>
+                    )}
                   </div>
                 ))}
               </Marquee>
@@ -93,7 +92,7 @@ export function Testimonials({ testimonials }: Props) {
       <ul className="sr-only">
         {testimonials.map((t, i) => (
           <li key={i}>
-            {t.quote} — {t.name}, {t.role}
+            {t.quote} — {t.name}
             {t.company ? `, ${t.company}` : ""}
           </li>
         ))}

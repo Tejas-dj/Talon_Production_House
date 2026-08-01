@@ -85,8 +85,6 @@ export interface Testimonial {
   quote: string;
   /** [4–32 ch] */
   name: string;
-  /** [6–40 ch] */
-  role: string;
   /** [4–32 ch] */
   company?: string;
 }
