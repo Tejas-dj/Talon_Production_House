@@ -55,9 +55,7 @@ const CAPABILITIES = {
       "Cyclorama Studio",
       "Grip & Lighting",
       "Equipment Rental",
-      "Green Room",
       "Styling Area",
-      "Parking",
     ],
   },
   post: {
@@ -67,7 +65,6 @@ const CAPABILITIES = {
       "Color Grading",
       "Sound Design",
       "Motion Graphics",
-      "Visual Effects",
       "Distribution",
     ],
   },

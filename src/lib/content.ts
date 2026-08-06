@@ -121,9 +121,25 @@ function assertStudioSpace(value: unknown, index: number): asserts value is Stud
   }
   const specs = s.specs as Partial<StudioSpace["specs"]> | undefined;
   if (!specs) fail(file, index, `"${s.slug}" is missing "specs"`);
-  for (const key of ["backdrops", "power", "amenities"] as const) {
+  for (const key of ["power", "amenities"] as const) {
     if (!isNonEmptyString(specs[key])) fail(file, index, `"${s.slug}" specs.${key} is missing`);
   }
+  if (!Array.isArray(specs.backdrops) || specs.backdrops.length === 0) {
+    fail(file, index, `"${s.slug}" specs.backdrops is missing`);
+  }
+  specs.backdrops.forEach((group, i) => {
+    const g = group as { label?: unknown; items?: unknown } | null;
+    if (!g || typeof g !== "object") fail(file, index, `"${s.slug}" specs.backdrops[${i}] is not an object`);
+    if (!isNonEmptyString(g.label)) fail(file, index, `"${s.slug}" specs.backdrops[${i}] is missing "label"`);
+    if (!Array.isArray(g.items) || g.items.length === 0) {
+      fail(file, index, `"${s.slug}" specs.backdrops[${i}] is missing "items"`);
+    }
+    g.items.forEach((item, j) => {
+      if (!isNonEmptyString(item)) {
+        fail(file, index, `"${s.slug}" specs.backdrops[${i}].items[${j}] is not a string`);
+      }
+    });
+  });
   if (!Array.isArray(specs.gripAndLighting) || specs.gripAndLighting.length === 0) {
     fail(file, index, `"${s.slug}" specs.gripAndLighting is missing`);
   }

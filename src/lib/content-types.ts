@@ -69,9 +69,16 @@ export interface StudioRateRow {
   price: string;
 }
 
+export interface BackdropGroup {
+  /** [4–24 ch], e.g. "Paper Roll" */
+  label: string;
+  /** 1+ items, each [3–30 ch] */
+  items: string[];
+}
+
 export interface StudioSpaceSpecs {
-  /** [20–40 ch] */
-  backdrops: string;
+  /** 1+ groups */
+  backdrops: BackdropGroup[];
   /** [20–40 ch] */
   power: string;
   /** 6–10 rows, each [20–44 ch] */

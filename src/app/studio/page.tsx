@@ -93,7 +93,18 @@ export default function StudioPage() {
         <div className="md:[grid-column:5/13]">
           <dl className="bg-surface">
             <SpecRow index={0} label="Backdrops">
-              {specs.backdrops}
+              <div className="flex flex-col gap-3">
+                {specs.backdrops.map((group) => (
+                  <div key={group.label}>
+                    <p className="type-meta text-muted mb-1">{group.label}</p>
+                    <ul className="flex flex-col gap-1">
+                      {group.items.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
             </SpecRow>
             <SpecRow index={1} label="Power">
               {specs.power}
