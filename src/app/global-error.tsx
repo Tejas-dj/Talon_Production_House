@@ -71,7 +71,7 @@ export default function GlobalError({ reset }: { reset: () => void }) {
           <h1>Something Broke</h1>
           <p>
             The site failed to load. Try again, or reach us directly at{" "}
-            <a href="mailto:Talonproductionhouse@gmail.com">Talonproductionhouse@gmail.com</a>.
+            <a href="mailto:prathamrajeurs@talonproductionhouse.com">prathamrajeurs@talonproductionhouse.com</a>.
           </p>
           <button type="button" onClick={() => reset()}>
             Try again

@@ -25,15 +25,15 @@ export const metadata: Metadata = {
 const LEADERS = [
   {
     name: "Pratham Raje Urs",
-    title: "Founder, CEO & Managing Director",
-    bio: "Pratham founded Talon Production House with a singular vision — build a production company where craft comes before convenience. From concept through final delivery, he oversees every project with the conviction that the work itself is the only portfolio that matters.",
+    title: "CEO & Founder",
+    bio: "Pratham is the founder and CEO of Talon Production House, a production company built on a singular vision: craft before convenience. A director and filmmaker with 6 years of experience, he oversees every project from concept through final delivery, working with the conviction that the work itself is the only portfolio that matters.",
     portraitPlaceholder: "PRU",
     portraitId: undefined as string | undefined,
   },
   {
     name: "Vikram Adithya Reddy",
-    title: "Chief Operating Officer",
-    bio: "Vikram brings operational clarity to the creative process. He ensures that every shoot runs on time, every rental is seamless, and every client interaction reflects the standard the studio was built on — no shortcuts, no surprises.",
+    title: "Managing Director",
+    bio: "Vikram is the producer behind Talon's operational backbone, bringing 3 years of experience to every shoot. He makes sure every shoot runs on time, every rental is seamless, and every client interaction reflects the standard the studio was built on: no shortcuts, no surprises.",
     portraitPlaceholder: "VAR",
     portraitId: "Vikram_Headshot_zfutqe",
   },

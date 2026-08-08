@@ -13,13 +13,15 @@ export const NAV_ITEMS = [
    robots.ts — one source instead of the fallback repeated in each file. */
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
-/* Real WhatsApp business number, digits only (country code + number, no "+"
-   or spaces) — required format for wa.me deep links. */
-export const WHATSAPP_NUMBER = "919538025355";
+/* Real WhatsApp click-to-chat link (WhatsApp Business shortlink) — the
+   canonical redirect target for every WhatsApp CTA on the site. */
+export const WHATSAPP_LINK = "https://wa.me/message/EYL4S6A5VKIRD1";
 
-/** Builds a wa.me deep link with a correctly encoded prefilled message. */
-export function waLink(message: string): string {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+/** Returns the site's WhatsApp deep link. Kept as a function (rather than a
+   bare constant re-export) so call sites don't need to change if the link
+   ever needs per-message routing again. */
+export function waLink(_message: string): string {
+  return WHATSAPP_LINK;
 }
 
 /* Studio booking enquiry — brief's exact template, §Studio CTA. */
@@ -50,8 +52,8 @@ export const CONTACT_LINKS = [
   { label: "Phone", handle: "+91 70759 81258", href: "tel:+917075981258", external: false },
   {
     label: "Email",
-    handle: "Talonproductionhouse@gmail.com",
-    href: "mailto:Talonproductionhouse@gmail.com",
+    handle: "prathamrajeurs@talonproductionhouse.com",
+    href: "mailto:prathamrajeurs@talonproductionhouse.com",
     external: false,
   },
 ] as const;

@@ -11,7 +11,7 @@
     ],
     "specs": {
       "backdrops": [
-        { "label": "Paper Roll", "items": ["Pink", "White", "Black"] },
+        { "label": "Paper Roll", "items": ["Baby pink", "White", "Black"] },
         { "label": "Painted Wall", "items": ["Double-sided, moveable"] }
       ],
       "power": "Power backup, extension cables & power board",
@@ -31,7 +31,7 @@
       "fullDay": { "item": "Full day (9 AM–6 PM)", "price": "₹9,999" },
       "equipmentAddOns": [
         { "item": "Double-sided studio wall", "price": "₹999 / day" },
-        { "item": "Pink paper roll", "price": "₹499 / day" },
+        { "item": "Baby Pink Paper roll", "price": "₹499 / day" },
         { "item": "Sony A7 IV camera body", "price": "₹1,499 / day" },
         { "item": "Sigma 35mm f/1.4 lens", "price": "₹699 / day" },
         { "item": "DJI RS 3 gimbal", "price": "₹999 / day" }

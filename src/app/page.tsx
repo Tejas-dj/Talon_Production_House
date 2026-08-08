@@ -41,6 +41,7 @@ const CAPABILITIES = {
   production: {
     label: "Production",
     items: [
+      "End-to-End Production",
       "Direction",
       "Cinematography",
       "Stills",
