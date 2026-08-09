@@ -14,14 +14,13 @@ export const NAV_ITEMS = [
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 /* Real WhatsApp click-to-chat link (WhatsApp Business shortlink) — the
-   canonical redirect target for every WhatsApp CTA on the site. */
+   canonical redirect target for every WhatsApp CTA on the site. Accepts the
+   same "?text=" prefill param as phone-number-based wa.me links. */
 export const WHATSAPP_LINK = "https://wa.me/message/EYL4S6A5VKIRD1";
 
-/** Returns the site's WhatsApp deep link. Kept as a function (rather than a
-   bare constant re-export) so call sites don't need to change if the link
-   ever needs per-message routing again. */
-export function waLink(_message: string): string {
-  return WHATSAPP_LINK;
+/** Builds the site's WhatsApp deep link with a correctly encoded prefilled message. */
+export function waLink(message: string): string {
+  return `${WHATSAPP_LINK}?text=${encodeURIComponent(message)}`;
 }
 
 /* Studio booking enquiry — brief's exact template, §Studio CTA. */
