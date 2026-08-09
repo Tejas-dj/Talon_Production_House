@@ -27,6 +27,38 @@ function ProjectThumb({ project, className }: { project: VideoProject; className
   return <img src={thumb} alt={alt} className={`absolute inset-0 h-full w-full ${className}`} />;
 }
 
+function ProjectThumbHoverVideo({ project, className }: { project: VideoProject; className: string }) {
+  const [hovered, setHovered] = useState(false);
+  const [everHovered, setEverHovered] = useState(false);
+
+  return (
+    <div
+      className="absolute inset-0"
+      onMouseEnter={() => {
+        setHovered(true);
+        setEverHovered(true);
+      }}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <ProjectThumb
+        project={project}
+        className={`${className} transition-opacity duration-[240ms] ease-shift ${hovered ? "opacity-0" : "opacity-100"}`}
+      />
+      {everHovered && (
+        <BunnyPlayer
+          videoId={project.bunnyVideoId}
+          title={project.title}
+          autoPlayMuted
+          active={hovered}
+          className={`absolute inset-0 h-full w-full transition-opacity duration-[240ms] ease-shift ${
+            hovered ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      )}
+    </div>
+  );
+}
+
 const FEATURED_START_TIMES: Record<string, number> = {
   "she-asked-for-sunflowers": 21,
   "the-christmas-guest": 27,
@@ -156,7 +188,7 @@ export function ProjectGrid({ projects, variant = "index" }: ProjectGridProps) {
                   <>
                     <div className="md:[grid-column:1/8]">
                       <div className="relative aspect-video overflow-hidden">
-                        <ProjectThumb
+                        <ProjectThumbHoverVideo
                           project={project}
                           className="scale-100 object-cover saturate-[.92] transition-[filter,transform] duration-[240ms] ease-shift group-hover:scale-[1.015] group-hover:saturate-100 group-focus-visible:scale-[1.015] group-focus-visible:saturate-100"
                         />
@@ -179,7 +211,7 @@ export function ProjectGrid({ projects, variant = "index" }: ProjectGridProps) {
                     </div>
                     <div className="order-1 md:order-2 md:[grid-column:6/13]">
                       <div className="relative aspect-video overflow-hidden">
-                        <ProjectThumb
+                        <ProjectThumbHoverVideo
                           project={project}
                           className="scale-100 object-cover saturate-[.92] transition-[filter,transform] duration-[240ms] ease-shift group-hover:scale-[1.015] group-hover:saturate-100 group-focus-visible:scale-[1.015] group-focus-visible:saturate-100"
                         />
