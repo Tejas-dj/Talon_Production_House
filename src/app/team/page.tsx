@@ -28,14 +28,14 @@ const LEADERS = [
     title: "CEO & Founder",
     bio: "Pratham is the founder and CEO of Talon Production House, a production company built on a singular vision: craft before convenience. A director and filmmaker with 6 years of experience, he oversees every project from concept through final delivery, working with the conviction that the work itself is the only portfolio that matters.",
     portraitPlaceholder: "PRU",
-    portraitId: undefined as string | undefined,
+    portraitId: "Pratham_Headshot_tnv01b" as string | undefined,
   },
   {
     name: "Vikram Adithya Reddy",
     title: "Managing Director",
     bio: "Vikram is the producer behind Talon's operational backbone, bringing 3 years of experience to every shoot. He makes sure every shoot runs on time, every rental is seamless, and every client interaction reflects the standard the studio was built on: no shortcuts, no surprises.",
     portraitPlaceholder: "VAR",
-    portraitId: "Vikram_Headshot_zfutqe",
+    portraitId: undefined as string | undefined,
   },
 ] as const;
 
