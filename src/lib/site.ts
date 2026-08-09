@@ -68,7 +68,7 @@ export const CREDIT = {
    Bunny Stream (library 708480) specifically for this purpose. Kept separate
    from `featured` projects: it's a reel, not a client project with a
    client/synopsis/credits, so it shouldn't also render as a Work grid card. */
-export const HERO_BUNNY_VIDEO_ID = "80b37aa9-bd62-4afe-a447-175a609f7695";
+export const HERO_BUNNY_VIDEO_ID = "534c8bd1-7e49-49da-aa46-866ad14ad814";
 
 /* Work overlay — right-hand panel plays this when "Motion" is hovered.
    PLACEHOLDER: reusing an existing featured project's clip until a

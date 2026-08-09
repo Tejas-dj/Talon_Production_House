@@ -34,6 +34,7 @@ export function Hero() {
           videoId={HERO_BUNNY_VIDEO_ID}
           title="Talon Production House showreel"
           autoPlayMuted
+          active
           className="h-full w-full"
         />
       </motion.div>
