@@ -68,16 +68,18 @@ export default function StudioPage() {
         <p className="type-meta text-muted mt-2">{studio.location}</p>
       </header>
 
-      {/* Lead image — full bleed, singular media element (asymmetry rule 3) */}
-      <div className="aspect-[21/9] w-full">
-        <CloudinaryImage
-          id={studio.heroImageId}
-          preset="hero"
-          alt={`${studio.name}, interior view`}
-          fill
-          priority
-          className="object-cover"
-        />
+      {/* Lead image — inset within the page grid, breathing room on all sides */}
+      <div className="container-site pb-6">
+        <div className="relative aspect-[21/9] w-full overflow-hidden">
+          <CloudinaryImage
+            id={studio.heroImageId}
+            preset="hero"
+            alt={`${studio.name}, interior view`}
+            fill
+            priority
+            className="object-cover"
+          />
+        </div>
       </div>
 
       {/* Gallery — multi-media section, so in-grid not full bleed */}
