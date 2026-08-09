@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { SplitText } from "@/components/motion/SplitText";
 import { EditorialGallery, type ImageEntry } from "@/components/work/EditorialGallery";
+import { StillsHero } from "@/components/work/StillsHero";
 import { getAllPhotoSeries } from "@/lib/content";
 import photoDims from "../../../../content/photo-dimensions.json";
 
@@ -28,9 +28,7 @@ export default function StillsPage() {
 
   return (
     <div>
-      <header className="container-site pt-8 pb-6">
-        <SplitText as="h1" className="type-display">Stills</SplitText>
-      </header>
+      <StillsHero />
       <div className="hairline" />
       <EditorialGallery images={allImages} />
     </div>

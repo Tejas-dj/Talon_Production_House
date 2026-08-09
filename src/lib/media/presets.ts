@@ -40,8 +40,9 @@ export const CLOUDINARY_PRESETS = {
     transform: "c_limit",
     sizes: "100vw",
   },
-  /** Work overlay Stills preview carousel: forced portrait crop (matches
-      PhotoSeriesGrid's aspect-[3/4] slot) regardless of source orientation */
+  /** Forced portrait crop (matches the aspect-[3/4] slot it's used in)
+      regardless of source orientation — Work overlay Stills preview carousel,
+      StillsHero's curated fan, StudioGallery's 1-2 image layout. */
   portraitCard: {
     transform: "c_fill,g_auto,ar_3:4",
     sizes: "33vw",
