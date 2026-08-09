@@ -53,5 +53,31 @@
     "synopsis": "Short-form commercial for a jewellery brand. Client name, full credits, and synopsis are pending confirmation.",
     "category": "Commercial",
     "bunnyVideoId": "f9512a8f-4837-4b2b-a00a-8889509124f0"
+  },
+  {
+    "slug": "shazia-khan-ad",
+    "title": "Shazia Khan AD",
+    "client": "Client pending confirmation",
+    "year": 2026,
+    "format": "16:9 · 1080p",
+    "runtime": "--:--",
+    "role": "Not yet specified",
+    "credits": [{ "role": "Production", "name": "Talon Production House" }],
+    "synopsis": "Short-form commercial. Client name, full credits, and synopsis are pending confirmation.",
+    "category": "Commercial",
+    "bunnyVideoId": "df769e53-d283-44cf-b180-bee38189ea99"
+  },
+  {
+    "slug": "ted-talk",
+    "title": "Ted Talk",
+    "client": "Talon Production House",
+    "year": 2026,
+    "format": "16:9 · 1080p",
+    "runtime": "--:--",
+    "role": "Not yet specified",
+    "credits": [{ "role": "Production", "name": "Talon Production House" }],
+    "synopsis": "A TEDx-style talk by Pratham about Talon Production House. Full credits and synopsis to follow.",
+    "category": "Brand Film",
+    "bunnyVideoId": "b9c50a64-6928-4d38-8480-8c5ad944b26a"
   }
 ]
