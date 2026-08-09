@@ -159,7 +159,7 @@ export default function StudioPage() {
             href={waLink(WHATSAPP_STUDIO_MESSAGE)}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-cta type-meta fixed inset-x-0 bottom-0 z-30 flex items-center justify-center border-x-0 border-b-0 px-4 py-4 text-center md:hidden"
+            className="btn btn-cta type-meta bg-page fixed inset-x-0 bottom-0 z-30 flex items-center justify-center border-x-0 border-b-0 px-4 py-4 text-center md:hidden"
           >
             {studio.whatsappCtaText}
           </a>
