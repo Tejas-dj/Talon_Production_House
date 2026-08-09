@@ -13,14 +13,16 @@ export const NAV_ITEMS = [
    robots.ts — one source instead of the fallback repeated in each file. */
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
-/* Real WhatsApp click-to-chat link (WhatsApp Business shortlink) — the
-   canonical redirect target for every WhatsApp CTA on the site. Accepts the
-   same "?text=" prefill param as phone-number-based wa.me links. */
-export const WHATSAPP_LINK = "https://wa.me/message/EYL4S6A5VKIRD1";
+/* Real WhatsApp business number, digits only (country code + number, no "+"
+   or spaces) — required format for wa.me deep links. Same number the
+   business shortlink https://wa.me/message/EYL4S6A5VKIRD1 resolves to;
+   using the number form directly here because the shortlink drops any
+   "?text=" param instead of carrying it through to the prefilled chat. */
+export const WHATSAPP_NUMBER = "917075981258";
 
-/** Builds the site's WhatsApp deep link with a correctly encoded prefilled message. */
+/** Builds a wa.me deep link with a correctly encoded prefilled message. */
 export function waLink(message: string): string {
-  return `${WHATSAPP_LINK}?text=${encodeURIComponent(message)}`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
 /* Studio booking enquiry — brief's exact template, §Studio CTA. */
