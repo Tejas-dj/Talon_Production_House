@@ -67,7 +67,7 @@ export default function RootLayout({
 }>) {
   return (
     // suppressHydrationWarning: next-themes sets data-theme pre-hydration
-    <html lang="en" className={archivo.variable} suppressHydrationWarning>
+    <html lang="en" className={`${archivo.variable} overflow-x-clip`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -75,7 +75,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="flex min-h-svh flex-col" suppressHydrationWarning>
+      <body className="flex min-h-svh flex-col overflow-x-clip" suppressHydrationWarning>
         <ThemeProvider>
           <SplashScreen />
           <CustomCursor />
