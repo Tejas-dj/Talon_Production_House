@@ -54,7 +54,7 @@ export function Header() {
               height={660}
               unoptimized
               priority
-              className="theme-logo-light h-7 w-auto"
+              className="theme-logo-light h-6 w-auto md:h-7"
             />
             <Image
               src="/images/logo/TALON_Logo_DarkTheme.svg"
@@ -63,7 +63,7 @@ export function Header() {
               height={660}
               unoptimized
               priority
-              className="theme-logo-dark h-7 w-auto"
+              className="theme-logo-dark h-6 w-auto md:h-7"
             />
           </Link>
 
