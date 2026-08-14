@@ -7,6 +7,7 @@ import { StudioGallery } from "@/components/studio/StudioGallery";
 import { StudioHeroImage } from "@/components/studio/StudioHeroImage";
 import { StudioMobileCta } from "@/components/studio/StudioMobileCta";
 import { getStudioSpace } from "@/lib/content";
+import { getPhotoAlt } from "@/lib/media/photo-alt-text";
 import { GOOGLE_MAPS_URL, WHATSAPP_STUDIO_MESSAGE, waLink } from "@/lib/site";
 import { buildLocalBusinessSchema } from "@/lib/structured-data";
 
@@ -60,7 +61,10 @@ export default function StudioPage() {
 
       {/* Lead image — inset within the page grid, breathing room on all sides */}
       <div className="container-site pb-6">
-        <StudioHeroImage id={studio.heroImageId} alt={`${studio.name}, interior view`} />
+        <StudioHeroImage
+          id={studio.heroImageId}
+          alt={getPhotoAlt(studio.heroImageId) ?? `${studio.name}, interior view`}
+        />
       </div>
 
       {/* Gallery — multi-media section, so in-grid not full bleed */}

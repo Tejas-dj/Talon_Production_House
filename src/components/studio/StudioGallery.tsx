@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { Lightbox } from "@/components/media/Lightbox";
+import { getPhotoAlt } from "@/lib/media/photo-alt-text";
 import { Reveal } from "@/components/motion/Reveal";
 
 type StudioGalleryProps = {
@@ -59,7 +60,7 @@ export function StudioGallery({ studioName, imageIds }: StudioGalleryProps) {
                 id={id}
                 preset={total >= 3 ? "gallery" : "portraitCard"}
                 sizes="(min-width: 768px) 50vw, 100vw"
-                alt={`${studioName}, interior view ${i + 1}`}
+                alt={getPhotoAlt(id) ?? `${studioName}, interior view ${i + 1}`}
                 fill
                 loading="lazy"
                 className="object-cover"

@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { cloudinaryBlurPlaceholder } from "@/lib/media/presets";
+import { getPhotoAlt } from "@/lib/media/photo-alt-text";
 import { useDialogBehavior } from "@/lib/use-dialog";
 
 type LightboxProps = {
@@ -123,7 +124,7 @@ export function Lightbox({ images, initialIndex, onClose, altPrefix }: LightboxP
           key={images[index]}
           id={images[index]}
           preset="lightbox"
-          alt={`${altPrefix}, photograph ${index + 1} of ${total}`}
+          alt={getPhotoAlt(images[index]) ?? `${altPrefix}, photograph ${index + 1} of ${total}`}
           width={1600}
           height={1067}
           preload

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { Lightbox } from "@/components/media/Lightbox";
+import { getPhotoAlt } from "@/lib/media/photo-alt-text";
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionNavRail } from "@/components/work/SectionNavRail";
 
@@ -146,7 +147,7 @@ export function StillsGallery({ sections }: Props) {
                     <CloudinaryImage
                       id={img.id}
                       preset="gallery"
-                      alt={`${section.title}, photograph ${iIdx + 1}`}
+                      alt={getPhotoAlt(img.id) ?? `${section.title}, photograph ${iIdx + 1}`}
                       fill
                       loading={thisGlobalIdx < 8 ? undefined : "lazy"}
                       preload={thisGlobalIdx < 4}
