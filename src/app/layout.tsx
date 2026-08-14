@@ -67,7 +67,7 @@ export default function RootLayout({
 }>) {
   return (
     // suppressHydrationWarning: next-themes sets data-theme pre-hydration
-    <html lang="en" className={`${archivo.variable} overflow-x-clip`} suppressHydrationWarning>
+    <html lang="en" className={archivo.variable} suppressHydrationWarning>
       <head>
         {/* Warms the connection to Cloudinary before the first image is
             requested — saves the DNS/TLS handshake (~100-300ms) off the
@@ -80,17 +80,27 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="flex min-h-svh flex-col overflow-x-clip" suppressHydrationWarning>
-        <ThemeProvider>
-          <SplashScreen />
-          <CustomCursor />
-          <SkipLink />
-          <Header />
-          <main id="main" tabIndex={-1} className="flex-1 focus:outline-none -mt-(--header-height) pt-(--header-height)">
-            {children}
-          </main>
-          <Footer />
-        </ThemeProvider>
+      {/* overflow-x-clip lives on this inner wrapper, not on <html>/<body>
+          directly — iOS Safari has a long-standing bug where any non-visible
+          overflow on the html or body element breaks position:fixed
+          descendants (they stop tracking the viewport and get laid out like
+          position:absolute instead), which is exactly what was hiding the
+          fixed-bottom mobile WhatsApp CTA on Studio. Clipping here still
+          stops an off-canvas element from creating horizontal scroll,
+          without ever touching html/body's own overflow. */}
+      <body suppressHydrationWarning>
+        <div className="flex min-h-svh flex-col overflow-x-clip">
+          <ThemeProvider>
+            <SplashScreen />
+            <CustomCursor />
+            <SkipLink />
+            <Header />
+            <main id="main" tabIndex={-1} className="flex-1 focus:outline-none -mt-(--header-height) pt-(--header-height)">
+              {children}
+            </main>
+            <Footer />
+          </ThemeProvider>
+        </div>
         <Analytics />
       </body>
     </html>
