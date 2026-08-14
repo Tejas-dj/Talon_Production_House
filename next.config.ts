@@ -52,6 +52,13 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig: NextConfig = {
+  // Inlines all page CSS into <style> tags instead of a render-blocking
+  // <link>, eliminating the CSS request-then-render waterfall on first
+  // load — worthwhile here since Tailwind's atomic output stays small.
+  // Production builds only (see docs/inlineCss.md's cache trade-off note).
+  experimental: {
+    inlineCss: true,
+  },
   images: {
     loader: "custom",
     loaderFile: "./src/lib/cloudinary-loader.ts",

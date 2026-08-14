@@ -58,6 +58,15 @@ export const CLOUDINARY_PRESETS = {
     transform: "c_fill,g_auto,ar_1200:630",
     sizes: "1200px",
   },
+  /** Home client-logo marquee: uncropped marks (no fixed aspect — logos range
+      square to wide wordmarks), row height fixed at h-7 (104px) across all
+      breakpoints. 352px covers the widest current logo (Furnishka, ~3.375:1
+      at that height); no vw term so next/image doesn't pull in viewport-scale
+      buckets for what's always a small fixed-size element. */
+  clientLogo: {
+    transform: "c_limit",
+    sizes: "352px",
+  },
 } as const satisfies Record<string, CloudinaryPreset>;
 
 export type CloudinaryPresetName = keyof typeof CLOUDINARY_PRESETS;

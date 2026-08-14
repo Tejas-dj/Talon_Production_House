@@ -38,6 +38,7 @@ export function Hero() {
           active={inView}
           maxHeight={720}
           maxLoops={2}
+          fetchPriority="high"
           className="h-full w-full"
         />
       </motion.div>

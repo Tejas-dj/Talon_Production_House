@@ -116,10 +116,10 @@ export default function HomePage() {
                 <CloudinaryImage
                   key={c.logoId}
                   id={c.logoId}
-                  preset="gallery"
+                  preset="clientLogo"
                   alt={c.name}
-                  width={416}
-                  height={156}
+                  width={352}
+                  height={104}
                   className="mr-6 h-7 w-auto object-contain grayscale"
                 />
               ))}

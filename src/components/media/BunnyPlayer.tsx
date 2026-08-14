@@ -88,6 +88,8 @@ type BunnyPlayerProps = {
   startTime?: number;
   /** External play/pause control — when true the video plays, when false it pauses. */
   active?: boolean;
+  /** LCP hint — set to "high" only for an above-the-fold instance (e.g. Hero). */
+  fetchPriority?: "high" | "low" | "auto";
   className?: string;
 };
 
@@ -100,6 +102,7 @@ export function BunnyPlayer({
   maxLoops,
   startTime,
   active,
+  fetchPriority,
   className,
 }: BunnyPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -216,6 +219,7 @@ export function BunnyPlayer({
       <video
         ref={videoRef}
         poster={posterImageId ? undefined : bunnyThumbnail}
+        {...{ fetchPriority }}
         controls={playing && !autoPlayMuted}
         playsInline
         muted={autoPlayMuted}
