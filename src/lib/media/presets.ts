@@ -35,10 +35,16 @@ export const CLOUDINARY_PRESETS = {
     transform: "c_fill,g_auto,ar_16:9",
     sizes: "100vw",
   },
-  /** Lightbox: near-original quality, capped width for bandwidth */
+  /** Lightbox: near-original quality, capped width for bandwidth. The image
+      sits in a box bounded by max-h-[80vh]/max-w-[85vw] (object-contain), so
+      it's never actually 100vw — 1882px is where 85vw alone would already
+      exceed the 1600px cap. Keeping this accurate (rather than the naive
+      "100vw") keeps the requested width small on big/retina screens, and
+      keeps it a small, predictable set of widths so Cloudinary's cache and
+      the Lightbox's own neighbor-preload land on the same URL. */
   lightbox: {
     transform: "c_limit",
-    sizes: "100vw",
+    sizes: "(min-width: 1882px) 1600px, 85vw",
   },
   /** Forced portrait crop (matches the aspect-[3/4] slot it's used in)
       regardless of source orientation — Work overlay Stills preview carousel,
@@ -76,4 +82,24 @@ export function cloudinaryUrl(
   }
   const { transform } = CLOUDINARY_PRESETS[preset];
   return `https://res.cloudinary.com/${cloudName}/image/upload/${transform},q_auto,f_auto,w_${width}/${publicId}`;
+}
+
+/**
+ * Tiny blurred stand-in for a Lightbox image: ~32px wide, blurred, low
+ * quality. Deliberately not a named preset — quality/blur are baked into
+ * the transform because this URL is never reused for anything but a
+ * placeholder, unlike the presets above where the caller always appends
+ * quality/width itself. Small enough that Cloudinary generates it fast even
+ * on a cold cache, so it can stand in while the full-res image (which can
+ * take a couple of seconds to derive the first time anyone requests that
+ * exact size from the source photo) loads in behind it.
+ */
+export function cloudinaryBlurPlaceholder(publicId: string): string {
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+  if (!cloudName) {
+    throw new Error(
+      "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME is not set — see .env.example and Step 7 of AGENTS.md.",
+    );
+  }
+  return `https://res.cloudinary.com/${cloudName}/image/upload/c_limit,w_32,e_blur:1500,q_auto:low,f_auto/${publicId}`;
 }

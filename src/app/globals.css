@@ -314,6 +314,37 @@
   }
 }
 
+/* Scrim variant: for .btn instances sitting directly on --scrim (Lightbox,
+   ReelLightbox close/prev/next). --scrim is theme-invariant dark (Bible
+   silent; see DECISIONS.md), so the default .btn colors — sourced from
+   --text-primary/--rule, which flip per theme — go near-invisible in light
+   theme (near-black text/icon on a near-black overlay). Reuses
+   --hero-overlay-fg, the same "always sits on a dark surface" token the Home
+   hero uses, instead of introducing a second one. */
+@utility btn-scrim {
+  color: var(--hero-overlay-fg);
+  border-color: rgba(244, 240, 232, 0.35);
+  /* A faint solid wash, not just transparent-over-scrim: these controls can
+     end up sitting over the enlarged photo itself (a near-square or portrait
+     image can reach any edge of the frame), so contrast can't depend on the
+     scrim alone being behind them. */
+  background-color: rgba(10, 9, 8, 0.32);
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--hero-overlay-fg);
+      color: #000;
+      border-color: var(--hero-overlay-fg);
+    }
+  }
+
+  &:focus-visible {
+    background-color: var(--hero-overlay-fg);
+    color: #000;
+    border-color: var(--hero-overlay-fg);
+  }
+}
+
 /* CTA variant (WhatsApp): pressed state fills with accent — Bible §7 */
 @utility btn-cta {
   &:active:not(:disabled):not([aria-disabled="true"]) {

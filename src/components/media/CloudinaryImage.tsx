@@ -28,7 +28,7 @@ export function CloudinaryImage({ id, preset, sizes, alt, ...imageProps }: Cloud
       );
     }
     const q = quality ?? "auto";
-    return `https://res.cloudinary.com/${cloudName}/image/upload/${presetConfig.transform},q_${q},w_${width}/${id}`;
+    return `https://res.cloudinary.com/${cloudName}/image/upload/${presetConfig.transform},q_${q},f_auto,w_${width}/${id}`;
   }
 
   return (

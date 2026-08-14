@@ -81,7 +81,7 @@ export function ProjectStillsGallery({ projectTitle, stillImageIds }: ProjectSti
           <button
             type="button"
             onClick={() => setOpenIndex(null)}
-            className="btn type-meta absolute top-4 right-4 px-4 py-2 md:top-8 md:right-8"
+            className="btn btn-scrim type-meta absolute top-4 right-4 px-4 py-2 md:top-8 md:right-8"
           >
             Close
           </button>

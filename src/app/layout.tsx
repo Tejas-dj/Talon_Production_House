@@ -69,6 +69,11 @@ export default function RootLayout({
     // suppressHydrationWarning: next-themes sets data-theme pre-hydration
     <html lang="en" className={`${archivo.variable} overflow-x-clip`} suppressHydrationWarning>
       <head>
+        {/* Warms the connection to Cloudinary before the first image is
+            requested — saves the DNS/TLS handshake (~100-300ms) off the
+            very first Stills thumbnail or Lightbox open on a page load. */}
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem("theme")||"system";var r=t==="system"?window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":t;document.documentElement.setAttribute("data-theme",r)}catch(e){}})()`,

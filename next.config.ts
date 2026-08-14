@@ -26,7 +26,10 @@ const CSP = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' https://res.cloudinary.com https://*.b-cdn.net",
   "media-src 'self' https://*.b-cdn.net",
-  "connect-src 'self' https://*.b-cdn.net",
+  // res.cloudinary.com here (not just in img-src) so the <link rel="preconnect">
+  // in the root layout is allowed — preconnect/dns-prefetch resource hints are
+  // governed by connect-src, not img-src.
+  "connect-src 'self' https://res.cloudinary.com https://*.b-cdn.net",
   "font-src 'self'",
   "object-src 'none'",
   "base-uri 'self'",
@@ -48,6 +51,14 @@ const nextConfig: NextConfig = {
   images: {
     loader: "custom",
     loaderFile: "./src/lib/cloudinary-loader.ts",
+    // Trimmed from Next's default (…1920, 2048, 3840) — these source photos
+    // are huge (~7000px wide), so every extra bucket is another distinct
+    // Cloudinary derived asset that has to be generated from scratch (a
+    // couple of seconds) the first time anyone's viewport lands on it.
+    // Fewer buckets means visitors share a warm cache more often; 2560 still
+    // covers a 2x-retina 1280px layout, well past what any preset here
+    // renders at full width.
+    deviceSizes: [640, 828, 1080, 1600, 1920, 2560],
   },
   async headers() {
     return [{ source: "/:path*", headers: SECURITY_HEADERS }];
