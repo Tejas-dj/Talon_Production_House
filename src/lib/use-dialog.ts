@@ -58,12 +58,36 @@ export function useDialogBehavior({ open, onClose, containerRef }: UseDialogBeha
     }
 
     document.addEventListener("keydown", onKeyDown);
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+
+    // Scroll lock. overflow:hidden on body alone doesn't stop iOS Safari's
+    // touch/rubber-band scroll, and whether body or html is the actual
+    // scrolling element varies by browser — pinning body at its current
+    // offset via position:fixed (the standard cross-browser-safe lock) and
+    // hiding overflow on both covers it, so the page behind the dialog
+    // can't shift no matter how the user tries to scroll it.
+    const scrollY = window.scrollY;
+    const { body, documentElement: html } = document;
+    const previous = {
+      bodyOverflow: body.style.overflow,
+      htmlOverflow: html.style.overflow,
+      bodyPosition: body.style.position,
+      bodyTop: body.style.top,
+      bodyWidth: body.style.width,
+    };
+    body.style.overflow = "hidden";
+    html.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.width = "100%";
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = previousOverflow;
+      body.style.overflow = previous.bodyOverflow;
+      html.style.overflow = previous.htmlOverflow;
+      body.style.position = previous.bodyPosition;
+      body.style.top = previous.bodyTop;
+      body.style.width = previous.bodyWidth;
+      window.scrollTo(0, scrollY);
       previouslyFocused?.focus();
     };
   }, [open, onClose, containerRef]);
