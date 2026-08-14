@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { EditorialGallery, type ImageEntry } from "@/components/work/EditorialGallery";
+import { StillsGallery, type StillsSection } from "@/components/work/StillsGallery";
 import { StillsHero } from "@/components/work/StillsHero";
 import { getAllPhotoSeries } from "@/lib/content";
 import photoDims from "../../../../content/photo-dimensions.json";
@@ -22,15 +22,18 @@ export const metadata: Metadata = {
 const dims = photoDims as Record<string, { w: number; h: number }>;
 
 export default function StillsPage() {
-  const allImages: ImageEntry[] = getAllPhotoSeries()
-    .flatMap((s) => s.imageIds)
-    .map((id) => ({ id, w: dims[id]?.w ?? 3, h: dims[id]?.h ?? 4 }));
+  const sections: StillsSection[] = getAllPhotoSeries().map((s) => ({
+    slug: s.slug,
+    title: s.title,
+    statement: s.statement,
+    images: s.imageIds.map((id) => ({ id, w: dims[id]?.w ?? 3, h: dims[id]?.h ?? 4 })),
+  }));
 
   return (
     <div>
       <StillsHero />
       <div className="hairline" />
-      <EditorialGallery images={allImages} />
+      <StillsGallery sections={sections} />
     </div>
   );
 }

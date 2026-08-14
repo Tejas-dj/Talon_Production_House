@@ -604,6 +604,115 @@
 }
 
 /* ==========================================================================
+   STILLS COLLAGE GRID — organic, varying-size image layout
+   ========================================================================== */
+.collage-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: calc(100vw / 12);
+  grid-auto-flow: dense;
+  gap: 2px;
+}
+
+@media (min-width: 768px) {
+  .collage-grid {
+    grid-template-columns: repeat(20, 1fr);
+    grid-auto-rows: calc(100vw / 20);
+  }
+}
+
+@media (min-width: 1024px) {
+  .collage-grid {
+    grid-template-columns: repeat(36, 1fr);
+    grid-auto-rows: calc(100vw / 36);
+  }
+}
+
+.collage-item {
+  grid-column: span var(--sm-col, 3);
+  grid-row: span var(--sm-row, 2);
+}
+
+@media (min-width: 768px) {
+  .collage-item {
+    grid-column: span var(--md-col, 4);
+    grid-row: span var(--md-row, 3);
+  }
+}
+
+@media (min-width: 1024px) {
+  .collage-item {
+    grid-column: span var(--lg-col, 5);
+    grid-row: span var(--lg-row, 4);
+  }
+}
+
+
+/* ==========================================================================
+   SECTION NAV RAIL — floating jump-to-section index (Stills page).
+   mix-blend-mode: difference lives on the <nav> element itself, NOT on
+   individual text spans — position:fixed creates an isolated stacking
+   context, and child-level blends only composite against the nav's own
+   (transparent) background, never the page. Hoisting it to the nav makes
+   the entire rendered output invert against whatever content sits behind
+   it, exactly like CustomCursor.tsx (white bg + difference on the fixed
+   div itself).  All children paint pure #ffffff — raw white is a blend
+   operand, not a themed color — and the difference math inverts it to a
+   strong dark on light areas, bright on dark areas.  Active section gets
+   a white underline instead of gold (gold would be destroyed by the
+   parent's difference blend).
+   ========================================================================== */
+.rail-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 10px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.rail-index {
+  font-size: clamp(0.6875rem, 0.8vw, 0.75rem);
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #ffffff;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--duration-shift) var(--ease-shift);
+}
+
+.rail-label {
+  font-size: clamp(0.6875rem, 0.8vw, 0.75rem);
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #ffffff;
+  white-space: nowrap;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-width var(--duration-shift) var(--ease-shift),
+    opacity var(--duration-shift) var(--ease-shift);
+}
+
+@media (hover: hover) {
+  .rail-item:hover .rail-label {
+    max-width: 220px;
+    opacity: 1;
+  }
+}
+
+.rail-item:focus-visible .rail-label {
+  max-width: 220px;
+  opacity: 1;
+}
+
+.rail-item[aria-current] .rail-index {
+  border-bottom-color: #ffffff;
+}
+
+/* ==========================================================================
    BASE
    ========================================================================== */
 @layer base {
