@@ -24,14 +24,14 @@ export function Header() {
     if (!veil) return;
 
     function update() {
-      const p = Math.min(1, window.scrollY / SCROLL_THRESHOLD);
+      const p = menuOpen ? 1 : Math.min(1, window.scrollY / SCROLL_THRESHOLD);
       veil!.style.setProperty("--header-opacity", String(p));
     }
 
     update();
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
-  }, []);
+  }, [menuOpen]);
 
   function isCurrent(href: string) {
     return pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
