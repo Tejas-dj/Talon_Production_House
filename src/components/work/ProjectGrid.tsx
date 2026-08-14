@@ -51,6 +51,7 @@ function ProjectThumbHoverVideo({ project, className }: { project: VideoProject;
           title={project.title}
           autoPlayMuted
           active={hovered}
+          maxHeight={480}
           className={`absolute inset-0 h-full w-full transition-opacity duration-[240ms] ease-shift ${
             hovered ? "opacity-100" : "opacity-0"
           }`}
@@ -94,6 +95,7 @@ function VideoWithOverlay({ project }: { project: VideoProject }) {
         title={project.title}
         posterImageId={project.posterImageId}
         autoPlayMuted
+        maxHeight={480}
         startTime={FEATURED_START_TIMES[project.slug]}
         active={inView}
         className="absolute inset-0 h-full w-full"
@@ -132,7 +134,17 @@ function ReelCard({
 }) {
   const [hovered, setHovered] = useState(false);
   const [inView, setInView] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [everActive, setEverActive] = useState(false);
   const cardRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   useEffect(() => {
     const el = cardRef.current;
@@ -144,6 +156,12 @@ function ReelCard({
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
+
+  const active = isDesktop ? hovered : inView;
+
+  useEffect(() => {
+    if (active) setEverActive(true);
+  }, [active]);
 
   return (
     <button
@@ -159,16 +177,19 @@ function ReelCard({
         <ProjectThumb
           project={project}
           className={`object-cover transition-opacity duration-[240ms] ease-shift ${
-            inView ? "opacity-0" : "opacity-100"
+            active ? "opacity-0" : "opacity-100"
           }`}
         />
-        <BunnyPlayer
-          videoId={project.bunnyVideoId}
-          title={project.title}
-          autoPlayMuted
-          active={inView}
-          className="absolute inset-0 h-full w-full"
-        />
+        {everActive && (
+          <BunnyPlayer
+            videoId={project.bunnyVideoId}
+            title={project.title}
+            autoPlayMuted
+            active={active}
+            maxHeight={480}
+            className="absolute inset-0 h-full w-full"
+          />
+        )}
         <div
           className="pointer-events-none absolute inset-0 flex items-center justify-center transition-opacity duration-[240ms] ease-shift"
           style={{ opacity: hovered ? 1 : 0, backgroundColor: "rgba(23, 22, 20, 0.35)" }}

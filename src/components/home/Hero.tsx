@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { BunnyPlayer } from "@/components/media/BunnyPlayer";
 import { SplitText } from "@/components/motion/SplitText";
@@ -16,6 +16,7 @@ import { HERO_BUNNY_VIDEO_ID } from "@/lib/site";
  */
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
+  const inView = useInView(sectionRef);
   const reducedMotion = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
@@ -34,7 +35,9 @@ export function Hero() {
           videoId={HERO_BUNNY_VIDEO_ID}
           title="Talon Production House showreel"
           autoPlayMuted
-          active
+          active={inView}
+          maxHeight={720}
+          maxLoops={2}
           className="h-full w-full"
         />
       </motion.div>
