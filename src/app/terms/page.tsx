@@ -45,9 +45,9 @@ export default function TermsPage() {
         <div>
           <h2 className="type-headline">Studio bookings</h2>
           <p className="type-body mt-3">
-            Rates and terms shown on the Studio page are indicative. A booking is only confirmed
-            once we&apos;ve agreed the date and received the advance, per the terms shared with you
-            directly.
+            Rates are quoted on enquiry and are indicative. A booking is only confirmed once
+            we&apos;ve agreed the date and rate and received the advance, per the terms shared with
+            you directly.
           </p>
         </div>
 

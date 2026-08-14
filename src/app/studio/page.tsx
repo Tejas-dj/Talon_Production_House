@@ -9,7 +9,7 @@ import { WHATSAPP_STUDIO_MESSAGE, waLink } from "@/lib/site";
 import { buildLocalBusinessSchema } from "@/lib/structured-data";
 
 const DESCRIPTION =
-  "Rent Talon's Bengaluru studio floor by the hour, half day, or full day — specs, rates, and instant WhatsApp booking.";
+  "Rent Talon's Bengaluru studio floor by the hour, half day, or full day — specs and instant WhatsApp booking.";
 
 export const metadata: Metadata = {
   title: "Studio",
@@ -39,21 +39,9 @@ function SpecRow({
   );
 }
 
-function RateRow({ item, price, index }: { item: string; price: string; index: number }) {
-  return (
-    <Reveal
-      index={index}
-      className="hairline flex items-baseline justify-between gap-4 p-4 first:border-t-0"
-    >
-      <span className="type-body">{item}</span>
-      <span className="type-body shrink-0">{price}</span>
-    </Reveal>
-  );
-}
-
 export default function StudioPage() {
   const studio = getStudioSpace();
-  const { specs, rates } = studio;
+  const { specs } = studio;
   const localBusinessSchema = buildLocalBusinessSchema();
 
   return (
@@ -127,20 +115,16 @@ export default function StudioPage() {
 
       <div className="hairline" />
 
-      {/* Rates — working role, WhatsApp CTA prominent within it (not buried) */}
+      {/* Booking — no rate card; a direct WhatsApp CTA, prominent not buried */}
       <section className="container-site grid grid-cols-1 gap-4 pt-6 pb-6 md:grid-cols-12 md:gap-gutter">
         <div className="md:sticky md:top-(--header-height) md:[grid-column:1/5] md:self-start">
-          <h2 className="type-headline">Rates</h2>
+          <h2 className="type-headline">Book the Studio</h2>
         </div>
         <div className="md:[grid-column:5/13]">
-          <div className="bg-surface">
-            <RateRow index={0} item={rates.hourly.item} price={rates.hourly.price} />
-            <RateRow index={1} item={rates.halfDay.item} price={rates.halfDay.price} />
-            <RateRow index={2} item={rates.fullDay.item} price={rates.fullDay.price} />
-            {rates.equipmentAddOns.map((row, i) => (
-              <RateRow key={row.item} index={3 + i} item={row.item} price={row.price} />
-            ))}
-          </div>
+          <p className="type-body max-w-[50ch]">
+            Hourly, half-day, and full-day sessions, with camera and lighting add-ons available.
+            Message us your date for a quote.
+          </p>
           <p className="type-small text-muted mt-4 max-w-[65ch]">{studio.terms}</p>
 
           {/* Desktop: inline prominent CTA. Mobile: fixed bottom bar, thumb
