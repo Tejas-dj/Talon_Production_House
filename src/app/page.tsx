@@ -118,9 +118,9 @@ export default function HomePage() {
                   id={c.logoId}
                   preset="gallery"
                   alt={c.name}
-                  width={160}
-                  height={60}
-                  className="mx-6 h-8 w-auto object-contain grayscale"
+                  width={416}
+                  height={156}
+                  className="mr-6 h-7 w-auto object-contain grayscale"
                 />
               ))}
             </Marquee>
