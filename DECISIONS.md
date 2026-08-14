@@ -78,6 +78,8 @@ Reasoning: `src/` with `@/*` alias keeps app code separate from content and docs
 - **Bunny playback URL needs the library's pull-zone CDN hostname (`vz-xxxxxxxx-yyy.b-cdn.net`), not the numeric library id** — the brief asks for "the Bunny library id," but the pull-zone hostname is what HLS playback URLs actually require. `.env.example` documents where to find it (Stream library → API tab) and the env var is named `NEXT_PUBLIC_BUNNY_PULL_ZONE` to be unambiguous about which value it wants.
 - **`.env.example` is force-included in `.gitignore`'s `.env*` blanket-ignore** (`!.env.example`) so the documentation file itself is committed while real `.env.local` values never are.
 - **Gate verification (one real image via Cloudinary, one real video via Bunny, checked on a physical phone) is deferred to a later phase at the client's own instruction** — asked in chat per the brief; the client confirmed neither account exists yet and will supply the cloud name and pull-zone hostname in a future phase. The loader, presets, player component, and `.env.example` are built and pass `next build`/lint with placeholder-shaped code paths now, so Phase 3 has working infrastructure to build on; only the live-credential + physical-phone check remains, and it needs no further code once those two values arrive — set them in `.env.local` and the same components resolve real URLs immediately.
+- **Cloudinary derived-image URLs here carry no version segment, and Cloudinary's default CDN cache header keeps a derivative for weeks to a year.** If a photo/poster/logo is ever re-uploaded under the _same_ public ID, visitors can keep seeing the stale derivative until that cache expires. Always give a replacement image a new public ID (or explicitly invalidate the old one in the Cloudinary dashboard/API) — never overwrite a public ID in place and expect the site to pick up the change quickly.
+- **`scripts/warm-cloudinary-cache.mjs` runs itself as a `postbuild` step, but only on Vercel production deploys** (`npm_lifecycle_event === "postbuild"` gated on `VERCEL_ENV === "production"`) — local `npm run build` and Vercel preview deploys skip it, so it never adds latency to a branch push or a dev's local build. It walks every image referenced in `content/*.json` (Stills, project posters/stills, Studio hero/gallery) across every preset that actually renders it and every `next.config.ts` device width, so new content gets its Cloudinary derivatives pre-generated before a real visitor ever requests them. Still runnable by hand (`node scripts/warm-cloudinary-cache.mjs`) for a local check.
 
 ## Page construction (Phase 3)
 
@@ -108,7 +110,7 @@ every step's gate report names the exact swap points.
   actually starts rendering frames (`onPlaying`), not merely on click/autoplay-intent — avoids a
   gap between the poster disappearing and the HLS stream having a frame ready.
 - **Project detail cinematic aspect ratio = 16:9`**, matching the existing `poster` Cloudinary
-  preset (`ar_16:9`) and each project's own `format` field, rather than inventing an un-Bibled
+preset (`ar_16:9`) and each project's own `format` field, rather than inventing an un-Bibled
   ultra-wide crop the wireframe's greybox proportions only vaguely suggested.
 - **Synopsis measure capped at `max-w-[70ch]`** — the wireframe gives a column span but no exact
   character measure; 70ch sits in the brief's own 65–75ch "readability sweet spot."
@@ -127,13 +129,13 @@ every step's gate report names the exact swap points.
   can exceed a mobile column's width with nowhere to wrap, causing real horizontal overflow.
   `break-words` allows a mid-word break only when unavoidable; normal-length words are unaffected.
 - **Removed a `text-right` I'd initially put on the "Next" link** — Bible §6.4 rule 2 is explicit
-  that *text* blocks stay left-anchored (only media is allowed to drift/offset right); right-
+  that _text_ blocks stay left-anchored (only media is allowed to drift/offset right); right-
   aligning a text block was a rule violation on my part, caught in the same 320px pass.
 - **`src/components/work/ProjectGrid.tsx` (new)** is the one implementation of the asymmetric
   card stagger (Bible §6.4 rule 4) shared by the Video index and Home's featured section, so the
   alternating-side/offset-down logic exists exactly once.
 - **`SITE_URL` consolidated into `site.ts`**, replacing the `process.env.NEXT_PUBLIC_SITE_URL ??
-  "http://localhost:3000"` fallback that was duplicated in `sitemap.ts` and `robots.ts`; also
+"http://localhost:3000"` fallback that was duplicated in `sitemap.ts` and `robots.ts`; also
   backs `layout.tsx`'s new `metadataBase` and every page's canonical URL (Step 7).
 - **`sitemap.ts` now includes project detail URLs** (`/work/[slug]` for every project) — a small,
   obviously-correct gap left over from Phase 2, when no project pages existed yet to list.
@@ -271,7 +273,7 @@ every step's gate report names the exact swap points.
 - **Meta description truncation is word-boundary-aware** (`truncateDescription`, ≤155 chars) —
   cuts at the last space before the limit rather than mid-word, appending "…".
 - **One known, unresolved 60-char title overage**: `Monsoon Sessions: Ep Collective Live — Talon
-  Production House` is 61 characters. That project's own title (37 chars) is within its stated
+Production House` is 61 characters. That project's own title (37 chars) is within its stated
   18–48ch content budget, but combined with the fixed `— Talon Production House` suffix (26
   chars) it exceeds the SEO title budget by one character. This is a structural tension between
   Phase 2's content-schema title budget and Phase 3's SEO title budget, not something fixable by
@@ -301,7 +303,7 @@ every step's gate report names the exact swap points.
   outside the token layer are the three in `src/lib/og-image.tsx` (Satori can't read CSS custom
   properties, already documented); no icon-library imports; the only `grid-cols-3` usage is the
   project-detail metadata `<dl>` (a data table, not a card grid — the guardrail targets uniform
-  *card* grids specifically); `outline-none` appears exactly once, on the pre-existing Phase 2
+  _card_ grids specifically); `outline-none` appears exactly once, on the pre-existing Phase 2
   skip-link target (`<main>`), not on any interactive control; `alt=""` appears exactly once, on
   `BunnyPlayer`'s decorative poster overlay, correctly paired with `aria-hidden="true"`.
 - **Full breakpoint × page overflow sweep** (320/768/1024/1440/1920, all six templates) via
@@ -314,7 +316,7 @@ every step's gate report names the exact swap points.
 ## Content population (Phase 3.5)
 
 - **Logo assets arrived on `master` one commit ahead of this branch's base** (`add talon logo
-  assets`, adding `public/images/logo/TALON_Logo_{Light,Dark}Theme.svg`) — cherry-picked directly
+assets`, adding `public/images/logo/TALON_Logo_{Light,Dark}Theme.svg`) — cherry-picked directly
   rather than merging, since `git merge-base` confirmed that commit sits cleanly on top of this
   branch's tip with no divergence.
 - **Both supplied SVGs are the full color lockup (wordmark + PRODUCTION HOUSE + wedge), one per
@@ -334,7 +336,7 @@ every step's gate report names the exact swap points.
   cards, so this isn't a new exception). Re-run manually if the source logo files ever change.
 - **Bug found and fixed during that script's development: deleting the wedge-hex paths (instead of
   recoloring them) left a diagonal bite out of otherwise-solid letter strokes.** The source file
-  doesn't draw the wedge only in the gaps *between* letters — where the wedge crosses a letter's
+  doesn't draw the wedge only in the gaps _between_ letters — where the wedge crosses a letter's
   own stroke, that overlapping region is exported as a separate orange-filled sub-path rather than
   layered on top of a complete letter shape, so simply deleting orange elements left true holes
   (confirmed by rendering onto a flattened background and seeing the letters visibly missing a
@@ -702,9 +704,9 @@ This phase's own verification tooling constraint, noted honestly rather than glo
 session's Browser pane tab reported `document.hidden === true` throughout (confirmed via
 `document.visibilityState`), which suspends Chromium's IntersectionObserver callbacks and
 scroll-linked `requestAnimationFrame` work for backgrounded pages - meaning the actual
-scroll-triggered *transition* of Step 1's `Reveal`/`Hero` components (opacity 0->1, the parallax
+scroll-triggered _transition_ of Step 1's `Reveal`/`Hero` components (opacity 0->1, the parallax
 scale advancing) could not be watched live playing out, and `computer{action:"screenshot"}` timed
-out for the same reason (no compositor frame to capture). What *was* verified live and is strong
+out for the same reason (no compositor frame to capture). What _was_ verified live and is strong
 evidence the wiring is correct regardless: every `Reveal`-wrapped element correctly renders its
 `hidden` variant state pre-scroll (`opacity: 0`, `translateY(24px)`, confirmed via computed styles
 on Home, Photography, and Studio), the DOM structure survived the `Reveal`-wrapping refactor intact
@@ -717,6 +719,7 @@ session's tooling could not actually produce.
 ## Phase 4 complete
 
 All six steps done. Summary against the brief's own checklist:
+
 - Motion: P1/P2/P3 all wired per the brief's page-by-page list; hero parallax; hover correctly
   touch-guarded (one real bug found and fixed); custom cursor skipped and documented;
   prefers-reduced-motion handled via the existing CSS kill switch plus `useReducedMotion()` in
@@ -771,7 +774,7 @@ as the real current baseline rather than the archived Bible text, and built acco
   `AnimatePresence` + the `veil` variants already exported from `src/lib/motion.ts` (P3, 320ms) —
   first real consumer of that export; every other P3 use on the site (`PageTransition.tsx`) rolled
   its own transition instead. `navigator.clipboard.writeText()` is wrapped in a bare `.catch(() =>
-  {})`: clipboard access is a real system-boundary call that can be denied by permissions policy,
+{})`: clipboard access is a real system-boundary call that can be denied by permissions policy,
   and a denial should be a silent no-op (the row's native `mailto:`/`tel:` href still fires
   regardless), not a thrown error.
 - **Icon rotation was dropped** from the original "morph/bounce" ask — scale + accent color alone
@@ -788,7 +791,7 @@ requested (`elementFromPoint` at that point returned `<main>` itself, not any ro
 properties resolving correctly (`--tw-scale-x`/`--tw-scale-y: 110%`) while the derived `scale`/
 `opacity` "used values" did not — consistent with style/paint recalculation being throttled for a
 backgrounded tab, not a selector or cascade bug (`.matches()` on the exact compiled selector
-returned `true` in every case checked). Real signal that *is* trustworthy from this session:
+returned `true` in every case checked). Real signal that _is_ trustworthy from this session:
 `text-accent` (a property that doesn't depend on the same derived-value path) visibly applied
 under the forced focus state; a direct, unrelated `navigator.clipboard.writeText()` call from the
 console reached the real browser Clipboard API and came back `NotAllowedError: Write permission
