@@ -54,11 +54,14 @@ export function SplitText({
       aria-label={children}
     >
       {words.map((word, wi) => (
-        <span key={wi} style={{ display: "inline-block" }}>
-          {/* Word is one nowrap unit so a line can only break between words,
-              never mid-word — splitting into per-char spans loses the atomic
-              word boundary a plain text node would otherwise have. */}
-          <span style={{ whiteSpace: "nowrap" }} aria-hidden="true">
+        <span key={wi}>
+          {/* Word is one nowrap inline-block unit so a line can only break
+              between words, never mid-word. The trailing space is a sibling
+              of this span, not a child — a space nested as the last child of
+              an inline-block gets collapsed like trailing whitespace at a
+              line's edge, which is what was swallowing the gap between
+              words. */}
+          <span style={{ display: "inline-block", whiteSpace: "nowrap" }} aria-hidden="true">
             {word.split("").map((char) => {
               const i = charIndex++;
               return (

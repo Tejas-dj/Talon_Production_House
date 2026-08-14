@@ -213,6 +213,10 @@
   font-weight: 600;
   font-stretch: 100%;
   text-transform: uppercase;
+  /* An email/handle can be one unbroken token wider than a narrow mobile
+     column (contact rows clip overflow) — allow a mid-word break only when
+     unavoidable, same precedent as type-display above. */
+  overflow-wrap: break-word;
 }
 
 /* ==========================================================================
