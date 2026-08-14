@@ -64,12 +64,18 @@ export function MobileNav({
     }
 
     document.addEventListener("keydown", onKeyDown);
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    /* Locks on documentElement, not body: this document's scrolling element
+       is <html> (document.scrollingElement), so overflow:hidden on body
+       neither blocks scroll nor is the right ancestor for the sticky
+       header's containing block — locking the wrong element let the page
+       scroll under the menu and dragged the "sticky" header off-screen
+       with it. */
+    const previousOverflow = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = previousOverflow;
+      document.documentElement.style.overflow = previousOverflow;
       previouslyFocused?.focus();
     };
   }, [open, onClose, headerRef, triggerRef]);
