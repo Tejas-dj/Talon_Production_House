@@ -124,6 +124,6 @@ export interface StudioSpace {
   };
   /** [60–120 ch] */
   terms: string;
-  /** [20–34 ch], e.g. "Message us with your date" */
+  /** [16–34 ch], e.g. "Enquire on WhatsApp" */
   whatsappCtaText: string;
 }
