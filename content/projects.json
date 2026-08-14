@@ -81,6 +81,19 @@
     "bunnyVideoId": "b9c50a64-6928-4d38-8480-8c5ad944b26a"
   },
   {
+    "slug": "skill-beyond-education-event",
+    "title": "Skill Beyond Education Event",
+    "client": "Skill Beyond Education",
+    "year": 2026,
+    "format": "16:9 · 1080p",
+    "runtime": "02:13",
+    "role": "Full Production",
+    "credits": [{ "role": "Production", "name": "Talon Production House" }],
+    "synopsis": "After-movie coverage of the Skill Beyond Education event. Full credits and synopsis pending.",
+    "category": "Brand Film",
+    "bunnyVideoId": "573e855c-e2e7-4df9-9673-78953160717a"
+  },
+  {
     "slug": "hair-oil-reel",
     "title": "Hair Oil Reel",
     "client": "Client pending confirmation",
