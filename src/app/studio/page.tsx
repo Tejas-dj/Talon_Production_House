@@ -4,6 +4,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { SplitText } from "@/components/motion/SplitText";
 import { StudioGallery } from "@/components/studio/StudioGallery";
 import { StudioHeroImage } from "@/components/studio/StudioHeroImage";
+import { StudioMobileCta } from "@/components/studio/StudioMobileCta";
 import { getStudioSpace } from "@/lib/content";
 import { WHATSAPP_STUDIO_MESSAGE, waLink } from "@/lib/site";
 import { buildLocalBusinessSchema } from "@/lib/structured-data";
@@ -130,14 +131,9 @@ export default function StudioPage() {
               {studio.whatsappCtaText}
             </a>
           </MagneticElement>
-          <a
-            href={waLink(WHATSAPP_STUDIO_MESSAGE)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-cta type-meta bg-page fixed inset-x-0 bottom-0 z-30 flex items-center justify-center border-x-0 border-b-0 px-4 py-4 text-center md:hidden"
-          >
+          <StudioMobileCta href={waLink(WHATSAPP_STUDIO_MESSAGE)}>
             {studio.whatsappCtaText}
-          </a>
+          </StudioMobileCta>
         </div>
       </section>
     </div>
