@@ -127,6 +127,9 @@ export function Footer() {
             <Link href="/terms" className="link-draw">
               Terms
             </Link>
+            <Link href="/careers" className="link-draw">
+              Careers
+            </Link>
           </p>
           <p className="type-small text-muted">
             Site by{" "}
