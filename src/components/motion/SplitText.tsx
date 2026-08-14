@@ -20,7 +20,7 @@ export function SplitText({
   const reducedMotion = useReducedMotion();
   const MotionTag = motion.create(Tag);
 
-  const chars = children.split("");
+  const words = children.split(" ");
 
   const variants = reducedMotion
     ? {
@@ -43,6 +43,8 @@ export function SplitText({
         }),
       };
 
+  let charIndex = 0;
+
   return (
     <MotionTag
       className={className}
@@ -51,16 +53,28 @@ export function SplitText({
       viewport={{ once: true, amount: 0.2 }}
       aria-label={children}
     >
-      {chars.map((char, i) => (
-        <motion.span
-          key={`${i}-${char}`}
-          custom={i}
-          variants={variants}
-          style={{ display: "inline-block", whiteSpace: char === " " ? "pre" : undefined }}
-          aria-hidden="true"
-        >
-          {char === " " ? " " : char}
-        </motion.span>
+      {words.map((word, wi) => (
+        <span key={wi} style={{ display: "inline-block" }}>
+          {/* Word is one nowrap unit so a line can only break between words,
+              never mid-word — splitting into per-char spans loses the atomic
+              word boundary a plain text node would otherwise have. */}
+          <span style={{ whiteSpace: "nowrap" }} aria-hidden="true">
+            {word.split("").map((char) => {
+              const i = charIndex++;
+              return (
+                <motion.span
+                  key={i}
+                  custom={i}
+                  variants={variants}
+                  style={{ display: "inline-block" }}
+                >
+                  {char}
+                </motion.span>
+              );
+            })}
+          </span>
+          {wi < words.length - 1 ? " " : null}
+        </span>
       ))}
     </MotionTag>
   );
