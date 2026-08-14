@@ -4,6 +4,40 @@ import { useEffect, useRef, useState } from "react";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { bunnyThumbnailUrl } from "@/lib/media/bunny";
 
+/**
+ * Bunny's master playlist lets the player pick a rendition — on native HLS
+ * engines (Safari, WebKit) that means the OS ramps up from a low bitrate
+ * over the first few seconds, which we never want. Resolving straight to the
+ * highest-resolution media playlist removes that choice entirely: there is
+ * only one rendition to load, on every engine (native or hls.js).
+ */
+async function resolveTopRenditionUrl(masterUrl: string): Promise<string> {
+  const res = await fetch(masterUrl);
+  const text = await res.text();
+  const lines = text.split("\n").map((line) => line.trim());
+
+  let best: { pixels: number; url: string } | null = null;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line.startsWith("#EXT-X-STREAM-INF")) continue;
+
+    const uri = lines[i + 1];
+    if (!uri || uri.startsWith("#")) continue;
+
+    const resolutionMatch = line.match(/RESOLUTION=(\d+)x(\d+)/);
+    const bandwidthMatch = line.match(/BANDWIDTH=(\d+)/);
+    const pixels = resolutionMatch
+      ? Number(resolutionMatch[1]) * Number(resolutionMatch[2])
+      : (bandwidthMatch ? Number(bandwidthMatch[1]) : 0);
+
+    if (!best || pixels > best.pixels) {
+      best = { pixels, url: new URL(uri, masterUrl).toString() };
+    }
+  }
+
+  return best?.url ?? masterUrl;
+}
+
 type BunnyPlayerProps = {
   /** Bunny Stream video GUID */
   videoId: string;
@@ -45,25 +79,31 @@ export function BunnyPlayer({
     if (!video || !hlsSrc) return;
     if (!(playing || autoPlayMuted)) return;
 
-    const canPlayNativeHls = video.canPlayType("application/vnd.apple.mpegurl") !== "";
-    if (canPlayNativeHls) {
-      video.src = hlsSrc;
-      return;
-    }
-
     let hls: import("hls.js").default | undefined;
     let cancelled = false;
 
-    import("hls.js").then(({ default: Hls }) => {
-      if (cancelled) return;
-      if (Hls.isSupported()) {
-        hls = new Hls();
-        hls.loadSource(hlsSrc);
-        hls.attachMedia(video);
-      } else {
-        video.src = hlsSrc;
-      }
-    });
+    resolveTopRenditionUrl(hlsSrc)
+      .catch(() => hlsSrc)
+      .then((topSrc) => {
+        if (cancelled || !video) return;
+
+        const canPlayNativeHls = video.canPlayType("application/vnd.apple.mpegurl") !== "";
+        if (canPlayNativeHls) {
+          video.src = topSrc;
+          return;
+        }
+
+        import("hls.js").then(({ default: Hls }) => {
+          if (cancelled) return;
+          if (Hls.isSupported()) {
+            hls = new Hls();
+            hls.loadSource(topSrc);
+            hls.attachMedia(video);
+          } else {
+            video.src = topSrc;
+          }
+        });
+      });
 
     return () => {
       cancelled = true;
