@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { BunnyPlayer } from "@/components/media/BunnyPlayer";
-import { Marquee } from "@/components/motion/Marquee";
 import { StillsPreviewCarousel, STILLS_CAROUSEL_IDS } from "@/components/work/StillsPreviewCarousel";
 import { ThemeToggle } from "@/components/shell/ThemeToggle";
 import { useDialogBehavior } from "@/lib/use-dialog";
-import { HERO_BUNNY_VIDEO_ID, WORK_OVERLAY_MOTION_PREVIEW_BUNNY_VIDEO_ID } from "@/lib/site";
+import {
+  HERO_BUNNY_VIDEO_ID,
+  WORK_OVERLAY_MOBILE_MOTION_BUNNY_VIDEO_ID,
+  WORK_OVERLAY_MOTION_PREVIEW_BUNNY_VIDEO_ID,
+} from "@/lib/site";
 import { CLOUDINARY_PRESETS } from "@/lib/media/presets";
-import { bunnyThumbnailUrl } from "@/lib/media/bunny";
 
 type WorkOverlayProps = {
   id: string;
@@ -18,24 +20,6 @@ type WorkOverlayProps = {
 };
 
 type Hovered = "motion" | "stills" | null;
-
-const STILLS_CARD_IMAGE = "VInita_Portfolio-7_n4zde7";
-
-const MOTION_STRIP_IDS = [
-  "DSC01254_s11rej",
-  "DSC00950_ddrpto",
-  "BEACH_1-19_hxysdl",
-  "BEACH_1-15_xffqol",
-  "IMG_9807_cmlxe0",
-];
-const STILLS_STRIP_IDS = STILLS_CAROUSEL_IDS[1];
-
-function cldUrl(publicId: string, preset: keyof typeof CLOUDINARY_PRESETS, width: number): string {
-  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-  if (!cloudName) return "";
-  const { transform } = CLOUDINARY_PRESETS[preset];
-  return `https://res.cloudinary.com/${cloudName}/image/upload/${transform},q_auto,f_auto,w_${width}/${publicId}`;
-}
 
 export function WorkOverlay({ id, open, onClose }: WorkOverlayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -52,6 +36,7 @@ export function WorkOverlay({ id, open, onClose }: WorkOverlayProps) {
   }, [open]);
 
   useEffect(() => {
+    if (!open) return;
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
     if (!cloudName) return;
     const { transform } = CLOUDINARY_PRESETS.portraitCard;
@@ -65,9 +50,7 @@ export function WorkOverlay({ id, open, onClose }: WorkOverlayProps) {
       links.push(link);
     }
     return () => links.forEach((l) => l.remove());
-  }, []);
-
-  const motionThumb = bunnyThumbnailUrl(WORK_OVERLAY_MOTION_PREVIEW_BUNNY_VIDEO_ID);
+  }, [open]);
 
   return (
     <div
@@ -109,12 +92,17 @@ export function WorkOverlay({ id, open, onClose }: WorkOverlayProps) {
               transition: "transform 180ms var(--ease-shift)",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={motionThumb || cldUrl("DSC01254_s11rej", "hero", 750)}
-              alt=""
-              className="absolute inset-0 h-full w-full object-cover"
-            />
+            {open && (
+              <div className="absolute inset-0">
+                <BunnyPlayer
+                  videoId={WORK_OVERLAY_MOBILE_MOTION_BUNNY_VIDEO_ID}
+                  title="Motion preview"
+                  autoPlayMuted
+                  active={open}
+                  className="h-full w-full"
+                />
+              </div>
+            )}
             <div className="work-card-scrim absolute inset-0" />
 
             <div className="relative z-10 mt-auto flex items-end justify-between p-4">
@@ -134,23 +122,6 @@ export function WorkOverlay({ id, open, onClose }: WorkOverlayProps) {
                 <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
-
-            <div className="relative z-10 overflow-hidden border-t border-white/10">
-              <Marquee speed={30} pauseOnHover={false} className="h-[72px]">
-                <div className="flex gap-1 py-1 pl-1">
-                  {MOTION_STRIP_IDS.map((imgId) => (
-                    <div key={imgId} className="relative h-[64px] w-[86px] shrink-0 overflow-hidden">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={cldUrl(imgId, "thumbnail", 200)}
-                        alt=""
-                        className="absolute inset-0 h-full w-full object-cover"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </Marquee>
-            </div>
           </Link>
 
           {/* Stills card */}
@@ -166,12 +137,11 @@ export function WorkOverlay({ id, open, onClose }: WorkOverlayProps) {
               transition: "transform 180ms var(--ease-shift)",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={cldUrl(STILLS_CARD_IMAGE, "hero", 750)}
-              alt=""
-              className="absolute inset-0 h-full w-full object-cover"
-            />
+            {open && (
+              <div className="absolute inset-0">
+                <StillsPreviewCarousel />
+              </div>
+            )}
             <div className="work-card-scrim absolute inset-0" />
 
             <div className="relative z-10 mt-auto flex items-end justify-between p-4">
@@ -190,23 +160,6 @@ export function WorkOverlay({ id, open, onClose }: WorkOverlayProps) {
               >
                 <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </div>
-
-            <div className="relative z-10 overflow-hidden border-t border-white/10">
-              <Marquee speed={25} pauseOnHover={false} direction="horizontal" reverse className="h-[72px]">
-                <div className="flex gap-1 py-1 pl-1">
-                  {STILLS_STRIP_IDS.map((imgId) => (
-                    <div key={imgId} className="relative h-[64px] w-[48px] shrink-0 overflow-hidden">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={cldUrl(imgId, "portraitCard", 200)}
-                        alt=""
-                        className="absolute inset-0 h-full w-full object-cover"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </Marquee>
             </div>
           </Link>
         </div>
@@ -256,7 +209,7 @@ export function WorkOverlay({ id, open, onClose }: WorkOverlayProps) {
         <p className="type-meta absolute top-8 left-8 z-10 text-[color:var(--hero-overlay-fg)]">
           {hovered === "motion" ? "Motion" : hovered === "stills" ? "Stills" : "Showreel"}
         </p>
-        {hovered === "stills" ? (
+        {open && (hovered === "stills" ? (
           <StillsPreviewCarousel />
         ) : (
           <BunnyPlayer
@@ -269,7 +222,7 @@ export function WorkOverlay({ id, open, onClose }: WorkOverlayProps) {
             active
             className="h-full w-full"
           />
-        )}
+        ))}
       </div>
     </div>
   );

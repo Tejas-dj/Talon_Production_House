@@ -74,3 +74,8 @@ export const HERO_BUNNY_VIDEO_ID = "534c8bd1-7e49-49da-aa46-866ad14ad814";
    PLACEHOLDER: reusing an existing featured project's clip until a
    purpose-shot preview is provided. */
 export const WORK_OVERLAY_MOTION_PREVIEW_BUNNY_VIDEO_ID = "69681521-f62b-454a-9309-ab97ccd96365";
+
+/* Work overlay — mobile Motion card background. Autoplays the Shazia Khan
+   AD spot (see content/projects.json, slug "shazia-khan-ad") as a silent,
+   looping preview instead of a static thumbnail. */
+export const WORK_OVERLAY_MOBILE_MOTION_BUNNY_VIDEO_ID = "df769e53-d283-44cf-b180-bee38189ea99";
