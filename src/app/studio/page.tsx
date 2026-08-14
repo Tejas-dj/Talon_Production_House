@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { MagneticElement } from "@/components/motion/MagneticElement";
 import { Reveal } from "@/components/motion/Reveal";
 import { SplitText } from "@/components/motion/SplitText";
 import { StudioGallery } from "@/components/studio/StudioGallery";
+import { StudioHeroImage } from "@/components/studio/StudioHeroImage";
 import { getStudioSpace } from "@/lib/content";
 import { WHATSAPP_STUDIO_MESSAGE, waLink } from "@/lib/site";
 import { buildLocalBusinessSchema } from "@/lib/structured-data";
@@ -58,16 +58,7 @@ export default function StudioPage() {
 
       {/* Lead image — inset within the page grid, breathing room on all sides */}
       <div className="container-site pb-6">
-        <div className="relative aspect-[21/9] w-full overflow-hidden">
-          <CloudinaryImage
-            id={studio.heroImageId}
-            preset="hero"
-            alt={`${studio.name}, interior view`}
-            fill
-            priority
-            className="object-cover"
-          />
-        </div>
+        <StudioHeroImage id={studio.heroImageId} alt={`${studio.name}, interior view`} />
       </div>
 
       {/* Gallery — multi-media section, so in-grid not full bleed */}
