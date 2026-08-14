@@ -5,7 +5,6 @@ import { CustomCursor } from "@/components/shell/CustomCursor";
 import { Footer } from "@/components/shell/Footer";
 import { Header } from "@/components/shell/Header";
 import { SkipLink } from "@/components/shell/SkipLink";
-import { SplashScreen } from "@/components/shell/SplashScreen";
 import { ThemeProvider } from "@/components/shell/ThemeProvider";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -91,7 +90,6 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         <div className="flex min-h-svh flex-col overflow-x-clip">
           <ThemeProvider>
-            <SplashScreen />
             <CustomCursor />
             <SkipLink />
             <Header />
