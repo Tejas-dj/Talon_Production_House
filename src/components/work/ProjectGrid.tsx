@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { BunnyPlayer } from "@/components/media/BunnyPlayer";
 import { Reveal } from "@/components/motion/Reveal";
+import { ReelLightbox } from "@/components/work/ReelLightbox";
 import { bunnyThumbnailUrl } from "@/lib/media/bunny";
 import type { VideoProject } from "@/lib/content-types";
 
@@ -118,6 +119,121 @@ function VideoWithOverlay({ project }: { project: VideoProject }) {
   );
 }
 
+/* ------------------------------------------------------------------ */
+/*  Reel card — portrait thumbnail with hover preview                  */
+/* ------------------------------------------------------------------ */
+
+function ReelCard({
+  project,
+  onClick,
+}: {
+  project: VideoProject;
+  onClick: () => void;
+}) {
+  const [hovered, setHovered] = useState(false);
+  const [inView, setInView] = useState(false);
+  const cardRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.3 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <button
+      ref={cardRef}
+      type="button"
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="group relative flex flex-col text-left"
+      aria-label={`Play reel: ${project.title}`}
+    >
+      <div className="relative aspect-[9/16] w-full overflow-hidden rounded-lg">
+        <ProjectThumb
+          project={project}
+          className={`object-cover transition-opacity duration-[240ms] ease-shift ${
+            inView ? "opacity-0" : "opacity-100"
+          }`}
+        />
+        <BunnyPlayer
+          videoId={project.bunnyVideoId}
+          title={project.title}
+          autoPlayMuted
+          active={inView}
+          className="absolute inset-0 h-full w-full"
+        />
+        <div
+          className="pointer-events-none absolute inset-0 flex items-center justify-center transition-opacity duration-[240ms] ease-shift"
+          style={{ opacity: hovered ? 1 : 0, backgroundColor: "rgba(23, 22, 20, 0.35)" }}
+        >
+          <span className="type-meta text-page">Play</span>
+        </div>
+      </div>
+      <p className="type-meta mt-2 truncate font-medium">{project.title}</p>
+      <p className="type-meta text-muted truncate">{project.client}</p>
+    </button>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reel trio row — the "mosaic break"                                 */
+/* ------------------------------------------------------------------ */
+
+function ReelTrioRow({
+  reels,
+  allReels,
+  startIndexInAllReels,
+  revealIndex,
+  showLabel = true,
+}: {
+  reels: VideoProject[];
+  allReels: VideoProject[];
+  startIndexInAllReels: number;
+  revealIndex: number;
+  showLabel?: boolean;
+}) {
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  return (
+    <div>
+      <div className="hairline" aria-hidden="true" />
+      <Reveal index={revealIndex}>
+        <div className="py-6">
+          {showLabel && <p className="type-meta text-muted mb-4 tracking-wider uppercase">/ Reels</p>}
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-gutter">
+            {reels.map((reel, i) => (
+              <ReelCard
+                key={reel.slug}
+                project={reel}
+                onClick={() => setLightboxIndex(startIndexInAllReels + i)}
+              />
+            ))}
+          </div>
+        </div>
+      </Reveal>
+
+      {lightboxIndex !== null && (
+        <ReelLightbox
+          reels={allReels}
+          initialIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Main grid                                                          */
+/* ------------------------------------------------------------------ */
+
 type ProjectGridProps = {
   projects: VideoProject[];
   variant?: "index" | "featured";
@@ -126,6 +242,130 @@ type ProjectGridProps = {
 export function ProjectGrid({ projects, variant = "index" }: ProjectGridProps) {
   const showNumbers = variant === "featured";
 
+  const landscapeProjects = projects.filter((p) => p.orientation !== "portrait");
+  const reelProjects = projects.filter((p) => p.orientation === "portrait");
+
+  if (showNumbers || reelProjects.length === 0) {
+    return <LandscapeGrid projects={landscapeProjects} showNumbers={showNumbers} />;
+  }
+
+  // Mosaic break: insert reel trios after every BREAK_INTERVAL landscape projects
+  const BREAK_INTERVAL = 3;
+  const reelChunks: VideoProject[][] = [];
+  for (let i = 0; i < reelProjects.length; i += 3) {
+    reelChunks.push(reelProjects.slice(i, i + 3));
+  }
+
+  const rows: React.ReactNode[] = [];
+  let reelChunkIdx = 0;
+  let revealCounter = 0;
+
+  for (let i = 0; i < landscapeProjects.length; i++) {
+    const project = landscapeProjects[i];
+    const thumbFirst = i % 2 === 0;
+
+    rows.push(
+      <div key={project.slug}>
+        {i > 0 && <div className="hairline" aria-hidden="true" />}
+        <Reveal index={revealCounter}>
+          <Link
+            href={`/work/motion/${project.slug}`}
+            className={`group grid grid-cols-1 gap-3 py-4 md:grid-cols-12 md:gap-gutter ${
+              i === 0 ? "pt-0" : ""
+            } ${thumbFirst ? "" : "md:mt-5"}`}
+          >
+            {thumbFirst ? (
+              <>
+                <div className="md:[grid-column:1/8]">
+                  <div className="relative aspect-video overflow-hidden">
+                    <ProjectThumbHoverVideo
+                      project={project}
+                      className="scale-100 object-cover saturate-[.92] transition-[filter,transform] duration-[240ms] ease-shift group-hover:scale-[1.015] group-hover:saturate-100 group-focus-visible:scale-[1.015] group-focus-visible:saturate-100"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-1 self-start md:[grid-column:8/13]">
+                  <h3 className="type-headline">{project.title}</h3>
+                  <p className="type-meta text-muted">
+                    {project.client} · {project.year} · {project.category}
+                  </p>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="order-2 flex flex-col gap-1 self-end md:order-1 md:[grid-column:1/6]">
+                  <h3 className="type-headline">{project.title}</h3>
+                  <p className="type-meta text-muted">
+                    {project.client} · {project.year} · {project.category}
+                  </p>
+                </div>
+                <div className="order-1 md:order-2 md:[grid-column:6/13]">
+                  <div className="relative aspect-video overflow-hidden">
+                    <ProjectThumbHoverVideo
+                      project={project}
+                      className="scale-100 object-cover saturate-[.92] transition-[filter,transform] duration-[240ms] ease-shift group-hover:scale-[1.015] group-hover:saturate-100 group-focus-visible:scale-[1.015] group-focus-visible:saturate-100"
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+          </Link>
+        </Reveal>
+      </div>,
+    );
+    revealCounter++;
+
+    // Insert reel trio after every BREAK_INTERVAL landscape projects
+    if ((i + 1) % BREAK_INTERVAL === 0 && reelChunkIdx < reelChunks.length) {
+      const chunk = reelChunks[reelChunkIdx];
+      const startInAll = reelChunkIdx * 3;
+      rows.push(
+        <ReelTrioRow
+          key={`reels-${reelChunkIdx}`}
+          reels={chunk}
+          allReels={reelProjects}
+          startIndexInAllReels={startInAll}
+          revealIndex={revealCounter}
+        />,
+      );
+      revealCounter++;
+      reelChunkIdx++;
+    }
+  }
+
+  // Any remaining reel chunks that didn't get inserted
+  const reelsOnly = landscapeProjects.length === 0;
+  while (reelChunkIdx < reelChunks.length) {
+    const chunk = reelChunks[reelChunkIdx];
+    const startInAll = reelChunkIdx * 3;
+    rows.push(
+      <ReelTrioRow
+        key={`reels-${reelChunkIdx}`}
+        reels={chunk}
+        allReels={reelProjects}
+        startIndexInAllReels={startInAll}
+        revealIndex={revealCounter}
+        showLabel={!reelsOnly}
+      />,
+    );
+    revealCounter++;
+    reelChunkIdx++;
+  }
+
+  return <div className="flex flex-col">{rows}</div>;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Landscape-only grid (used for featured variant & no-reel fallback) */
+/* ------------------------------------------------------------------ */
+
+function LandscapeGrid({
+  projects,
+  showNumbers,
+}: {
+  projects: VideoProject[];
+  showNumbers: boolean;
+}) {
   return (
     <div className="flex flex-col">
       {projects.map((project, i) => {

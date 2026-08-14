@@ -26,6 +26,7 @@ const VIDEO_CATEGORIES: VideoCategory[] = [
   "Documentary",
   "Brand Film",
   "Short Film",
+  "Reel",
 ];
 
 function readJson(file: string): unknown {

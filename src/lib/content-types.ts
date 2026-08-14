@@ -10,7 +10,8 @@ export type VideoCategory =
   | "Music Video"
   | "Documentary"
   | "Brand Film"
-  | "Short Film";
+  | "Short Film"
+  | "Reel";
 
 export interface Credit {
   /** [8–22 ch] e.g. "Direction", "Cinematography" */
@@ -39,6 +40,8 @@ export interface VideoProject {
   synopsis: string;
   /** Filter category — matches the wireframe's TYPE filter chips, [6–14 ch] */
   category: VideoCategory;
+  /** Portrait (9:16) reels vs default landscape (16:9). Omit for landscape. */
+  orientation?: "portrait" | "landscape";
   /** Hand-picked Home-page highlight (Phase 3). Selection AND ordering both
    * come from this flag plus the array's own order — no separate order field. */
   featured?: boolean;
