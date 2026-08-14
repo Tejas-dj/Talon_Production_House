@@ -17,6 +17,9 @@ import type { NextConfig } from "next";
  *   playback/thumbnails and hls.js's own segment fetches).
  * - Vercel Analytics is served same-origin (`/_vercel/insights/*`), so it
  *   needs no separate CSP domain.
+ * - frame-src allows Google's own map-embed domains for the Studio page's
+ *   "Visit" iframe (`maps.google.com` redirects to `www.google.com/maps/…`
+ *   for the actual embed, so both need to be listed).
  */
 const isDev = process.env.NODE_ENV === "development";
 
@@ -31,6 +34,7 @@ const CSP = [
   // governed by connect-src, not img-src.
   "connect-src 'self' https://res.cloudinary.com https://*.b-cdn.net",
   "font-src 'self'",
+  "frame-src https://www.google.com https://maps.google.com",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",

@@ -13,8 +13,12 @@ type ContactRowProps = {
   external?: boolean;
   index: number;
   icon: React.ReactNode;
-  /** Phone/Email only — click also copies the detail text, confirmed via a P3 Veil text swap. */
+  /** Phone/Email/Visit Us — click also copies the detail text, confirmed via a P3 Veil text swap. */
   copyable?: boolean;
+  /** Every other row's detail is a short handle that reads fine in the
+   * uppercase type-meta treatment; a street address doesn't, so it drops
+   * to sentence case at a slightly larger size instead. */
+  long?: boolean;
 };
 
 export function ContactRow({
@@ -25,6 +29,7 @@ export function ContactRow({
   index,
   icon,
   copyable,
+  long,
 }: ContactRowProps) {
   const [copied, setCopied] = useState(false);
   const copyTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -79,7 +84,10 @@ export function ContactRow({
             {label} →
           </span>
 
-          <span className="type-meta text-muted relative z-1" aria-live="polite">
+          <span
+            className={`relative z-1 text-muted ${long ? "type-small max-w-[34ch] sm:text-right" : "type-meta"}`}
+            aria-live="polite"
+          >
             <AnimatePresence mode="wait" initial={false}>
               {copied ? (
                 <motion.span

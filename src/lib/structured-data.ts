@@ -9,7 +9,7 @@ import { getStudioSpace } from "./content";
 import type { VideoProject } from "./content-types";
 import { bunnyThumbnailUrl } from "./media/bunny";
 import { cloudinaryUrl } from "./media/presets";
-import { CONTACT_LINKS, SITE_URL } from "./site";
+import { CONTACT_LINKS, GOOGLE_MAPS_URL, SITE_URL, STUDIO_ADDRESS_PARTS } from "./site";
 
 /** "09:45" -> "PT9M45S", "01:11:21" -> "PT1H11M21S". */
 export function runtimeToIso8601(runtime: string): string {
@@ -24,10 +24,9 @@ export function runtimeToIso8601(runtime: string): string {
 }
 
 /**
- * LocalBusiness for the Studio page. No street address/pincode exists in
- * content — locality/region/country only, rather than inventing one. No
- * openingHoursSpecification either, for the same reason: no real hours
- * exist anywhere in content or site.ts.
+ * LocalBusiness for the Studio page. No openingHoursSpecification — no real
+ * hours exist anywhere in content or site.ts, so it's omitted rather than
+ * invented.
  */
 export function buildLocalBusinessSchema() {
   const studio = getStudioSpace();
@@ -42,10 +41,13 @@ export function buildLocalBusinessSchema() {
     telephone: phone?.handle,
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Bengaluru",
-      addressRegion: "Karnataka",
-      addressCountry: "IN",
+      streetAddress: STUDIO_ADDRESS_PARTS.street,
+      addressLocality: STUDIO_ADDRESS_PARTS.locality,
+      addressRegion: STUDIO_ADDRESS_PARTS.region,
+      postalCode: STUDIO_ADDRESS_PARTS.postalCode,
+      addressCountry: STUDIO_ADDRESS_PARTS.country,
     },
+    hasMap: GOOGLE_MAPS_URL,
   };
 }
 

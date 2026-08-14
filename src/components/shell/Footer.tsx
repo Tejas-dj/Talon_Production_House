@@ -1,8 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
-import { FiMail } from "react-icons/fi";
-import { CREDIT, CONTACT_LINKS, NAV_ITEMS, WHATSAPP_GENERAL_MESSAGE, waLink } from "@/lib/site";
+import { FiMail, FiMapPin } from "react-icons/fi";
+import {
+  CREDIT,
+  CONTACT_LINKS,
+  GOOGLE_MAPS_URL,
+  NAV_ITEMS,
+  STUDIO_ADDRESS,
+  WHATSAPP_GENERAL_MESSAGE,
+  waLink,
+} from "@/lib/site";
 import { CopyrightYear } from "@/components/shell/CopyrightYear";
 import { Marquee } from "@/components/motion/Marquee";
 
@@ -62,7 +70,7 @@ export function Footer() {
             />
           </div>
 
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:gap-10">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-10">
             <nav aria-label="Footer">
               <ul className="flex flex-col gap-2">
                 {NAV_ITEMS.map((item) => (
@@ -91,6 +99,19 @@ export function Footer() {
                   </li>
                 ))}
               </ul>
+            </nav>
+
+            <nav aria-label="Visit us">
+              <p className="type-meta text-muted mb-3">Visit Us</p>
+              <a
+                href={GOOGLE_MAPS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex max-w-[26ch] items-start gap-2 transition-colors duration-[240ms] ease-shift hover:text-accent focus-visible:text-accent"
+              >
+                <FiMapPin size={16} className="mt-0.5 shrink-0" aria-hidden="true" />
+                <span className="type-small">{STUDIO_ADDRESS}</span>
+              </a>
             </nav>
           </div>
         </div>

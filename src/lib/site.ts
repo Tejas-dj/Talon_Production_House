@@ -64,6 +64,33 @@ export const CREDIT = {
   href: "#", // TODO: confirm URL
 } as const;
 
+/* Verified Google Business Profile listing — same "Share" link Maps gives
+   out for the pin itself, so Get Directions opens the exact right result
+   instead of a text search that could resolve to a different place. */
+export const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/AN8zJB55D4doFdeL6";
+
+/* No-API-key embed source for the Studio page iframe. Coordinates resolved
+   from GOOGLE_MAPS_URL's own redirect (12.9057652, 77.588443) rather than a
+   name-only text search, so the embedded pin lands on the exact verified
+   listing instead of whatever a "Talon Production House" search happens to
+   rank first. */
+export const GOOGLE_MAPS_EMBED_SRC =
+  "https://maps.google.com/maps?q=Talon+Production+House@12.9057652,77.588443&z=16&output=embed";
+
+/* Real postal address, broken into parts so both the display string below
+   and structured-data.ts's schema.org PostalAddress derive from one source
+   instead of two copies drifting apart. */
+export const STUDIO_ADDRESS_PARTS = {
+  street: "#12, 4th Floor, 16th Cross, 20th Main, Opp. Samved School, J. P. Nagar 5th Phase",
+  locality: "Bengaluru",
+  region: "Karnataka",
+  postalCode: "560078",
+  country: "IN",
+} as const;
+
+export const STUDIO_ADDRESS =
+  `${STUDIO_ADDRESS_PARTS.street}, ${STUDIO_ADDRESS_PARTS.locality} – ${STUDIO_ADDRESS_PARTS.postalCode}`;
+
 /* Home hero background — the studio's own 24s silent showreel, uploaded to
    Bunny Stream (library 708480) specifically for this purpose. Kept separate
    from `featured` projects: it's a reel, not a client project with a

@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
 import { FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
-import { FiPhone, FiMail } from "react-icons/fi";
+import { FiPhone, FiMail, FiMapPin } from "react-icons/fi";
 import { ContactRow } from "@/components/contact/ContactRow";
 import { SplitText } from "@/components/motion/SplitText";
-import { CONTACT_LINKS, WHATSAPP_GENERAL_MESSAGE, waLink } from "@/lib/site";
+import {
+  CONTACT_LINKS,
+  GOOGLE_MAPS_URL,
+  STUDIO_ADDRESS,
+  WHATSAPP_GENERAL_MESSAGE,
+  waLink,
+} from "@/lib/site";
 
 const CONTACT_ICONS: Record<string, React.ReactNode> = {
   Instagram: <FaInstagram size={24} />,
@@ -11,10 +17,11 @@ const CONTACT_ICONS: Record<string, React.ReactNode> = {
   Phone: <FiPhone size={24} />,
   Email: <FiMail size={24} />,
   WhatsApp: <FaWhatsapp size={24} />,
+  "Visit Us": <FiMapPin size={24} />,
 };
 
 const DESCRIPTION =
-  "Reach Talon Production House directly — Instagram, YouTube, phone, email, or WhatsApp. No forms.";
+  "Reach Talon Production House directly — Instagram, YouTube, phone, email, WhatsApp, or visit the studio. No forms.";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -58,6 +65,16 @@ export default function ContactPage() {
           href={waLink(WHATSAPP_GENERAL_MESSAGE)}
           external
           icon={CONTACT_ICONS.WhatsApp}
+        />
+        <ContactRow
+          index={CONTACT_LINKS.length + 1}
+          label="Visit Us"
+          detail={STUDIO_ADDRESS}
+          href={GOOGLE_MAPS_URL}
+          external
+          icon={CONTACT_ICONS["Visit Us"]}
+          copyable
+          long
         />
         <div className="hairline" aria-hidden="true" />
       </div>

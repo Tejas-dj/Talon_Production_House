@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { MagneticElement } from "@/components/motion/MagneticElement";
 import { Reveal } from "@/components/motion/Reveal";
 import { SplitText } from "@/components/motion/SplitText";
+import { LocationMap } from "@/components/studio/LocationMap";
 import { StudioGallery } from "@/components/studio/StudioGallery";
 import { StudioHeroImage } from "@/components/studio/StudioHeroImage";
 import { StudioMobileCta } from "@/components/studio/StudioMobileCta";
 import { getStudioSpace } from "@/lib/content";
-import { WHATSAPP_STUDIO_MESSAGE, waLink } from "@/lib/site";
+import { GOOGLE_MAPS_URL, WHATSAPP_STUDIO_MESSAGE, waLink } from "@/lib/site";
 import { buildLocalBusinessSchema } from "@/lib/structured-data";
 
 const DESCRIPTION =
@@ -134,6 +135,34 @@ export default function StudioPage() {
           <StudioMobileCta href={waLink(WHATSAPP_STUDIO_MESSAGE)}>
             {studio.whatsappCtaText}
           </StudioMobileCta>
+        </div>
+      </section>
+
+      <div className="hairline" />
+
+      {/* Visit — address + an on-brand schematic map, opens the verified
+          Google Business Profile listing rather than embedding it */}
+      <section className="container-site grid grid-cols-1 gap-4 pt-6 pb-6 md:grid-cols-12 md:gap-gutter">
+        <div className="md:sticky md:top-(--header-height) md:[grid-column:1/5] md:self-start">
+          <h2 className="type-headline">Visit</h2>
+        </div>
+        <div className="md:[grid-column:5/13]">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-center">
+            <div>
+              <p className="type-body max-w-[38ch]">{studio.location}</p>
+              <MagneticElement radius={80} strength={0.2} className="mt-4 inline-block">
+                <a
+                  href={GOOGLE_MAPS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-draw type-meta inline-flex items-center gap-2"
+                >
+                  Get Directions <span aria-hidden="true">→</span>
+                </a>
+              </MagneticElement>
+            </div>
+            <LocationMap label={studio.name} />
+          </div>
         </div>
       </section>
     </div>
