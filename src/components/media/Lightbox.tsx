@@ -145,7 +145,11 @@ export function Lightbox({ images, initialIndex, onClose, altPrefix }: LightboxP
             className="pointer-events-none absolute inset-0 opacity-0"
           />
         )}
-        {total > 1 && (
+        {/* At total === 2, prev and next both wrap to the same other image —
+            rendering a second CloudinaryImage for it would collide on the
+            same key/id as the one above (React duplicate-key warning) for a
+            preload that's already covered. */}
+        {nextIndex !== prevIndex && (
           <CloudinaryImage
             key={`preload-${images[nextIndex]}`}
             id={images[nextIndex]}
