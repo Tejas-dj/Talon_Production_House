@@ -22,7 +22,7 @@ Keyword/style guidance for whoever writes a batch: `content/alt-text/keywords.md
 |---|---|---|---|---|
 | 1 | 30 | coastline-reverie (1-19, all), faces-in-frame (1-11) | done | 8631f42 |
 | 2 | 30 | faces-in-frame (12-41) | done | 2871dd5 |
-| 3 | 30 | faces-in-frame (42-60, rest), indyvarna-the-lookbook (1-11) | done | pending |
+| 3 | 30 | faces-in-frame (42-60, rest), indyvarna-the-lookbook (1-11) | done | 91e37c0 |
 | 4 | 30 | indyvarna-the-lookbook (12-41) | done | 95d91a5 |
 | 5 | 30 | indyvarna-the-lookbook (42-68, rest), the-ensemble (1-3) | done | c3d94c8 |
 | 6 | 30 | the-ensemble (4-7, rest), behind-the-hymn (1-7, all), draped-in-legacy (1-7, all), eva-chemlinks (1-6, all), skill-beyond-education (1-6) | done | eb0fdeb |
