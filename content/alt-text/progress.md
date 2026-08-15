@@ -24,7 +24,7 @@ Keyword/style guidance for whoever writes a batch: `content/alt-text/keywords.md
 | 4 | 30 | indyvarna-the-lookbook (12-41) | not started | |
 | 5 | 30 | indyvarna-the-lookbook (42-68, rest), the-ensemble (1-3) | not started | |
 | 6 | 30 | the-ensemble (4-7, rest), behind-the-hymn (1-7, all), draped-in-legacy (1-7, all), eva-chemlinks (1-6, all), skill-beyond-education (1-6) | not started | |
-| 7 | 8 | skill-beyond-education (7-11, rest), talon-studio hero + gallery (all 3) | not started | |
+| 7 | 8 | skill-beyond-education (7-11, rest), talon-studio hero + gallery (all 3) | done | pending |
 
 Update the Status column (`pending` → `done`) and Commit column (short hash)
 as each batch lands. `pending` = agent dispatched, not yet committed.
