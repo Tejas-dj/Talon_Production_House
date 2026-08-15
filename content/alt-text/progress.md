@@ -18,7 +18,7 @@ Keyword/style guidance for whoever writes a batch: `content/alt-text/keywords.md
 
 | Batch | Images | Series covered | Status | Commit |
 |---|---|---|---|---|
-| 1 | 30 | coastline-reverie (1-19, all), faces-in-frame (1-11) | pending | |
+| 1 | 30 | coastline-reverie (1-19, all), faces-in-frame (1-11) | done | (pending push) |
 | 2 | 30 | faces-in-frame (12-41) | pending | |
 | 3 | 30 | faces-in-frame (42-60, rest), indyvarna-the-lookbook (1-11) | not started | |
 | 4 | 30 | indyvarna-the-lookbook (12-41) | not started | |
