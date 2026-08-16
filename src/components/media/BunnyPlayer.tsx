@@ -119,10 +119,31 @@ export function BunnyPlayer({
   const hlsSrc = pullZone ? `https://${pullZone}.b-cdn.net/${videoId}/playlist.m3u8` : undefined;
   const effectivePosterId = posterImageId ?? bunnyPosterCloudinaryId(videoId);
 
+  // Autoplay-preview instances that report their own viewport/hover state
+  // via `active` (e.g. VideoWithOverlay's `active={inView}`) shouldn't start
+  // fetching HLS segments before they're actually needed — that's what was
+  // driving PageSpeed's "enormous network payload" finding (every featured
+  // card buffering video immediately on load, regardless of scroll
+  // position). Once an instance has been active at least once it stays
+  // eligible, so a later hover-out/scroll-out doesn't tear the stream back
+  // down. The LCP-critical hero (fetchPriority="high") is exempt — it must
+  // start loading immediately, not wait for its own IntersectionObserver
+  // callback to fire.
+  const [hasBeenActive, setHasBeenActive] = useState(active ?? false);
+  // Adjust state during render rather than in an effect (react.dev "You
+  // Might Not Need an Effect" — adjusting state when a prop changes): this
+  // flips exactly once, synchronously, with no extra render/commit
+  // round-trip, and no separate effect thrashing on every hover/inView
+  // toggle after that.
+  if (active && !hasBeenActive) setHasBeenActive(true);
+  const deferLoad =
+    autoPlayMuted && active != null && !hasBeenActive && fetchPriority !== "high";
+
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !hlsSrc) return;
     if (!(playing || autoPlayMuted)) return;
+    if (deferLoad) return;
 
     let hls: import("hls.js").default | undefined;
     let cancelled = false;
@@ -158,7 +179,7 @@ export function BunnyPlayer({
       cancelled = true;
       hls?.destroy();
     };
-  }, [hlsSrc, playing, autoPlayMuted, maxHeight]);
+  }, [hlsSrc, playing, autoPlayMuted, maxHeight, deferLoad]);
 
   useEffect(() => {
     if (startTime == null || startTimeApplied.current) return;
