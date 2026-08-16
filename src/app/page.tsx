@@ -11,6 +11,16 @@ import { ProjectGrid } from "@/components/work/ProjectGrid";
 import { Testimonials } from "@/components/home/Testimonials";
 import { getAllClientLogos, getAllProjects, getAllTestimonials } from "@/lib/content";
 import { CONTACT_LINKS, waLink, WHATSAPP_GENERAL_MESSAGE } from "@/lib/site";
+import logoDims from "../../content/logo-dimensions.json";
+
+const LOGO_DIMS = logoDims as Record<string, { w: number; h: number }>;
+/** Row height the marquee renders every logo at (Tailwind h-7 on this
+ * project's custom spacing scale — see CloudinaryImage usage below). */
+const LOGO_ROW_HEIGHT = 104;
+/** Fallback width if a logo is somehow missing from logo-dimensions.json
+ * (e.g. clients.json was edited without re-running the fetch script) —
+ * matches the old uniform worst-case so nothing crashes or renders at 0. */
+const LOGO_FALLBACK_WIDTH = 352;
 
 const CONTACT_ICONS: Record<string, React.ReactNode> = {
   Instagram: <FaInstagram size={16} />,
@@ -112,17 +122,23 @@ export default function HomePage() {
           <section className="py-6">
             <p className="type-meta text-muted container-site mb-4">A Few of Our Clients</p>
             <Marquee speed={35} className="py-3">
-              {clients.map((c) => (
-                <CloudinaryImage
-                  key={c.logoId}
-                  id={c.logoId}
-                  preset="clientLogo"
-                  alt={c.name}
-                  width={352}
-                  height={104}
-                  className="mr-6 h-7 w-auto object-contain grayscale"
-                />
-              ))}
+              {clients.map((c) => {
+                const dims = LOGO_DIMS[c.logoId];
+                const width = dims
+                  ? Math.round(LOGO_ROW_HEIGHT * (dims.w / dims.h))
+                  : LOGO_FALLBACK_WIDTH;
+                return (
+                  <CloudinaryImage
+                    key={c.logoId}
+                    id={c.logoId}
+                    preset="clientLogo"
+                    alt={c.name}
+                    width={width}
+                    height={LOGO_ROW_HEIGHT}
+                    className="mr-6 h-7 w-auto object-contain grayscale"
+                  />
+                );
+              })}
             </Marquee>
           </section>
         </>

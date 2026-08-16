@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { BunnyPlayer } from "@/components/media/BunnyPlayer";
+import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { StillsPreviewCarousel, STILLS_CAROUSEL_IDS } from "@/components/work/StillsPreviewCarousel";
 import { ThemeToggle } from "@/components/shell/ThemeToggle";
-import { bunnyThumbnailUrl } from "@/lib/media/bunny";
+import { bunnyPosterCloudinaryId } from "@/lib/media/bunny";
 import { useDialogBehavior } from "@/lib/use-dialog";
 import {
   HERO_BUNNY_VIDEO_ID,
@@ -95,12 +96,13 @@ export function WorkOverlay({ id, open, onClose }: WorkOverlayProps) {
           >
             {open && (
               <div className="absolute inset-0">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={bunnyThumbnailUrl(WORK_OVERLAY_MOBILE_MOTION_BUNNY_VIDEO_ID)}
+                <CloudinaryImage
+                  id={bunnyPosterCloudinaryId(WORK_OVERLAY_MOBILE_MOTION_BUNNY_VIDEO_ID)}
+                  preset="thumbnail"
                   alt=""
                   aria-hidden="true"
-                  className="h-full w-full object-cover"
+                  fill
+                  className="object-cover"
                 />
               </div>
             )}
@@ -222,12 +224,13 @@ export function WorkOverlay({ id, open, onClose }: WorkOverlayProps) {
             className="h-full w-full"
           />
         ) : (
-          // eslint-disable-next-line @next/next/no-img-element -- Bunny CDN thumbnail, not a local asset
-          <img
-            src={bunnyThumbnailUrl(HERO_BUNNY_VIDEO_ID)}
+          <CloudinaryImage
+            id={bunnyPosterCloudinaryId(HERO_BUNNY_VIDEO_ID)}
+            preset="thumbnail"
             alt=""
             aria-hidden="true"
-            className="h-full w-full object-cover"
+            fill
+            className="object-cover"
           />
         ))}
       </div>

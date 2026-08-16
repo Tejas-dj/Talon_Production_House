@@ -101,10 +101,24 @@ for (const series of photography) {
 }
 
 // Work grid thumbnails, project detail poster, and project stills gallery/lightbox.
+// Projects with no posterImageId fall back to their synced Bunny-thumbnail
+// copy (scripts/sync-video-posters.mjs, which runs immediately before this
+// script in postbuild) — warm that derived id too, same as a curated one.
 for (const project of projects) {
-  addImage(project.posterImageId, ["thumbnail", "poster"]);
+  const posterId = project.posterImageId ?? `talon/video-posters/${project.bunnyVideoId}`;
+  addImage(posterId, ["thumbnail", "poster"]);
   for (const id of project.stillImageIds ?? [])
     addImage(id, ["gallery", "lightbox"], { blur: true });
+}
+
+// Hero showreel + Work overlay motion previews — same fallback, not "projects".
+const HERO_AND_OVERLAY_VIDEO_IDS = [
+  "534c8bd1-7e49-49da-aa46-866ad14ad814", // HERO_BUNNY_VIDEO_ID
+  "69681521-f62b-454a-9309-ab97ccd96365", // WORK_OVERLAY_MOTION_PREVIEW_BUNNY_VIDEO_ID
+  "df769e53-d283-44cf-b180-bee38189ea99", // WORK_OVERLAY_MOBILE_MOTION_BUNNY_VIDEO_ID
+];
+for (const videoId of HERO_AND_OVERLAY_VIDEO_IDS) {
+  addImage(`talon/video-posters/${videoId}`, ["thumbnail", "poster"]);
 }
 
 // Studio hero + gallery (rendered as "gallery" or "portraitCard" depending on count).

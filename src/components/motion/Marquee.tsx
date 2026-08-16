@@ -35,8 +35,19 @@ export function Marquee({
     if (!track) return;
     const single = track.firstElementChild as HTMLElement | null;
     if (!single) return;
-    const size = vertical ? single.offsetHeight : single.offsetWidth;
-    if (size > 0) setDuration(size / speed);
+
+    const measure = () => {
+      const size = vertical ? single.offsetHeight : single.offsetWidth;
+      if (size > 0) setDuration(size / speed);
+    };
+
+    // ResizeObserver reports size after layout has already been committed,
+    // so reading it here never forces a synchronous reflow (unlike reading
+    // offsetWidth/offsetHeight directly in the effect body).
+    const observer = new ResizeObserver(() => measure());
+    observer.observe(single);
+
+    return () => observer.disconnect();
   }, [speed, vertical]);
 
   return (

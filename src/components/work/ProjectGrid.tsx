@@ -6,26 +6,15 @@ import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { BunnyPlayer } from "@/components/media/BunnyPlayer";
 import { Reveal } from "@/components/motion/Reveal";
 import { ReelLightbox } from "@/components/work/ReelLightbox";
-import { bunnyThumbnailUrl } from "@/lib/media/bunny";
+import { bunnyPosterCloudinaryId } from "@/lib/media/bunny";
 import type { VideoProject } from "@/lib/content-types";
 
 function ProjectThumb({ project, className }: { project: VideoProject; className: string }) {
   const alt = `${project.title}, ${project.category.toLowerCase()} for ${project.client}`;
-  if (project.posterImageId) {
-    return (
-      <CloudinaryImage
-        id={project.posterImageId}
-        preset="thumbnail"
-        alt={alt}
-        fill
-        className={className}
-      />
-    );
-  }
-  const thumb = bunnyThumbnailUrl(project.bunnyVideoId);
-  if (!thumb) return null;
-  // eslint-disable-next-line @next/next/no-img-element -- external Bunny CDN URL; next/image would route it through the global Cloudinary loader.
-  return <img src={thumb} alt={alt} className={`absolute inset-0 h-full w-full ${className}`} />;
+  const posterId = project.posterImageId ?? bunnyPosterCloudinaryId(project.bunnyVideoId);
+  return (
+    <CloudinaryImage id={posterId} preset="thumbnail" alt={alt} fill className={className} />
+  );
 }
 
 function ProjectThumbHoverVideo({ project, className }: { project: VideoProject; className: string }) {

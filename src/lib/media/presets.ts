@@ -60,12 +60,18 @@ export const CLOUDINARY_PRESETS = {
   },
   /** Home client-logo marquee: uncropped marks (no fixed aspect — logos range
       square to wide wordmarks), row height fixed at h-7 (104px) across all
-      breakpoints. 352px covers the widest current logo (Furnishka, ~3.375:1
-      at that height); no vw term so next/image doesn't pull in viewport-scale
-      buckets for what's always a small fixed-size element. */
+      breakpoints. Each <CloudinaryImage> instance is given its own real
+      per-logo `width` (content/logo-dimensions.json), so this preset
+      deliberately omits `sizes`: per Next's image docs, when `sizes` is
+      absent and a numeric `width` is passed, next/image treats the image as
+      fixed-size and emits a plain 1x/2x srcset sized off that width, instead
+      of the full viewport-scale `w`-descriptor srcset `sizes` triggers (which
+      would let the browser pick a much larger source than any logo actually
+      needs — that's what caused Skills Beyond Education, displayed at
+      ~101px, to fetch a 640px asset). */
   clientLogo: {
     transform: "c_limit",
-    sizes: "352px",
+    sizes: undefined,
   },
 } as const satisfies Record<string, CloudinaryPreset>;
 

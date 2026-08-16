@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
-import { bunnyThumbnailUrl } from "@/lib/media/bunny";
+import { bunnyPosterCloudinaryId } from "@/lib/media/bunny";
 
 const playlistCache = new Map<string, Promise<string>>();
 
@@ -74,7 +74,9 @@ type BunnyPlayerProps = {
   videoId: string;
   /** Accessible label / used as the poster alt text */
   title: string;
-  /** Cloudinary public id for the poster frame; falls back to Bunny's own thumbnail if omitted */
+  /** Cloudinary public id for the poster frame; falls back to the video's
+   *  synced Bunny-thumbnail-in-Cloudinary copy if omitted (see
+   *  bunnyPosterCloudinaryId in src/lib/media/bunny.ts) */
   posterImageId?: string;
   /** Hero use: silent, looping, autoplaying background video. Default: tap-to-play with sound. */
   autoPlayMuted?: boolean;
@@ -115,7 +117,7 @@ export function BunnyPlayer({
 
   const pullZone = process.env.NEXT_PUBLIC_BUNNY_PULL_ZONE;
   const hlsSrc = pullZone ? `https://${pullZone}.b-cdn.net/${videoId}/playlist.m3u8` : undefined;
-  const bunnyThumbnail = bunnyThumbnailUrl(videoId);
+  const effectivePosterId = posterImageId ?? bunnyPosterCloudinaryId(videoId);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -218,7 +220,6 @@ export function BunnyPlayer({
     <div className={`relative overflow-hidden ${className ?? ""}`}>
       <video
         ref={videoRef}
-        poster={posterImageId ? undefined : bunnyThumbnail}
         {...{ fetchPriority }}
         controls={playing && !autoPlayMuted}
         playsInline
@@ -229,19 +230,17 @@ export function BunnyPlayer({
         aria-label={title}
         className="h-full w-full object-cover"
       />
-      {posterImageId && (
-        <CloudinaryImage
-          id={posterImageId}
-          preset="poster"
-          alt=""
-          aria-hidden="true"
-          fill
-          priority
-          className={`absolute inset-0 object-cover transition-opacity duration-[320ms] ease-veil ${
-            videoPlaying ? "pointer-events-none opacity-0" : "opacity-100"
-          }`}
-        />
-      )}
+      <CloudinaryImage
+        id={effectivePosterId}
+        preset="poster"
+        alt=""
+        aria-hidden="true"
+        fill
+        priority
+        className={`absolute inset-0 object-cover transition-opacity duration-[320ms] ease-veil ${
+          videoPlaying ? "pointer-events-none opacity-0" : "opacity-100"
+        }`}
+      />
       {!playing && !autoPlayMuted && (
         <button
           type="button"
