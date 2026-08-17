@@ -22,7 +22,8 @@ export const metadata: Metadata = {
   },
 };
 
-const LEADERS = [
+/* Exported so sitemap.ts can list portrait images without duplicating ids. */
+export const LEADERS = [
   {
     name: "Pratham Raje Urs",
     title: "CEO & Founder",
