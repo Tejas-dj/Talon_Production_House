@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { Lightbox } from "@/components/media/Lightbox";
 import { getPhotoAlt } from "@/lib/media/photo-alt-text";
@@ -23,6 +24,12 @@ export type StillsSection = {
 
 type Props = {
   sections: StillsSection[];
+  /** Off for a single-series detail page, whose own page header already
+      shows the title/statement — avoids rendering it a second time. */
+  showSectionHeader?: boolean;
+  /** Lightbox aria-label / alt-text prefix. Defaults to "Stills" for the
+      multi-section page; detail pages pass their series title. */
+  altPrefix?: string;
 };
 
 const SIZE_SEQ = [4, 3, 7, 3, 5, 6, 3, 4, 3, 7, 5, 3, 6, 3, 4, 3, 5, 3, 8, 4];
@@ -43,7 +50,7 @@ function scaleSpan(lgSpan: number, fromCols: number, toCols: number): number {
   return Math.max(2, Math.min(Math.round(lgSpan * (toCols / fromCols)), toCols - 1));
 }
 
-export function StillsGallery({ sections }: Props) {
+export function StillsGallery({ sections, showSectionHeader = true, altPrefix = "Stills" }: Props) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [visibleCount, setVisibleCount] = useState(() => Math.min(BATCH_SIZE, sections.length));
   const loadMoreTriggerRef = useRef<HTMLDivElement | null>(null);
@@ -99,22 +106,31 @@ export function StillsGallery({ sections }: Props) {
               scrollMarginTop: "calc(var(--header-height) + 24px)",
             }}
           >
-            <div className={`px-5 md:px-10 mb-6 md:mb-10 ${isOdd ? "text-right" : ""}`}>
-              <Reveal>
-                <h2 className="type-headline md:whitespace-nowrap">{section.title}</h2>
-              </Reveal>
-              <Reveal index={1}>
-                <p
-                  className="type-body text-muted mt-2"
-                  style={{
-                    maxWidth: "44ch",
-                    marginInlineStart: isOdd ? "auto" : undefined,
-                  }}
-                >
-                  {section.statement}
-                </p>
-              </Reveal>
-            </div>
+            {showSectionHeader && (
+              <div className={`px-5 md:px-10 mb-6 md:mb-10 ${isOdd ? "text-right" : ""}`}>
+                <Reveal>
+                  <h2 className="type-headline md:whitespace-nowrap">
+                    {/* Every series' own page (SEO-only surface, not in primary
+                        nav) is reachable from exactly here — clicking its
+                        heading on this page. */}
+                    <Link href={`/work/stills/${section.slug}`} className="link-draw">
+                      {section.title}
+                    </Link>
+                  </h2>
+                </Reveal>
+                <Reveal index={1}>
+                  <p
+                    className="type-body text-muted mt-2"
+                    style={{
+                      maxWidth: "44ch",
+                      marginInlineStart: isOdd ? "auto" : undefined,
+                    }}
+                  >
+                    {section.statement}
+                  </p>
+                </Reveal>
+              </div>
+            )}
 
             <div className="collage-grid">
               {section.images.map((img, iIdx) => {
@@ -166,7 +182,7 @@ export function StillsGallery({ sections }: Props) {
           images={allIds}
           initialIndex={openIndex}
           onClose={() => setOpenIndex(null)}
-          altPrefix="Stills"
+          altPrefix={altPrefix}
         />
       )}
     </div>

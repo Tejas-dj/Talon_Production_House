@@ -211,6 +211,10 @@ export function getAllPhotoSeries(): PhotoSeries[] {
   return photography;
 }
 
+export function getPhotoSeriesBySlug(slug: string): PhotoSeries | undefined {
+  return photography.find((s) => s.slug === slug);
+}
+
 /** The site currently rents a single physical space; Studio is a one-space page. */
 export function getStudioSpace(): StudioSpace {
   const space = studioSpaces[0];
