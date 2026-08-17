@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { StillsGallery, type StillsSection } from "@/components/work/StillsGallery";
 import { getAllPhotoSeries, getPhotoSeriesBySlug } from "@/lib/content";
 import { cloudinaryUrl } from "@/lib/media/presets";
+import { SITE_URL } from "@/lib/site";
+import { buildBreadcrumbSchema } from "@/lib/structured-data";
 import photoDims from "../../../../../content/photo-dimensions.json";
 
 /**
@@ -73,8 +75,18 @@ export default async function PhotoSeriesPage({ params }: { params: Promise<Para
     images: series.imageIds.map((id) => ({ id, w: dims[id]?.w ?? 3, h: dims[id]?.h ?? 4 })),
   };
 
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", url: SITE_URL },
+    { name: "Stills", url: `${SITE_URL}/work/stills` },
+    { name: series.title, url: `${SITE_URL}/work/stills/${series.slug}` },
+  ]);
+
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <header className="container-site pt-8 pb-6">
         <p className="type-meta text-muted mb-2">Photography — Bengaluru</p>
         <h1 className="type-display max-w-[20ch]">{series.title}</h1>

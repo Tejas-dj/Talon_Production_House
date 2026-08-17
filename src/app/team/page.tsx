@@ -3,6 +3,7 @@ import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { Reveal } from "@/components/motion/Reveal";
 import { SplitText } from "@/components/motion/SplitText";
 import { TiltCard } from "@/components/motion/TiltCard";
+import { buildTeamProfileSchemas } from "@/lib/structured-data";
 
 const DESCRIPTION =
   "Meet the team behind Talon Production House — the people shaping every frame, every project, every decision.";
@@ -41,8 +42,14 @@ export const LEADERS = [
 ] as const;
 
 export default function TeamPage() {
+  const profileSchemas = buildTeamProfileSchemas(LEADERS);
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(profileSchemas) }}
+      />
       <header className="container-site pt-8 pb-6">
         <SplitText as="h1" className="type-display">The Team</SplitText>
         <Reveal>

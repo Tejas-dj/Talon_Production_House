@@ -11,6 +11,7 @@ import { ProjectGrid } from "@/components/work/ProjectGrid";
 import { Testimonials } from "@/components/home/Testimonials";
 import { getAllClientLogos, getAllProjects, getAllTestimonials } from "@/lib/content";
 import { CONTACT_LINKS, waLink, WHATSAPP_GENERAL_MESSAGE } from "@/lib/site";
+import { buildServiceCatalogSchema } from "@/lib/structured-data";
 import logoDims from "../../content/logo-dimensions.json";
 
 const LOGO_DIMS = logoDims as Record<string, { w: number; h: number }>;
@@ -89,6 +90,10 @@ export default function HomePage() {
 
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildServiceCatalogSchema()) }}
+      />
       {/* ── Hero ── */}
       <Hero />
 

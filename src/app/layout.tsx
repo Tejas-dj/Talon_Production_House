@@ -7,6 +7,7 @@ import { Header } from "@/components/shell/Header";
 import { SkipLink } from "@/components/shell/SkipLink";
 import { ThemeProvider } from "@/components/shell/ThemeProvider";
 import { SITE_URL } from "@/lib/site";
+import { buildOrganizationSchema } from "@/lib/structured-data";
 import "./globals.css";
 
 /* Bible §5.1-A / §5.3: Archivo variable (wght + wdth axes), single self-hosted
@@ -68,6 +69,11 @@ export default function RootLayout({
     // suppressHydrationWarning: next-themes sets data-theme pre-hydration
     <html lang="en" className={archivo.variable} suppressHydrationWarning>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildOrganizationSchema()) }}
+        />
+        <link rel="author" href="/humans.txt" />
         {/* Warms the connection to Cloudinary before the first image is
             requested — saves the DNS/TLS handshake (~100-300ms) off the
             very first Stills thumbnail or Lightbox open on a page load. */}

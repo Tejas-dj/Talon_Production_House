@@ -1,0 +1,16 @@
+/* TEAM */
+Founder & CEO: Pratham Raje Urs
+Role: Direction, Cinematography, Creative Vision
+Location: Bengaluru, India
+
+Managing Director: Vikram Adithya Reddy
+Role: Production, Operations, Client Relations
+Location: Bengaluru, India
+
+/* SITE */
+Last update: 2026/08/18
+Language: English
+Built with: Next.js, React, Vercel, Cloudinary, Bunny Stream
+
+/* THANKS */
+Design & Development: CobaltKite Creatives

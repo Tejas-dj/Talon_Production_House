@@ -7,7 +7,8 @@ import { ProjectStillsGallery } from "@/components/work/ProjectStillsGallery";
 import { getAllProjects, getProjectBySlug } from "@/lib/content";
 import { bunnyThumbnailUrl } from "@/lib/media/bunny";
 import { cloudinaryUrl } from "@/lib/media/presets";
-import { buildVideoObjectSchema } from "@/lib/structured-data";
+import { SITE_URL } from "@/lib/site";
+import { buildBreadcrumbSchema, buildVideoObjectSchema } from "@/lib/structured-data";
 
 type Params = { slug: string };
 
@@ -69,12 +70,17 @@ export default async function ProjectDetailPage({ params }: { params: Promise<Pa
   const prevProject = projects[(currentIndex - 1 + projects.length) % projects.length];
   const nextProject = projects[(currentIndex + 1) % projects.length];
   const videoObjectSchema = buildVideoObjectSchema(project);
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Home", url: SITE_URL },
+    { name: "Motion", url: `${SITE_URL}/work/motion` },
+    { name: project.title, url: `${SITE_URL}/work/motion/${project.slug}` },
+  ]);
 
   return (
     <article>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(videoObjectSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([videoObjectSchema, breadcrumbSchema]) }}
       />
 
       <div className="aspect-video w-full">
