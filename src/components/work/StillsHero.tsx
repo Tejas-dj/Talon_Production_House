@@ -94,6 +94,7 @@ export function StillsHero() {
                   alt={ALT}
                   fill
                   sizes="19vw"
+                  preload={i === 1 || i === 5}
                   className={IMG_CLASS}
                 />
               </div>
@@ -108,7 +109,7 @@ export function StillsHero() {
           className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 md:hidden"
           style={{ paddingInline: "var(--margin-outer)" }}
         >
-          {ARC.map((img) => (
+          {ARC.map((img, i) => (
             <div
               key={img.id}
               className="group relative aspect-[3/4] w-[44%] shrink-0 snap-center overflow-hidden"
@@ -119,6 +120,7 @@ export function StillsHero() {
                 alt={ALT}
                 fill
                 sizes="44vw"
+                preload={i === 0}
                 className={IMG_CLASS}
               />
             </div>

@@ -224,13 +224,13 @@ export function WorkOverlay({ id, open, onClose }: WorkOverlayProps) {
             className="h-full w-full"
           />
         ) : (
-          <CloudinaryImage
-            id={bunnyPosterCloudinaryId(HERO_BUNNY_VIDEO_ID)}
-            preset="thumbnail"
-            alt=""
-            aria-hidden="true"
-            fill
-            className="object-cover"
+          <BunnyPlayer
+            videoId={HERO_BUNNY_VIDEO_ID}
+            title="Showreel"
+            autoPlayMuted
+            active
+            maxHeight={720}
+            className="h-full w-full"
           />
         ))}
       </div>
