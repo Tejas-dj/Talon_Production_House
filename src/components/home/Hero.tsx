@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import { useRef } from "react";
 import { BunnyPlayer } from "@/components/media/BunnyPlayer";
 import { SplitText } from "@/components/motion/SplitText";
@@ -28,9 +29,31 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative h-[100vh] w-full overflow-hidden [clip-path:polygon(0_0,100%_0,100%_100%,0_90%)] -mt-(--header-height)"
+      className="relative h-[100vh] w-full overflow-hidden bg-surface [clip-path:polygon(0_0,100%_0,100%_100%,0_90%)] -mt-(--header-height)"
     >
-      <motion.div className="h-full w-full" style={reducedMotion ? undefined : { scale }}>
+      {/* Logo title card — paints from HTML/CSS with zero network wait,
+          making it the LCP element instead of the Cloudinary poster.
+          Sits behind the video so it's naturally covered once playback
+          starts; the scrim tints it slightly until then. */}
+      <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+        <Image
+          src="/images/logo/TALON_Logo_LightTheme.svg"
+          alt=""
+          width={1050}
+          height={660}
+          unoptimized
+          className="theme-logo-light w-[45%] max-w-[350px] h-auto"
+        />
+        <Image
+          src="/images/logo/TALON_Logo_DarkTheme.svg"
+          alt=""
+          width={1050}
+          height={660}
+          unoptimized
+          className="theme-logo-dark w-[45%] max-w-[350px] h-auto"
+        />
+      </div>
+      <motion.div className="relative z-10 h-full w-full" style={reducedMotion ? undefined : { scale }}>
         <BunnyPlayer
           videoId={HERO_BUNNY_VIDEO_ID}
           title="Talon Production House showreel"
@@ -39,19 +62,20 @@ export function Hero() {
           maxHeight={720}
           maxLoops={2}
           fetchPriority="high"
+          showPoster={false}
           className="h-full w-full"
         />
       </motion.div>
       {/* Flat scrim tint (not a gradient) for overlay text legibility */}
-      <div className="bg-scrim/30 pointer-events-none absolute inset-0" aria-hidden="true" />
-      <div className="pointer-events-none absolute inset-0">
+      <div className="bg-scrim/30 pointer-events-none absolute inset-0 z-20" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-0 z-30">
         <div className="container-site grid h-full grid-rows-[auto_1fr_auto] pt-(--header-height) pb-6 md:grid-cols-12">
           <p className="type-meta text-hero-overlay text-right md:col-span-3 md:col-start-10">
             Production House / Bengaluru
           </p>
         </div>
       </div>
-      <SplitText as="h1" className="type-display text-hero-overlay pointer-events-none absolute bottom-[10%] left-0 pl-4">
+      <SplitText as="h1" className="type-display text-hero-overlay pointer-events-none absolute bottom-[10%] left-0 z-30 pl-4">
         Talon
       </SplitText>
     </section>

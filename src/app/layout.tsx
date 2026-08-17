@@ -73,6 +73,12 @@ export default function RootLayout({
             very first Stills thumbnail or Lightbox open on a page load. */}
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        {process.env.NEXT_PUBLIC_BUNNY_PULL_ZONE && (
+          <>
+            <link rel="preconnect" href={`https://${process.env.NEXT_PUBLIC_BUNNY_PULL_ZONE}.b-cdn.net`} />
+            <link rel="dns-prefetch" href={`https://${process.env.NEXT_PUBLIC_BUNNY_PULL_ZONE}.b-cdn.net`} />
+          </>
+        )}
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem("theme")||"system";var r=t==="system"?window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":t;document.documentElement.setAttribute("data-theme",r)}catch(e){}})()`,

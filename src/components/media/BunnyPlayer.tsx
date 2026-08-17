@@ -92,6 +92,9 @@ type BunnyPlayerProps = {
   active?: boolean;
   /** LCP hint — set to "high" only for an above-the-fold instance (e.g. Hero). */
   fetchPriority?: "high" | "low" | "auto";
+  /** When false, the Cloudinary poster image is not rendered — use when
+   *  the parent provides its own placeholder (e.g. Hero's logo card). */
+  showPoster?: boolean;
   className?: string;
 };
 
@@ -105,11 +108,13 @@ export function BunnyPlayer({
   startTime,
   active,
   fetchPriority,
+  showPoster = true,
   className,
 }: BunnyPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(autoPlayMuted);
   const [videoPlaying, setVideoPlaying] = useState(false);
+  const [posterLoaded, setPosterLoaded] = useState(false);
   const startTimeApplied = useRef(false);
   const loopCount = useRef(0);
 
@@ -126,9 +131,7 @@ export function BunnyPlayer({
   // card buffering video immediately on load, regardless of scroll
   // position). Once an instance has been active at least once it stays
   // eligible, so a later hover-out/scroll-out doesn't tear the stream back
-  // down. The LCP-critical hero (fetchPriority="high") is exempt — it must
-  // start loading immediately, not wait for its own IntersectionObserver
-  // callback to fire.
+  // down.
   const [hasBeenActive, setHasBeenActive] = useState(active ?? false);
   // Adjust state during render rather than in an effect (react.dev "You
   // Might Not Need an Effect" — adjusting state when a prop changes): this
@@ -139,11 +142,19 @@ export function BunnyPlayer({
   const deferLoad =
     autoPlayMuted && active != null && !hasBeenActive && fetchPriority !== "high";
 
+  // LCP gate: when a poster IS shown, the poster image and HLS video
+  // segments share the same throttled connection — on mobile 4G the video
+  // cuts the poster's effective bandwidth roughly in half. Yield all
+  // bandwidth to the poster until it paints (the LCP event), then start
+  // the video stream. When the parent provides its own placeholder
+  // (showPoster=false) there's nothing to compete with, so load immediately.
+  const deferForLcp = showPoster && fetchPriority === "high" && !posterLoaded;
+
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !hlsSrc) return;
     if (!(playing || autoPlayMuted)) return;
-    if (deferLoad) return;
+    if (deferLoad || deferForLcp) return;
 
     let hls: import("hls.js").default | undefined;
     let cancelled = false;
@@ -179,7 +190,7 @@ export function BunnyPlayer({
       cancelled = true;
       hls?.destroy();
     };
-  }, [hlsSrc, playing, autoPlayMuted, maxHeight, deferLoad]);
+  }, [hlsSrc, playing, autoPlayMuted, maxHeight, deferLoad, deferForLcp]);
 
   useEffect(() => {
     if (startTime == null || startTimeApplied.current) return;
@@ -251,17 +262,21 @@ export function BunnyPlayer({
         aria-label={title}
         className="h-full w-full object-cover"
       />
-      <CloudinaryImage
-        id={effectivePosterId}
-        preset="poster"
-        alt=""
-        aria-hidden="true"
-        fill
-        priority
-        className={`absolute inset-0 object-cover transition-opacity duration-[320ms] ease-veil ${
-          videoPlaying ? "pointer-events-none opacity-0" : "opacity-100"
-        }`}
-      />
+      {showPoster && (
+        <CloudinaryImage
+          id={effectivePosterId}
+          preset="poster"
+          alt=""
+          aria-hidden="true"
+          fill
+          priority
+          onLoad={() => setPosterLoaded(true)}
+          onError={() => setPosterLoaded(true)}
+          className={`absolute inset-0 object-cover transition-opacity duration-[320ms] ease-veil ${
+            videoPlaying ? "pointer-events-none opacity-0" : "opacity-100"
+          }`}
+        />
+      )}
       {!playing && !autoPlayMuted && (
         <button
           type="button"

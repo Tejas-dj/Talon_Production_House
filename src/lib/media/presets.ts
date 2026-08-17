@@ -30,10 +30,13 @@ export const CLOUDINARY_PRESETS = {
     transform: "c_fill,g_auto",
     sizes: "100vw",
   },
-  /** Bunny/video poster frames rendered through Cloudinary */
+  /** Bunny/video poster frames rendered through Cloudinary — mobile sizes
+      halved because the 16:9 landscape poster in a portrait viewport is
+      object-cover'd with ~3.8x upscaling regardless; 640px vs 1080px is
+      invisible behind the scrim, but ~50% fewer bytes on throttled 4G. */
   poster: {
     transform: "c_fill,g_auto,ar_16:9",
-    sizes: "100vw",
+    sizes: "(max-width: 768px) 50vw, 100vw",
   },
   /** Lightbox: near-original quality, capped width for bandwidth. The image
       sits in a box bounded by max-h-[80vh]/max-w-[85vw] (object-contain), so
