@@ -37,7 +37,7 @@ export const LEADERS = [
     title: "Managing Director",
     bio: "Vikram is the producer behind Talon's operational backbone, bringing 3 years of experience to every shoot. He makes sure every shoot runs on time, every rental is seamless, and every client interaction reflects the standard the studio was built on: no shortcuts, no surprises.",
     portraitPlaceholder: "VAR",
-    portraitId: undefined as string | undefined,
+    portraitId: "Vikram_Photo_2.jpg_k2zt1b" as string | undefined,
   },
 ] as const;
 
