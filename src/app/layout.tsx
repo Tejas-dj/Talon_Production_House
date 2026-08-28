@@ -4,8 +4,11 @@ import { Archivo } from "next/font/google";
 import { CustomCursor } from "@/components/shell/CustomCursor";
 import { Footer } from "@/components/shell/Footer";
 import { Header } from "@/components/shell/Header";
+import { PrefetchStills } from "@/components/shell/PrefetchStills";
 import { SkipLink } from "@/components/shell/SkipLink";
 import { ThemeProvider } from "@/components/shell/ThemeProvider";
+import { getAllPhotoSeries } from "@/lib/content";
+import { cloudinaryUrl } from "@/lib/media/presets";
 import { SITE_URL } from "@/lib/site";
 import { buildOrganizationSchema } from "@/lib/structured-data";
 import "./globals.css";
@@ -60,6 +63,11 @@ export const metadata: Metadata = {
   },
 };
 
+const stillsPrefetchUrls = getAllPhotoSeries()
+  .flatMap((s) => s.imageIds)
+  .slice(0, 8)
+  .map((id) => cloudinaryUrl(id, "gallery", 640));
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -111,6 +119,7 @@ export default function RootLayout({
             <Footer />
           </ThemeProvider>
         </div>
+        <PrefetchStills urls={stillsPrefetchUrls} />
         <Analytics />
       </body>
     </html>
