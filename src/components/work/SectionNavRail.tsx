@@ -7,7 +7,6 @@ export type NavSection = { slug: string; title: string };
 
 type Props = {
   sections: NavSection[];
-  onBeforeNavigate?: (slug: string) => void;
 };
 
 function scrollToSection(slug: string, behavior: ScrollBehavior) {
@@ -18,7 +17,7 @@ function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-export function SectionNavRail({ sections, onBeforeNavigate }: Props) {
+export function SectionNavRail({ sections }: Props) {
   const [activeSlug, setActiveSlug] = useState(sections[0]?.slug ?? "");
   const suppressObserverRef = useRef(false);
   const [mounted, setMounted] = useState(false);
@@ -28,7 +27,6 @@ export function SectionNavRail({ sections, onBeforeNavigate }: Props) {
   useEffect(() => {
     const hash = window.location.hash.slice(1);
     if (!hash || !sections.some((s) => s.slug === hash)) return;
-    onBeforeNavigate?.(hash);
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         scrollToSection(hash, prefersReducedMotion() ? "auto" : "smooth");
@@ -62,7 +60,6 @@ export function SectionNavRail({ sections, onBeforeNavigate }: Props) {
   function handleClick(slug: string) {
     suppressObserverRef.current = true;
     setActiveSlug(slug);
-    onBeforeNavigate?.(slug);
     window.history.replaceState(null, "", `#${slug}`);
     requestAnimationFrame(() => {
       scrollToSection(slug, prefersReducedMotion() ? "auto" : "smooth");

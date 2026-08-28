@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { Lightbox } from "@/components/media/Lightbox";
@@ -8,10 +8,10 @@ import { getPhotoAlt } from "@/lib/media/photo-alt-text";
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionNavRail } from "@/components/work/SectionNavRail";
 
-/** How many series mount at a time — first batch on load, then one more
-    batch each time the reader scrolls into the second-to-last loaded one,
-    so the next batch is already in the DOM well before they'd notice a gap. */
-const BATCH_SIZE = 3;
+/** Sections beyond this index use content-visibility:auto so the browser
+    skips layout/paint while they're off-screen, but every <img> stays in
+    the DOM for Googlebot to discover. */
+const EAGER_SECTIONS = 3;
 
 export type StillsImage = { id: string; w: number; h: number };
 
@@ -52,58 +52,29 @@ function scaleSpan(lgSpan: number, fromCols: number, toCols: number): number {
 
 export function StillsGallery({ sections, showSectionHeader = true, altPrefix = "Stills" }: Props) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const [visibleCount, setVisibleCount] = useState(() => Math.min(BATCH_SIZE, sections.length));
-  const loadMoreTriggerRef = useRef<HTMLDivElement | null>(null);
 
   const allIds = sections.flatMap((s) => s.images.map((img) => img.id));
-  const visibleSections = sections.slice(0, visibleCount);
   let globalIdx = 0;
-
-  // Watches the second-to-last mounted section — a full section of scroll
-  // distance ahead of the true edge — and grows the batch when it's near
-  // the viewport, so the next section is already in the DOM by the time the
-  // reader would otherwise hit a gap.
-  const loadMoreTriggerIndex = visibleCount - 2;
-  useEffect(() => {
-    if (visibleCount >= sections.length) return;
-    const el = loadMoreTriggerRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          setVisibleCount((count) => Math.min(count + BATCH_SIZE, sections.length));
-        }
-      },
-      { rootMargin: "0px 0px 800px 0px" },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [visibleCount, sections.length]);
-
-  function revealThrough(slug: string) {
-    const targetIdx = sections.findIndex((s) => s.slug === slug);
-    if (targetIdx === -1) return;
-    setVisibleCount((count) => Math.max(count, targetIdx + 1));
-  }
 
   return (
     <div>
       <SectionNavRail
         sections={sections.map((s) => ({ slug: s.slug, title: s.title }))}
-        onBeforeNavigate={revealThrough}
       />
 
-      {visibleSections.map((section, sIdx) => {
+      {sections.map((section, sIdx) => {
         const isOdd = sIdx % 2 !== 0;
 
         return (
           <div
             key={section.title}
             id={section.slug}
-            ref={sIdx === loadMoreTriggerIndex ? loadMoreTriggerRef : undefined}
             style={{
               marginTop: sIdx === 0 ? "3rem" : "6rem",
               scrollMarginTop: "calc(var(--header-height) + 24px)",
+              ...(sIdx >= EAGER_SECTIONS
+                ? { contentVisibility: "auto", containIntrinsicBlockSize: "auto 1000px" }
+                : {}),
             }}
           >
             {showSectionHeader && (
