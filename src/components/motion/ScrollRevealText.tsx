@@ -35,7 +35,8 @@ export function ScrollRevealText({ children, as: Tag = "p", className }: ScrollR
 
   return (
     <div ref={containerRef}>
-      <Tag className={className} aria-label={children}>
+      <Tag className={className}>
+        <span className="sr-only">{children}</span>
         {words.map((word, i) => {
           const start = i / words.length;
           const end = start + 1 / words.length;
