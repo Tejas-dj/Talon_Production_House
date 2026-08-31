@@ -1,6 +1,7 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Archivo } from "next/font/google";
+import Script from "next/script";
 import { CustomCursor } from "@/components/shell/CustomCursor";
 import { Footer } from "@/components/shell/Footer";
 import { Header } from "@/components/shell/Header";
@@ -68,6 +69,8 @@ const stillsPrefetchUrls = getAllPhotoSeries()
   .slice(0, 8)
   .map((id) => cloudinaryUrl(id, "gallery", 640));
 
+const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -121,6 +124,17 @@ export default function RootLayout({
         </div>
         <PrefetchStills urls={stillsPrefetchUrls} />
         <Analytics />
+        {gaMeasurementId && (
+          <>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`} strategy="afterInteractive" />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaMeasurementId}');`}
+            </Script>
+          </>
+        )}
       </body>
     </html>
   );
