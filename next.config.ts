@@ -17,6 +17,17 @@ import type { NextConfig } from "next";
  *   playback/thumbnails and hls.js's own segment fetches).
  * - Vercel Analytics is served same-origin (`/_vercel/insights/*`), so it
  *   needs no separate CSP domain.
+ * - script-src/connect-src allow Google's tag loader + collect endpoint
+ *   (`www.googletagmanager.com`, `*.google-analytics.com`) for GA4, and
+ *   Microsoft Clarity's tag + load-balanced collect endpoints
+ *   (`*.clarity.ms`, `c.bing.com` — both required per Microsoft's own CSP
+ *   guidance: https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-csp).
+ *   `*.clarity.ms` and `c.bing.com` are also needed in img-src: Clarity's
+ *   beacon is a `c.gif` pixel (`https://c.clarity.ms/c.gif`, occasionally
+ *   `https://c.bing.com/c.gif`), not just fetch/XHR — confirmed by the
+ *   actual CSP violations these threw in-browser before being added here.
+ *   Without these, both scripts request-block silently — no console error
+ *   beyond a CSP violation, and neither dashboard ever sees data.
  * - frame-src allows Google's own map-embed domains for the Studio page's
  *   "Visit" iframe (`maps.google.com` redirects to `www.google.com/maps/…`
  *   for the actual embed, so both need to be listed).
@@ -25,14 +36,14 @@ const isDev = process.env.NODE_ENV === "development";
 
 const CSP = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://*.clarity.ms https://c.bing.com${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' https://res.cloudinary.com https://*.b-cdn.net",
+  "img-src 'self' https://res.cloudinary.com https://*.b-cdn.net https://*.clarity.ms https://c.bing.com",
   "media-src 'self' https://*.b-cdn.net",
   // res.cloudinary.com here (not just in img-src) so the <link rel="preconnect">
   // in the root layout is allowed — preconnect/dns-prefetch resource hints are
   // governed by connect-src, not img-src.
-  "connect-src 'self' https://res.cloudinary.com https://*.b-cdn.net",
+  "connect-src 'self' https://res.cloudinary.com https://*.b-cdn.net https://www.googletagmanager.com https://*.google-analytics.com https://*.clarity.ms https://c.bing.com",
   "font-src 'self'",
   "frame-src https://www.google.com https://maps.google.com",
   "object-src 'none'",

@@ -800,3 +800,30 @@ permissions/backgrounded-tab artifact, not a logic bug); `tsc --noEmit` and `esl
 clean; zero console errors/warnings from React or this component. Flagging honestly, per this
 file's own established practice, rather than claiming a live-interaction verification this
 session's tooling could not actually produce.
+
+## Analytics: Microsoft Clarity
+
+- **Wired the same way GA4 was** (`next/script`, `strategy="afterInteractive"`, gated on
+  `NEXT_PUBLIC_CLARITY_PROJECT_ID` in `layout.tsx`) — one more opt-in, per-environment analytics
+  tag alongside the existing Vercel Analytics/GA4 pair, not a new pattern.
+- **Real bug found and fixed while verifying this: the CSP added for GA4 in Phase 4 Step 3 was
+  never actually satisfied by GA4 itself.** `script-src`/`connect-src` were `'self'
+  'unsafe-inline'` plus the Cloudinary/Bunny domains only — `googletagmanager.com` and
+  `google-analytics.com` were never added, so the GA4 tag committed one commit before this one has
+  been silently CSP-blocked in every environment since, with no console-visible symptom beyond a
+  CSP violation nobody was watching for. Fixed alongside Clarity's own CSP needs rather than left
+  broken next to a newly-working tag: `script-src`/`connect-src` now also allow
+  `www.googletagmanager.com` and `*.google-analytics.com`.
+- **Clarity itself needs three directives, not one — confirmed by live CSP violations, not just
+  Microsoft's docs.** `script-src` needs `*.clarity.ms` (Clarity load-balances the tag script
+  across environments, per Microsoft's own CSP guidance) plus `c.bing.com`. `img-src` additionally
+  needs both `*.clarity.ms` and `c.bing.com`: Clarity's beacon falls back to a `c.gif` pixel
+  (`https://c.clarity.ms/c.gif`, sometimes proxied via `https://c.bing.com/c.gif`), which is an
+  `img-src` load, not `connect-src` — this only surfaced by actually loading the page and reading
+  the console, twice more after the first fix looked complete.
+- **Verified end-to-end in-browser**: after the CSP fix, zero `clarity.ms`/`bing.com` CSP
+  violations on load, `window.clarity` is a live function, and the real
+  `https://www.clarity.ms/tag/<id>` script tag is present in the DOM — not just "no error thrown."
+- **`.env.local` carries the real project ID (`yc4rh0aq55`)**, same precedent as GA4's real
+  measurement ID living there for local verification; `.env.example` documents where to find it
+  (Clarity dashboard → Settings → Setup → Install manually).
