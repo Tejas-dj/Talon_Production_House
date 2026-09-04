@@ -188,7 +188,7 @@ export function buildTeamProfileSchemas(
     return {
       "@context": "https://schema.org",
       "@type": "ProfilePage",
-      dateModified: new Date().toISOString().split("T")[0],
+      dateModified: new Date().toISOString(),
       mainEntity: {
         "@type": "Person",
         "@id": `${SITE_URL}/team#${slug}`,
