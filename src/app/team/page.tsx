@@ -23,7 +23,14 @@ export const metadata: Metadata = {
   },
 };
 
-/* Exported so sitemap.ts can list portrait images without duplicating ids. */
+/* Exported so sitemap.ts can list portrait images without duplicating ids.
+ *
+ * `profileCreated`/`profileModified` feed the ProfilePage JSON-LD. They are
+ * literal ISO 8601 datetimes with the +05:30 offset because Google rejects a
+ * date-only value for these, and because they have to track when the profile
+ * itself last changed — not when the site was last deployed. Update the
+ * `profileModified` line for a person whenever their bio, title, or portrait
+ * changes; leave it alone for every other kind of edit. */
 export const LEADERS = [
   {
     name: "Pratham Raje Urs",
@@ -31,6 +38,8 @@ export const LEADERS = [
     bio: "Pratham is the founder and CEO of Talon Production House, a production company built on a singular vision: craft before convenience. A director and filmmaker with 6 years of experience, he oversees every project from concept through final delivery, working with the conviction that the work itself is the only portfolio that matters.",
     portraitPlaceholder: "PRU",
     portraitId: "Pratham_Headshot_tnv01b" as string | undefined,
+    profileCreated: "2026-07-22T15:10:59+05:30",
+    profileModified: "2026-08-09T15:19:45+05:30",
   },
   {
     name: "Vikram Adithya Reddy",
@@ -38,6 +47,8 @@ export const LEADERS = [
     bio: "Vikram is the producer behind Talon's operational backbone, bringing 3 years of experience to every shoot. He makes sure every shoot runs on time, every rental is seamless, and every client interaction reflects the standard the studio was built on: no shortcuts, no surprises.",
     portraitPlaceholder: "VAR",
     portraitId: "Vikram_Photo_2.jpg_k2zt1b" as string | undefined,
+    profileCreated: "2026-07-22T15:10:59+05:30",
+    profileModified: "2026-08-28T22:13:21+05:30",
   },
 ] as const;
 

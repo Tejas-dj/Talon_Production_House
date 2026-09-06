@@ -174,6 +174,18 @@ export function buildServiceCatalogSchema() {
  * ProfilePage + Person schemas for the team page. Returns an array of
  * JSON-LD objects (one ProfilePage per leader) to be serialised as a
  * single array inside one <script> tag.
+ *
+ * `dateCreated`/`dateModified` come in from the caller as literal ISO 8601
+ * strings rather than being computed here. Two reasons:
+ *  - Google requires a full datetime with a timezone for these on
+ *    ProfilePage, not a bare `YYYY-MM-DD` date (a date-only value is what
+ *    Search Console reported as "Invalid datetime value for dateModified").
+ *  - They must describe when the *profile content* changed. A `new Date()`
+ *    here is evaluated at build time, so every unrelated deploy would claim
+ *    both bios had just been rewritten — exactly the "don't update
+ *    dateModified without changing the content" case Google warns about.
+ * Bump the literal in `LEADERS` (src/app/team/page.tsx) when a bio, title,
+ * or portrait actually changes.
  */
 export function buildTeamProfileSchemas(
   leaders: ReadonlyArray<{
@@ -181,6 +193,8 @@ export function buildTeamProfileSchemas(
     title: string;
     bio: string;
     portraitId?: string;
+    profileCreated: string;
+    profileModified: string;
   }>,
 ) {
   return leaders.map((leader) => {
@@ -188,7 +202,8 @@ export function buildTeamProfileSchemas(
     return {
       "@context": "https://schema.org",
       "@type": "ProfilePage",
-      dateModified: new Date().toISOString(),
+      dateCreated: leader.profileCreated,
+      dateModified: leader.profileModified,
       mainEntity: {
         "@type": "Person",
         "@id": `${SITE_URL}/team#${slug}`,

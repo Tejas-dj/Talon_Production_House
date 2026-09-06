@@ -827,3 +827,35 @@ session's tooling could not actually produce.
 - **`.env.local` carries the real project ID (`yc4rh0aq55`)**, same precedent as GA4's real
   measurement ID living there for local verification; `.env.example` documents where to find it
   (Clarity dashboard → Settings → Setup → Install manually).
+
+## Structured data: ProfilePage `dateModified` (Search Console "Invalid datetime value")
+
+- **What Search Console actually flagged.** Both `/team` profiles (Pratham, Vikram) threw "Invalid
+  datetime value for 'dateModified'" — non-critical, so the items stayed valid but lost rich-result
+  eligibility. Cause: the schema emitted `new Date().toISOString().split("T")[0]`, i.e. a bare
+  `YYYY-MM-DD`. Google's ProfilePage docs call for an ISO 8601 *datetime*, and their own example
+  carries time and offset (`2024-12-23T12:34:00-05:00`); a date-only value fails that check.
+- **The format-only fix (commit 7f6157f) was necessary but not sufficient.** Dropping `.split("T")`
+  produced a valid `2026-09-04T09:04:54.042Z` — confirmed live on the deployed page — but the value
+  was still `new Date()` evaluated at *build* time. That means every unrelated deploy republished
+  both profiles claiming their bios had just been rewritten, which is precisely the case Google
+  warns against ("don't update dateModified unless the content changed"). Valid syntax, dishonest
+  semantics.
+- **Now literal per-person ISO 8601 datetimes with the +05:30 offset**, carried on `LEADERS` in
+  `src/app/team/page.tsx` as `profileCreated`/`profileModified` and passed straight through by
+  `buildTeamProfileSchemas`. Values are taken from the git history of the profile content itself,
+  not invented: Pratham `2026-08-09T15:19:45+05:30` (portrait swap, 8eb5012), Vikram
+  `2026-08-28T22:13:21+05:30` (headshot added, 022cefd), both created `2026-07-22T15:10:59+05:30`
+  (2f2afc5, the commit that added the page). They are maintained by hand from here — bump a
+  person's `profileModified` when their bio, title, or portrait changes, and leave it alone for
+  every other edit.
+- **`dateCreated` added alongside it** — a recommended ProfilePage property that was simply absent,
+  and the obvious next Search Console warning once the datetime one clears.
+- **`new Date()` here was safe but pointless.** `cacheComponents` is not enabled, so the call never
+  needed `await connection()` and never forced the route dynamic — `/team` still prerenders as
+  static. The build-time timestamp was a correctness problem, not a rendering one.
+- **Verified by parsing the built HTML**, not by reading the source: `.next/server/app/team.html`
+  emits both ProfilePage blocks with the exact literals above. `tsc --noEmit`, `eslint`, and
+  `next build` all clean.
+- **Search Console still shows the old error until it recrawls** (last crawl 28 Aug 2026, before
+  either fix shipped). Hit "Validate fix" on the issue once this is deployed.
