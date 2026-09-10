@@ -30,7 +30,13 @@ async function fetchAndResolveRendition(
   const text = await res.text();
   const lines = text.split("\n").map((line) => line.trim());
 
-  type Rendition = { height: number; pixels: number; url: string };
+  // `tier` is the rendition's ladder position — Bunny names every tier after
+  // the SHORT side, so a portrait video's "480p" is 480x854, not 854x480.
+  // Ranking on RESOLUTION's height field instead makes maxHeight mean
+  // different things in the two orientations: asking for 480 correctly gave
+  // landscape 854x480, but gave portrait reels 360x640 (the 360p tier),
+  // because their heights start at 640.
+  type Rendition = { tier: number; pixels: number; url: string };
   const renditions: Rendition[] = [];
 
   for (let i = 0; i < lines.length; i++) {
@@ -42,13 +48,15 @@ async function fetchAndResolveRendition(
 
     const resolutionMatch = line.match(/RESOLUTION=(\d+)x(\d+)/);
     const bandwidthMatch = line.match(/BANDWIDTH=(\d+)/);
+    const width = resolutionMatch ? Number(resolutionMatch[1]) : 0;
     const height = resolutionMatch ? Number(resolutionMatch[2]) : 0;
+    const tier = width && height ? Math.min(width, height) : 0;
     const pixels = resolutionMatch
-      ? Number(resolutionMatch[1]) * Number(resolutionMatch[2])
+      ? width * height
       : (bandwidthMatch ? Number(bandwidthMatch[1]) : 0);
 
     renditions.push({
-      height,
+      tier,
       pixels,
       url: new URL(uri, masterUrl).toString(),
     });
@@ -57,8 +65,8 @@ async function fetchAndResolveRendition(
   if (renditions.length === 0) return masterUrl;
 
   if (maxHeight != null) {
-    renditions.sort((a, b) => a.height - b.height);
-    const fit = renditions.find((r) => r.height >= maxHeight);
+    renditions.sort((a, b) => a.tier - b.tier);
+    const fit = renditions.find((r) => r.tier >= maxHeight);
     return (fit ?? renditions[renditions.length - 1]).url;
   }
 
@@ -80,9 +88,11 @@ type BunnyPlayerProps = {
   posterImageId?: string;
   /** Hero use: silent, looping, autoplaying background video. Default: tap-to-play with sound. */
   autoPlayMuted?: boolean;
-  /** Cap the HLS rendition height for muted previews (e.g. 480 for small
-   *  cards). Ignored for click-to-play; when omitted on autoPlayMuted a
-   *  viewport-aware default (480p mobile / 720p desktop) kicks in. */
+  /** Cap the HLS rendition tier for muted previews (e.g. 480 for small
+   *  cards). This is the tier's short side — the "p" number — so 480 means
+   *  854x480 landscape and 480x854 portrait alike. Ignored for
+   *  click-to-play; when omitted on autoPlayMuted a viewport-aware default
+   *  (480p mobile / 720p desktop) kicks in. */
   maxHeight?: number;
   /** Stop looping after this many plays. Only applies when autoPlayMuted. */
   maxLoops?: number;
@@ -176,13 +186,45 @@ export function BunnyPlayer({
 
         import("hls.js").then(({ default: Hls }) => {
           if (cancelled) return;
-          if (Hls.isSupported()) {
-            hls = new Hls();
-            hls.loadSource(topSrc);
-            hls.attachMedia(video);
-          } else {
+          if (!Hls.isSupported()) {
             video.src = topSrc;
+            return;
           }
+
+          const instance = new Hls();
+          hls = instance;
+
+          // Without this, a fatal hls.js error leaves the poster up forever
+          // and says nothing — which is exactly how a missing `blob:` in the
+          // CSP's media-src took every video on the site offline in every
+          // non-Safari browser without a single console message (see the
+          // media-src note in next.config.ts). Retry each recoverable class
+          // once, then hand the rendition URL to the element directly and
+          // make some noise.
+          let networkRetried = false;
+          let mediaRetried = false;
+          instance.on(Hls.Events.ERROR, (_event, data) => {
+            if (!data.fatal) return;
+            if (data.type === Hls.ErrorTypes.NETWORK_ERROR && !networkRetried) {
+              networkRetried = true;
+              instance.startLoad();
+              return;
+            }
+            if (data.type === Hls.ErrorTypes.MEDIA_ERROR && !mediaRetried) {
+              mediaRetried = true;
+              instance.recoverMediaError();
+              return;
+            }
+            console.error(
+              `[BunnyPlayer] HLS playback failed for video ${videoId} (${data.type}/${data.details}) — falling back to direct playback.`,
+            );
+            instance.destroy();
+            if (hls === instance) hls = undefined;
+            video.src = topSrc;
+          });
+
+          instance.loadSource(topSrc);
+          instance.attachMedia(video);
         });
       });
 
@@ -190,7 +232,7 @@ export function BunnyPlayer({
       cancelled = true;
       hls?.destroy();
     };
-  }, [hlsSrc, playing, autoPlayMuted, maxHeight, deferLoad, deferForLcp]);
+  }, [hlsSrc, videoId, playing, autoPlayMuted, maxHeight, deferLoad, deferForLcp]);
 
   useEffect(() => {
     if (startTime == null || startTimeApplied.current) return;

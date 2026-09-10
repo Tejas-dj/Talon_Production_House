@@ -15,8 +15,23 @@ import type { NextConfig } from "next";
  * - img-src/media-src/connect-src allow Cloudinary and Bunny's CDN
  *   (`*.b-cdn.net` covers both the pull-zone hostname used for HLS
  *   playback/thumbnails and hls.js's own segment fetches).
- * - Vercel Analytics is served same-origin (`/_vercel/insights/*`), so it
- *   needs no separate CSP domain.
+ * - media-src MUST include `blob:`. Every browser without native HLS
+ *   (Chrome, Edge, Firefox — i.e. everything but Safari/iOS) plays through
+ *   hls.js, which feeds the <video> element from a MediaSource attached via
+ *   `URL.createObjectURL(...)`. Without `blob:` the element rejects that
+ *   assignment with "MEDIA_ELEMENT_ERROR: Media load rejected by URL safety
+ *   check" and NO video on the site ever plays — silently, since BunnyPlayer
+ *   just leaves the poster up. Safari keeps working (it gets the https
+ *   rendition URL directly), which is what makes this so easy to miss.
+ * - worker-src allows `blob:` for the same reason: hls.js runs its
+ *   transmuxer in a Worker built from a blob URL. Chrome happens to permit
+ *   that under script-src's fallback, Firefox does not — there it falls back
+ *   to main-thread demuxing and logs a CSP error.
+ * - Vercel Analytics is served same-origin (`/_vercel/insights/*`) in
+ *   production, so it needs no separate CSP domain there. In development it
+ *   pulls its debug build from `va.vercel-scripts.com` instead, hence the
+ *   dev-only script-src entry — without it every page load logs a CSP
+ *   violation that buries the real ones.
  * - script-src/connect-src allow Google's tag loader + collect endpoint
  *   (`www.googletagmanager.com`, `*.google-analytics.com`) for GA4, and
  *   Microsoft Clarity's tag + load-balanced collect endpoints
@@ -36,15 +51,16 @@ const isDev = process.env.NODE_ENV === "development";
 
 const CSP = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://*.clarity.ms https://c.bing.com${isDev ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://*.clarity.ms https://c.bing.com${isDev ? " 'unsafe-eval' https://va.vercel-scripts.com" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' https://res.cloudinary.com https://*.b-cdn.net https://*.clarity.ms https://c.bing.com",
-  "media-src 'self' https://*.b-cdn.net",
+  "media-src 'self' blob: https://*.b-cdn.net",
   // res.cloudinary.com here (not just in img-src) so the <link rel="preconnect">
   // in the root layout is allowed — preconnect/dns-prefetch resource hints are
   // governed by connect-src, not img-src.
   "connect-src 'self' https://res.cloudinary.com https://*.b-cdn.net https://www.googletagmanager.com https://*.google-analytics.com https://*.clarity.ms https://c.bing.com",
   "font-src 'self'",
+  "worker-src 'self' blob:",
   "frame-src https://www.google.com https://maps.google.com",
   "object-src 'none'",
   "base-uri 'self'",

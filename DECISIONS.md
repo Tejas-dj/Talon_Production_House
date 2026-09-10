@@ -859,3 +859,47 @@ session's tooling could not actually produce.
   `next build` all clean.
 - **Search Console still shows the old error until it recrawls** (last crawl 28 Aug 2026, before
   either fix shipped). Hit "Validate fix" on the issue once this is deployed.
+
+## Video playback: `blob:` missing from CSP `media-src` (every video, every non-Safari browser)
+
+- **The symptom was "the videos on /work/motion don't play"; the scope was the whole site.** Every
+  `<video>` on Talon goes through one component (`BunnyPlayer`), so the home hero, the featured
+  cards, the project detail pages, and the reel lightbox were all equally dead. The motion index is
+  simply where it's most obvious, because that page is mostly video.
+- **Root cause: `media-src 'self' https://*.b-cdn.net` had no `blob:`.** Browsers without native
+  HLS — Chrome, Edge, Firefox, i.e. nearly all traffic — play through hls.js, which does not point
+  the element at an https URL at all. It builds a `MediaSource` and attaches it via
+  `URL.createObjectURL(...)`, a `blob:` URL, and `media-src` governs that assignment. Reproduced
+  directly in the page: assigning a `MediaSource` object URL failed with
+  `MEDIA_ELEMENT_ERROR: Media load rejected by URL safety check`. The Bunny CDN was never the
+  problem — playlists returned 200 with `Access-Control-Allow-Origin: *` throughout.
+- **Why it survived the CSP hardening pass unnoticed.** Safari and iOS take the other branch in
+  `BunnyPlayer` (`canPlayType("application/vnd.apple.mpegurl")` is truthy → the https rendition URL
+  is assigned directly, no blob involved), so any check on a Mac or a phone showed working video.
+  And nothing reported the failure: hls.js's fatal error was unhandled, `video.play()` is wrapped
+  in `.catch(() => {})`, and the Cloudinary poster stays at `opacity-100` until an `onPlaying` that
+  never fires. A dead player is visually identical to one that simply hasn't been hovered.
+- **`worker-src 'self' blob:` added at the same time.** hls.js runs its transmuxer in a Worker
+  built from a blob URL. Chrome permits that under the `script-src` fallback; Firefox blocks it,
+  quietly demoting playback to main-thread demuxing. Not a playback blocker, but the same class of
+  latent bug.
+- **`va.vercel-scripts.com` allowed in `script-src` in development only.** Vercel Analytics is
+  same-origin (`/_vercel/insights/*`) in production but pulls a debug build from that host in dev,
+  throwing a CSP violation on every single page load. That noise is exactly what buries a real
+  violation — the reason this bug went unseen — so it is worth silencing.
+- **Fatal-error handling added to `BunnyPlayer`.** One retry each for `NETWORK_ERROR`
+  (`startLoad()`) and `MEDIA_ERROR` (`recoverMediaError()`), then `console.error` with the video id
+  and error details and a fallback to direct playback. The next time playback breaks it will say
+  so.
+- **Second bug found in the same code path: portrait reels were served one tier too low.**
+  `fetchAndResolveRendition` ranked renditions by `RESOLUTION`'s *height* field, but Bunny names
+  every tier after the **short** side — a portrait video's 480p tier is `480x854`, not `854x480`.
+  So `maxHeight: 480` correctly returned `854x480` for landscape but returned `360x640` (the 360p
+  tier) for every reel, because portrait heights start at 640. Now ranked on
+  `Math.min(width, height)`, so the cap means the same "p" number in both orientations.
+- **Verified in-browser on the production build**, with `canPlayType` stubbed to `""` to force the
+  Chrome/Edge/Firefox path rather than trusting the preview browser's own HLS support: landscape
+  card `blob:` / `readyState 4` / `854x480`, portrait reel `blob:` / `readyState 4` / `480x854`
+  (was `360x640`), detail page `currentTime` advancing 0 → 2.45s, home hero buffered 32s at
+  `1280x720`, and zero `securitypolicyviolation` events across all of it. `tsc --noEmit`, `eslint`,
+  and `next build` clean.
