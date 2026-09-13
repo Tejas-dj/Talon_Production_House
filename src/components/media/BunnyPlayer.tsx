@@ -261,6 +261,27 @@ export function BunnyPlayer({
     return () => video.removeEventListener("ended", onEnded);
   }, [autoPlayMuted, maxLoops]);
 
+  // Start playback after the user clicks the Play overlay (click-to-play
+  // mode, i.e. autoPlayMuted is false and no external `active` prop). The
+  // HLS effect above loads the source when `playing` flips to true; this
+  // effect starts the <video> once enough data is buffered. Without it the
+  // video loaded behind the poster but never played — the poster stayed
+  // opaque (onPlaying never fired), the native controls were hidden behind
+  // it, and the user saw a frozen frame with no way forward.
+  useEffect(() => {
+    if (!playing || autoPlayMuted) return;
+    if (active != null) return; // handled by the active effect below
+    const video = videoRef.current;
+    if (!video) return;
+    const tryPlay = () => video.play().catch(() => {});
+    if (video.readyState >= 2) {
+      tryPlay();
+    } else {
+      video.addEventListener("canplay", tryPlay, { once: true });
+      return () => video.removeEventListener("canplay", tryPlay);
+    }
+  }, [playing, autoPlayMuted, active]);
+
   // Respond to external active prop changes.
   useEffect(() => {
     if (active == null) return;
