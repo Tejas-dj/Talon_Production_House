@@ -42,6 +42,24 @@
     "bunnyVideoId": "05a4f958-1efa-44fd-af17-671daab058ff"
   },
   {
+    "slug": "jhumki",
+    "title": "Jhumki (Official Video)",
+    "client": "Tanmay Gururaj",
+    "year": 2026,
+    "format": "4:3 · 1080p",
+    "runtime": "02:50",
+    "role": "Full Production",
+    "credits": [
+      { "role": "Artist", "name": "Tanmay Gururaj" },
+      { "role": "Cast", "name": "Pratham" },
+      { "role": "Cast", "name": "Yuktha" },
+      { "role": "Production", "name": "Talon Production House" }
+    ],
+    "synopsis": "Official music video for Jhumki, a Kannada indie single by artist and composer Tanmay Gururaj. Shot and produced by Talon Production House, the video features Pratham and Yuktha in a vibrant, colour-drenched visual that brings the track's energy to life. Full cast, crew credits, and detailed synopsis to follow from the artist.",
+    "category": "Music Video",
+    "bunnyVideoId": "e66190ce-cb87-4850-ac37-6cfafb8eb763"
+  },
+  {
     "slug": "jewellery-ad",
     "title": "Jewellery Ad",
     "client": "Client pending confirmation",
