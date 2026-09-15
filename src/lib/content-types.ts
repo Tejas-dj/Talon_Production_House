@@ -47,6 +47,9 @@ export interface VideoProject {
   featured?: boolean;
   /** Bunny Stream video GUID */
   bunnyVideoId: string;
+  /** Full YouTube URL when the video is also published there. Used in
+   * VideoObject structured data (embedUrl) to help Google surface rich results. */
+  youtubeUrl?: string;
   /** Cloudinary public id. Omit if no real poster still exists yet — falls
    * back to Bunny Stream's own auto-generated thumbnail (src/lib/media/bunny.ts). */
   posterImageId?: string;

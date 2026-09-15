@@ -72,6 +72,12 @@ export function buildVideoObjectSchema(project: VideoProject) {
     ? `https://${pullZone}.b-cdn.net/${project.bunnyVideoId}/playlist.m3u8`
     : undefined;
 
+  const youtubeEmbedUrl = project.youtubeUrl
+    ? project.youtubeUrl
+        .replace("youtu.be/", "www.youtube.com/embed/")
+        .replace("youtube.com/watch?v=", "youtube.com/embed/")
+    : undefined;
+
   return {
     "@context": "https://schema.org",
     "@type": "VideoObject",
@@ -80,7 +86,8 @@ export function buildVideoObjectSchema(project: VideoProject) {
     thumbnailUrl,
     uploadDate: `${project.year}-01-01`,
     duration: runtimeToIso8601(project.runtime),
-    ...(playbackUrl ? { contentUrl: playbackUrl, embedUrl: playbackUrl } : {}),
+    ...(playbackUrl ? { contentUrl: playbackUrl } : {}),
+    ...(youtubeEmbedUrl ? { embedUrl: youtubeEmbedUrl } : playbackUrl ? { embedUrl: playbackUrl } : {}),
   };
 }
 

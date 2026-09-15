@@ -51,9 +51,9 @@ function ProjectThumbHoverVideo({ project, className }: { project: VideoProject;
 }
 
 const FEATURED_START_TIMES: Record<string, number> = {
+  "jhumki": 0,
+  "shazia-khan-ad": 0,
   "she-asked-for-sunflowers": 21,
-  "the-christmas-guest": 27,
-  "before-the-coffee-gets-cold": 17,
 };
 
 function VideoWithOverlay({ project }: { project: VideoProject }) {
