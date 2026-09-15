@@ -12,11 +12,11 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: { canonical: "/work/stills" },
   openGraph: {
-    title: "Stills — Talon Production House",
+    title: "Stills | Talon Production House",
     description: DESCRIPTION,
     url: "/work/stills",
   },
-  twitter: { title: "Stills — Talon Production House", description: DESCRIPTION },
+  twitter: { title: "Stills | Talon Production House", description: DESCRIPTION },
 };
 
 const dims = photoDims as Record<string, { w: number; h: number }>;

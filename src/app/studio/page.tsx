@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   title: "Studio",
   description: DESCRIPTION,
   alternates: { canonical: "/studio" },
-  openGraph: { title: "Studio — Talon Production House", description: DESCRIPTION, url: "/studio" },
-  twitter: { title: "Studio — Talon Production House", description: DESCRIPTION },
+  openGraph: { title: "Studio | Talon Production House", description: DESCRIPTION, url: "/studio" },
+  twitter: { title: "Studio | Talon Production House", description: DESCRIPTION },
 };
 
 function SpecRow({

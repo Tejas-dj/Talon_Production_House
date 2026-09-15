@@ -41,7 +41,7 @@ export async function generateMetadata({
   if (!series) return { title: "Series not found" };
 
   const description = truncateDescription(series.statement);
-  const ogTitle = `${series.title} — Talon Production House`;
+  const ogTitle = `${series.title} | Talon Production House`;
   const ogImage = cloudinaryUrl(series.imageIds[0], "ogImage", 1200);
 
   return {

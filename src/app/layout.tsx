@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: "Talon Production House",
-    template: "%s — Talon Production House",
+    template: "%s | Talon Production House",
   },
   description: "Motion production, stills, and studio rental in Bengaluru.",
   openGraph: {

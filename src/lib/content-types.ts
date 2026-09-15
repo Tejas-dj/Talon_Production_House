@@ -50,6 +50,22 @@ export interface VideoProject {
   /** Full YouTube URL when the video is also published there. Used in
    * VideoObject structured data (embedUrl) to help Google surface rich results. */
   youtubeUrl?: string;
+  /** On-page display title when different from the SEO title, e.g. "Jhumki | Official Music Video" */
+  subtitle?: string;
+  /** Tagline shown under the subtitle, e.g. "Produced by Talon Production House" */
+  tagline?: string;
+  /** Short description shown in the header area, below the tagline */
+  headerDescription?: string;
+  /** Full date string for display, e.g. "10 September 2026" (replaces year in metadata) */
+  releaseDate?: string;
+  /** Display override for category, e.g. "Kannada Music Video" */
+  displayCategory?: string;
+  /** Production company name when shown as its own metadata field */
+  productionCompany?: string;
+  /** Heading + body for a "shot at" note below the About section */
+  studioNoteHeading?: string;
+  /** Body text for the studio note */
+  studioNote?: string;
   /** Cloudinary public id. Omit if no real poster still exists yet — falls
    * back to Bunny Stream's own auto-generated thumbnail (src/lib/media/bunny.ts). */
   posterImageId?: string;

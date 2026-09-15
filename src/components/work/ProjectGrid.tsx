@@ -51,7 +51,7 @@ function ProjectThumbHoverVideo({ project, className }: { project: VideoProject;
 }
 
 const FEATURED_START_TIMES: Record<string, number> = {
-  "jhumki": 0,
+  "jhumki-official-music-video-tanmay-gururaj": 0,
   "shazia-khan-ad": 0,
   "she-asked-for-sunflowers": 21,
 };

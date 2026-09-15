@@ -32,7 +32,7 @@ export async function generateMetadata({
   if (!project) return { title: "Project not found" };
 
   const description = truncateDescription(project.synopsis);
-  const ogTitle = `${project.title} — Talon Production House`;
+  const ogTitle = `${project.title} | Talon Production House`;
   const ogImage = project.posterImageId
     ? cloudinaryUrl(project.posterImageId, "ogImage", 1200)
     : (bunnyThumbnailUrl(project.bunnyVideoId) ?? "");
@@ -93,32 +93,52 @@ export default async function ProjectDetailPage({ params }: { params: Promise<Pa
       </div>
 
       <header className="container-site pt-8 pb-6">
-        {/* Category tags — inspired by Pure Cinema's "Documentary / Branded Content / Campaign" treatment */}
-        <div className="mb-4 flex flex-wrap items-center gap-2">
-          <span className="type-meta text-muted">{project.category}</span>
-          <span className="type-meta text-muted opacity-40">/</span>
-          <span className="type-meta text-muted">{project.format}</span>
-          <span className="type-meta text-muted opacity-40">/</span>
-          <span className="type-meta text-muted">{String(project.year)}</span>
-        </div>
-
-        {/* Client name as large headline */}
-        <p className="type-meta text-muted mb-2">{project.client}</p>
-
-        {/* Quote-style project title — inspired by Pure Cinema's large quoted subtitle */}
-        <h1 className="type-headline flex items-baseline gap-2">
-          <span className="text-muted opacity-30" aria-hidden="true">&ldquo;</span>
-          {project.title}
-          <span className="text-muted opacity-30" aria-hidden="true">&rdquo;</span>
-        </h1>
+        {project.subtitle ? (
+          <>
+            <p className="type-display mb-2 uppercase">{project.client}</p>
+            <h1 className="type-headline mb-3">{project.subtitle}</h1>
+            {project.tagline && (
+              <p className="type-meta text-muted mb-4">{project.tagline}</p>
+            )}
+            {project.headerDescription && (
+              <Reveal>
+                <p className="type-body max-w-[70ch]">{project.headerDescription}</p>
+              </Reveal>
+            )}
+          </>
+        ) : (
+          <>
+            <div className="mb-4 flex flex-wrap items-center gap-2">
+              <span className="type-meta text-muted">{project.category}</span>
+              <span className="type-meta text-muted opacity-40">/</span>
+              <span className="type-meta text-muted">{project.format}</span>
+              <span className="type-meta text-muted opacity-40">/</span>
+              <span className="type-meta text-muted">{String(project.year)}</span>
+            </div>
+            <p className="type-meta text-muted mb-2">{project.client}</p>
+            <h1 className="type-headline flex items-baseline gap-2">
+              <span className="text-muted opacity-30" aria-hidden="true">&ldquo;</span>
+              {project.title}
+              <span className="text-muted opacity-30" aria-hidden="true">&rdquo;</span>
+            </h1>
+          </>
+        )}
 
         <Reveal className="mt-6">
           <dl className="grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3 lg:grid-cols-6">
             <MetaField label="Client" value={project.client} />
-            <MetaField label="Year" value={String(project.year)} />
-            <MetaField label="Type" value={project.category} />
-            <MetaField label="Format" value={project.format} />
+            <MetaField
+              label={project.releaseDate ? "Released" : "Year"}
+              value={project.releaseDate ?? String(project.year)}
+            />
+            <MetaField label="Type" value={project.displayCategory ?? project.category} />
+            {!project.productionCompany && (
+              <MetaField label="Format" value={project.format} />
+            )}
             <MetaField label="Runtime" value={project.runtime} />
+            {project.productionCompany && (
+              <MetaField label="Production Company" value={project.productionCompany} />
+            )}
             <MetaField label="Role" value={project.role} />
           </dl>
         </Reveal>
@@ -145,10 +165,26 @@ export default async function ProjectDetailPage({ params }: { params: Promise<Pa
         <div className="md:[grid-column:7/13]">
           <h2 className="type-meta text-muted mb-3">/ About the Project</h2>
           <Reveal>
-            <p className="type-body max-w-[70ch]">{project.synopsis}</p>
+            <div className="max-w-[70ch] space-y-4">
+              {project.synopsis.split("\n\n").map((paragraph, i) => (
+                <p key={i} className="type-body">{paragraph}</p>
+              ))}
+            </div>
           </Reveal>
         </div>
       </section>
+
+      {project.studioNoteHeading && project.studioNote && (
+        <>
+          <div className="hairline" />
+          <section className="container-site pt-6 pb-6">
+            <h2 className="type-meta text-muted mb-3">/ {project.studioNoteHeading}</h2>
+            <Reveal>
+              <p className="type-body max-w-[70ch]">{project.studioNote}</p>
+            </Reveal>
+          </section>
+        </>
+      )}
 
       {project.stillImageIds && project.stillImageIds.length > 0 && (
         <section className="container-site pb-6">

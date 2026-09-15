@@ -13,12 +13,12 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: { canonical: "/team" },
   openGraph: {
-    title: "The Team — Talon Production House",
+    title: "The Team | Talon Production House",
     description: DESCRIPTION,
     url: "/team",
   },
   twitter: {
-    title: "The Team — Talon Production House",
+    title: "The Team | Talon Production House",
     description: DESCRIPTION,
   },
 };

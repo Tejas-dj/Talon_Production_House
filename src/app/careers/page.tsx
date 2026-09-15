@@ -13,11 +13,11 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: { canonical: "/careers" },
   openGraph: {
-    title: "Careers — Talon Production House",
+    title: "Careers | Talon Production House",
     description: DESCRIPTION,
     url: "/careers",
   },
-  twitter: { title: "Careers — Talon Production House", description: DESCRIPTION },
+  twitter: { title: "Careers | Talon Production House", description: DESCRIPTION },
 };
 
 const email = CONTACT_LINKS.find((c) => c.label === "Email")!;

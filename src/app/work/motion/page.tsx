@@ -13,8 +13,8 @@ export const metadata: Metadata = {
   title: "Motion",
   description: DESCRIPTION,
   alternates: { canonical: "/work/motion" },
-  openGraph: { title: "Motion — Talon Production House", description: DESCRIPTION, url: "/work/motion" },
-  twitter: { title: "Motion — Talon Production House", description: DESCRIPTION },
+  openGraph: { title: "Motion | Talon Production House", description: DESCRIPTION, url: "/work/motion" },
+  twitter: { title: "Motion | Talon Production House", description: DESCRIPTION },
 };
 
 type SearchParams = { category?: string };

@@ -14,7 +14,7 @@ export default function GlobalError({ reset }: { reset: () => void }) {
   return (
     <html lang="en">
       <head>
-        <title>Something Broke — Talon Production House</title>
+        <title>Something Broke | Talon Production House</title>
         <style>{`
           :root { --bg: #EDE7DC; --fg: #171614; --muted: #655F56; --rule: #C9C0B2; }
           @media (prefers-color-scheme: dark) {

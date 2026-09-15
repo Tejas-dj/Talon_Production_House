@@ -88,6 +88,9 @@ export function buildVideoObjectSchema(project: VideoProject) {
     duration: runtimeToIso8601(project.runtime),
     ...(playbackUrl ? { contentUrl: playbackUrl } : {}),
     ...(youtubeEmbedUrl ? { embedUrl: youtubeEmbedUrl } : playbackUrl ? { embedUrl: playbackUrl } : {}),
+    ...(project.productionCompany
+      ? { productionCompany: { "@type": "Organization", name: project.productionCompany } }
+      : {}),
   };
 }
 

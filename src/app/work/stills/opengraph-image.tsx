@@ -4,7 +4,7 @@ import { OG_CONTENT_TYPE, OG_SIZE, renderOgImageWithPhoto } from "@/lib/og-image
 
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
-export const alt = "Stills — Talon Production House";
+export const alt = "Stills | Talon Production House";
 
 // First image of the first series in content/photography.json
 // (Coastline Reverie) — a deterministic, content-driven pick rather than a

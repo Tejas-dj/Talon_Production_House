@@ -28,11 +28,11 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: { canonical: "/contact" },
   openGraph: {
-    title: "Contact — Talon Production House",
+    title: "Contact | Talon Production House",
     description: DESCRIPTION,
     url: "/contact",
   },
-  twitter: { title: "Contact — Talon Production House", description: DESCRIPTION },
+  twitter: { title: "Contact | Talon Production House", description: DESCRIPTION },
 };
 
 /* Blunt, typography-forward, no form (Bible §3.4: "Four links and nothing
