@@ -6,7 +6,7 @@
  */
 
 import { getStudioSpace } from "./content";
-import type { VideoProject } from "./content-types";
+import type { PhotoSeries, VideoProject } from "./content-types";
 import { bunnyThumbnailUrl } from "./media/bunny";
 import { cloudinaryUrl } from "./media/presets";
 import { CONTACT_LINKS, GOOGLE_MAPS_URL, SITE_URL, STUDIO_ADDRESS_PARTS } from "./site";
@@ -227,6 +227,29 @@ export function buildTeamProfileSchemas(
       },
     };
   });
+}
+
+/** ImageGallery for a photo-series detail page. */
+export function buildImageGallerySchema(series: PhotoSeries) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ImageGallery",
+    name: series.title,
+    description: series.statement,
+    url: `${SITE_URL}/work/stills/${series.slug}`,
+    numberOfItems: series.imageIds.length,
+    image: series.imageIds.map((id, i) => ({
+      "@type": "ImageObject",
+      contentUrl: cloudinaryUrl(id, "lightbox", 1600),
+      name: `${series.title}, photograph ${i + 1}`,
+    })),
+    isPartOf: {
+      "@type": "CollectionPage",
+      name: "Stills",
+      url: `${SITE_URL}/work/stills`,
+    },
+    provider: { "@id": `${SITE_URL}/#organization` },
+  };
 }
 
 /** BreadcrumbList for detail pages (motion projects, stills series). */

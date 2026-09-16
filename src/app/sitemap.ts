@@ -95,7 +95,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const photoSeriesPaths = getAllPhotoSeries().map((s) => ({
     url: `${SITE_URL}/work/stills/${s.slug}`,
-    lastModified: now,
     images: seriesImages(s),
   }));
 

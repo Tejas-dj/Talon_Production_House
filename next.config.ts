@@ -98,6 +98,16 @@ const nextConfig: NextConfig = {
     // renders at full width.
     deviceSizes: [640, 828, 1080, 1600, 1920, 2560],
   },
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "talonproductionhouse.com" }],
+        destination: "https://www.talonproductionhouse.com/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [{ source: "/:path*", headers: SECURITY_HEADERS }];
   },

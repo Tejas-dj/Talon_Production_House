@@ -5,7 +5,7 @@ import { StillsGallery, type StillsSection } from "@/components/work/StillsGalle
 import { getAllPhotoSeries, getPhotoSeriesBySlug } from "@/lib/content";
 import { cloudinaryUrl } from "@/lib/media/presets";
 import { SITE_URL } from "@/lib/site";
-import { buildBreadcrumbSchema } from "@/lib/structured-data";
+import { buildBreadcrumbSchema, buildImageGallerySchema } from "@/lib/structured-data";
 import photoDims from "../../../../../content/photo-dimensions.json";
 
 /**
@@ -81,14 +81,20 @@ export default async function PhotoSeriesPage({ params }: { params: Promise<Para
     { name: series.title, url: `${SITE_URL}/work/stills/${series.slug}` },
   ]);
 
+  const imageGallerySchema = buildImageGallerySchema(series);
+
   return (
     <article>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(imageGallerySchema) }}
+      />
       <header className="container-site pt-8 pb-6">
-        <p className="type-meta text-muted mb-2">Photography — Bengaluru</p>
+        <p className="type-meta text-muted mb-2">Photography — Bengaluru — {series.imageIds.length} photographs</p>
         <h1 className="type-display max-w-[20ch]">{series.title}</h1>
         <p className="type-subhead text-muted mt-4 max-w-[60ch]">{series.statement}</p>
       </header>

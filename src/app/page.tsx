@@ -9,7 +9,7 @@ import { ScrollRevealText } from "@/components/motion/ScrollRevealText";
 import { Marquee } from "@/components/motion/Marquee";
 import { ProjectGrid } from "@/components/work/ProjectGrid";
 import { Testimonials } from "@/components/home/Testimonials";
-import { getAllClientLogos, getAllProjects, getAllTestimonials } from "@/lib/content";
+import { getAllClientLogos, getAllPhotoSeries, getAllProjects, getAllTestimonials } from "@/lib/content";
 import { CONTACT_LINKS, waLink, WHATSAPP_GENERAL_MESSAGE } from "@/lib/site";
 import { buildServiceCatalogSchema } from "@/lib/structured-data";
 import logoDims from "../../content/logo-dimensions.json";
@@ -85,6 +85,7 @@ const CAPABILITIES = {
 export default function HomePage() {
   const allProjects = getAllProjects();
   const featured = allProjects.filter((p) => p.featured);
+  const allSeries = getAllPhotoSeries();
   const clients = getAllClientLogos();
   const testimonials = getAllTestimonials();
 
@@ -117,6 +118,38 @@ export default function HomePage() {
         <ProjectGrid projects={featured} variant="featured" />
         <Link href="/work/motion" className="link-draw type-meta mt-6 inline-block">
           All motion projects →
+        </Link>
+      </section>
+
+      {/* ── Photography series — crawlable links to each /work/stills/[slug] page ── */}
+      <div className="hairline" />
+      <section className="container-site pt-6 pb-6">
+        <div className="mb-6 flex items-baseline justify-between">
+          <h2 className="type-headline">Photography</h2>
+          <span className="type-meta text-muted">{allSeries.length} Series</span>
+        </div>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {allSeries.map((s) => (
+            <Reveal key={s.slug}>
+              <Link href={`/work/stills/${s.slug}`} className="group block">
+                <div className="relative aspect-[3/2] overflow-hidden">
+                  <CloudinaryImage
+                    id={s.imageIds[0]}
+                    preset="gallery"
+                    alt={s.title}
+                    fill
+                    loading="lazy"
+                    className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                  />
+                </div>
+                <p className="type-meta mt-2 group-hover:text-accent transition-colors">{s.title}</p>
+                <p className="type-small text-muted">{s.imageIds.length} photographs</p>
+              </Link>
+            </Reveal>
+          ))}
+        </div>
+        <Link href="/work/stills" className="link-draw type-meta mt-6 inline-block">
+          All photography →
         </Link>
       </section>
 
