@@ -52,12 +52,22 @@ function projectImage(project: { posterImageId?: string; bunnyVideoId: string })
   return cloudinaryUrl(posterId, "poster", IMAGE_WIDTH);
 }
 
+function projectLastModified(p: { releaseDate?: string; year: number }): Date {
+  if (p.releaseDate) {
+    const parsed = new Date(p.releaseDate);
+    if (!Number.isNaN(parsed.getTime())) return parsed;
+  }
+  return new Date(`${p.year}-01-01`);
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const imagesByPath: Record<string, string[]> = {
     "/work/stills": stillsImages(),
     "/studio": studioImages(),
     "/team": teamImages(),
   };
+
+  const now = new Date();
 
   const staticPaths = [
     "",
@@ -70,15 +80,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/terms",
   ].map((path) => {
     const images = imagesByPath[path];
-    return { url: `${SITE_URL}${path}`, ...(images?.length ? { images } : {}) };
+    return {
+      url: `${SITE_URL}${path}`,
+      lastModified: now,
+      ...(images?.length ? { images } : {}),
+    };
   });
+
   const projectPaths = getAllProjects().map((p) => ({
     url: `${SITE_URL}/work/motion/${p.slug}`,
+    lastModified: projectLastModified(p),
     images: [projectImage(p)],
   }));
 
   const photoSeriesPaths = getAllPhotoSeries().map((s) => ({
     url: `${SITE_URL}/work/stills/${s.slug}`,
+    lastModified: now,
     images: seriesImages(s),
   }));
 
