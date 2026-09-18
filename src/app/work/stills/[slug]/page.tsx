@@ -94,7 +94,7 @@ export default async function PhotoSeriesPage({ params }: { params: Promise<Para
         dangerouslySetInnerHTML={{ __html: JSON.stringify(imageGallerySchema) }}
       />
       <header className="container-site pt-8 pb-6">
-        <p className="type-meta text-muted mb-2">Photography — Bengaluru — {series.imageIds.length} photographs</p>
+        <p className="type-meta text-muted mb-2">Photography / Bengaluru / {series.imageIds.length} photographs</p>
         <h1 className="type-display max-w-[20ch]">{series.title}</h1>
         <p className="type-subhead text-muted mt-4 max-w-[60ch]">{series.statement}</p>
       </header>

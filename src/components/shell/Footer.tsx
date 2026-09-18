@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
 import { FiMail, FiMapPin } from "react-icons/fi";
-import { getAllPhotoSeries } from "@/lib/content";
 import {
   CREDIT,
   CONTACT_LINKS,
@@ -34,8 +33,6 @@ const FOOTER_SOCIAL_LINKS = [
 
 const MARQUEE_TEXT = "Production House · Bengaluru";
 const MARQUEE_SEPARATOR = "   /   ";
-
-const photoSeries = getAllPhotoSeries();
 
 export function Footer() {
   return (
@@ -80,19 +77,6 @@ export function Footer() {
                   <li key={item.href}>
                     <Link href={item.href} className="link-draw type-meta">
                       {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-
-            <nav aria-label="Photography">
-              <p className="type-meta text-muted mb-3">Photography</p>
-              <ul className="flex flex-col gap-2">
-                {photoSeries.map((s) => (
-                  <li key={s.slug}>
-                    <Link href={`/work/stills/${s.slug}`} className="link-draw type-small">
-                      {s.title}
                     </Link>
                   </li>
                 ))}
