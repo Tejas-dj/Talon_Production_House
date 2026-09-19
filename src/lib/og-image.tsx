@@ -115,7 +115,7 @@ export function renderOgImage(pageLabel: string) {
  * card, per Google/social's preference for real photos in og:image /
  * primaryImageOfPage. Satori/ImageResponse has no next/image pipeline, so
  * the photo is fetched at request time via a plain `<img src>` — verified
- * against this project's real Cloudinary delivery URLs (dev server request
+ * against this project's real R2 CDN delivery URLs (dev server request
  * + network log), not assumed. Two scrims (top for the label, bottom for
  * the wordmark, both plain black-to-transparent linear-gradients — one of
  * the few gradient forms Satori supports) keep text legible over an

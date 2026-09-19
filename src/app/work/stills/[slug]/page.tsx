@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StillsGallery, type StillsSection } from "@/components/work/StillsGallery";
 import { getAllPhotoSeries, getPhotoSeriesBySlug } from "@/lib/content";
-import { cloudinaryUrl } from "@/lib/media/presets";
+import { cdnImageUrl } from "@/lib/media/presets";
 import { SITE_URL } from "@/lib/site";
 import { buildBreadcrumbSchema, buildImageGallerySchema } from "@/lib/structured-data";
 import photoDims from "../../../../../content/photo-dimensions.json";
@@ -42,7 +42,7 @@ export async function generateMetadata({
 
   const description = truncateDescription(series.statement);
   const ogTitle = `${series.title} | Talon Production House`;
-  const ogImage = cloudinaryUrl(series.imageIds[0], "ogImage", 1200);
+  const ogImage = cdnImageUrl(series.imageIds[0]);
 
   return {
     title: series.title,

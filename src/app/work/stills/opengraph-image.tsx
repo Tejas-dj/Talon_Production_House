@@ -1,5 +1,5 @@
 import { getAllPhotoSeries } from "@/lib/content";
-import { cloudinaryUrl } from "@/lib/media/presets";
+import { cdnImageUrl } from "@/lib/media/presets";
 import { OG_CONTENT_TYPE, OG_SIZE, renderOgImageWithPhoto } from "@/lib/og-image";
 
 export const size = OG_SIZE;
@@ -12,6 +12,6 @@ export const alt = "Stills | Talon Production House";
 // end of the file.
 export default function Image() {
   const [firstSeries] = getAllPhotoSeries();
-  const photoUrl = cloudinaryUrl(firstSeries.imageIds[0], "ogImage", 1200);
+  const photoUrl = cdnImageUrl(firstSeries.imageIds[0]);
   return renderOgImageWithPhoto("Stills", photoUrl);
 }

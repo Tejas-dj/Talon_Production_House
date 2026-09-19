@@ -66,10 +66,10 @@ export interface VideoProject {
   studioNoteHeading?: string;
   /** Body text for the studio note */
   studioNote?: string;
-  /** Cloudinary public id. Omit if no real poster still exists yet — falls
+  /** R2 object path. Omit if no real poster still exists yet — falls
    * back to Bunny Stream's own auto-generated thumbnail (src/lib/media/bunny.ts). */
   posterImageId?: string;
-  /** Cloudinary public ids, 2–3 stills per the wireframes. Omit/empty when no
+  /** R2 object paths, 2–3 stills per the wireframes. Omit/empty when no
    * real production stills exist yet — the Stills section is hidden. */
   stillImageIds?: string[];
 }
@@ -80,7 +80,7 @@ export interface PhotoSeries {
   title: string;
   /** Curatorial one-liner, [60–110 ch] */
   statement: string;
-  /** Cloudinary public ids. Images carry no captions (Bible §3.4). */
+  /** R2 object paths. Images carry no captions (Bible §3.4). */
   imageIds: string[];
 }
 
@@ -121,7 +121,7 @@ export interface Testimonial {
 export interface ClientLogo {
   /** [4–24 ch], used as alt text */
   name: string;
-  /** Cloudinary public id, monochrome-treatable SVG/PNG */
+  /** R2 object path, monochrome-treatable SVG/PNG */
   logoId: string;
 }
 

@@ -1,7 +1,7 @@
 [
-  { "name": "The 11th Bean", "logoId": "11thBean_LOGO_yo4vuq" },
-  { "name": "Skills Beyond Education", "logoId": "SkillsBeyondEducation_LOGO_zzfxu5" },
-  { "name": "Eva Chemilinks", "logoId": "EvaChemilinks_LOGO_ifghhm" },
-  { "name": "Furnishka", "logoId": "Furnishka_LOGO_ss39de" },
-  { "name": "Livspace", "logoId": "Livspace_LOGO_t2rboi" }
+  { "name": "The 11th Bean", "logoId": "Client_Logos/11thBean_LOGO.png" },
+  { "name": "Skills Beyond Education", "logoId": "Client_Logos/SkillsBeyondEducation_LOGO.png" },
+  { "name": "Eva Chemilinks", "logoId": "Client_Logos/EvaChemilinks_LOGO.png" },
+  { "name": "Furnishka", "logoId": "Client_Logos/Furnishka_LOGO.png" },
+  { "name": "Livspace", "logoId": "Client_Logos/Livspace_LOGO.png" }
 ]

@@ -8,7 +8,7 @@
 import { getStudioSpace } from "./content";
 import type { PhotoSeries, VideoProject } from "./content-types";
 import { bunnyThumbnailUrl } from "./media/bunny";
-import { cloudinaryUrl } from "./media/presets";
+import { cdnImageUrl } from "./media/presets";
 import { CONTACT_LINKS, GOOGLE_MAPS_URL, SITE_URL, STUDIO_ADDRESS_PARTS } from "./site";
 
 const ORG_ID = `${SITE_URL}/#organization`;
@@ -40,7 +40,7 @@ export function buildLocalBusinessSchema() {
     "@id": `${SITE_URL}/#local-business`,
     name: "Talon Production House",
     url: SITE_URL,
-    image: cloudinaryUrl(studio.heroImageId, "hero", 1200),
+    image: cdnImageUrl(studio.heroImageId),
     telephone: phone?.handle,
     address: {
       "@type": "PostalAddress",
@@ -57,14 +57,14 @@ export function buildLocalBusinessSchema() {
 
 /**
  * VideoObject for a project detail page. thumbnailUrl mirrors the same
- * posterImageId -> Cloudinary, else Bunny-thumbnail fallback already used by
+ * posterImageId -> R2 CDN, else Bunny-thumbnail fallback already used by
  * the page's own generateMetadata. contentUrl/embedUrl are only included
  * when the Bunny pull zone is configured — mirrors bunnyThumbnailUrl's own
  * graceful-omission pattern rather than throwing.
  */
 export function buildVideoObjectSchema(project: VideoProject) {
   const thumbnailUrl = project.posterImageId
-    ? cloudinaryUrl(project.posterImageId, "ogImage", 1200)
+    ? cdnImageUrl(project.posterImageId)
     : (bunnyThumbnailUrl(project.bunnyVideoId) ?? "");
 
   const pullZone = process.env.NEXT_PUBLIC_BUNNY_PULL_ZONE;
@@ -222,7 +222,7 @@ export function buildTeamProfileSchemas(
         description: leader.bio,
         worksFor: { "@id": ORG_ID },
         ...(leader.portraitId
-          ? { image: cloudinaryUrl(leader.portraitId, "portraitCard", 800) }
+          ? { image: cdnImageUrl(leader.portraitId) }
           : {}),
       },
     };
@@ -240,7 +240,7 @@ export function buildImageGallerySchema(series: PhotoSeries) {
     numberOfItems: series.imageIds.length,
     image: series.imageIds.map((id, i) => ({
       "@type": "ImageObject",
-      contentUrl: cloudinaryUrl(id, "lightbox", 1600),
+      contentUrl: cdnImageUrl(id),
       name: `${series.title}, photograph ${i + 1}`,
     })),
     isPartOf: {

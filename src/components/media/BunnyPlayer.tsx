@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
-import { bunnyPosterCloudinaryId } from "@/lib/media/bunny";
+import { bunnyThumbnailUrl } from "@/lib/media/bunny";
 
 const playlistCache = new Map<string, Promise<string>>();
 
@@ -82,9 +82,9 @@ type BunnyPlayerProps = {
   videoId: string;
   /** Accessible label / used as the poster alt text */
   title: string;
-  /** Cloudinary public id for the poster frame; falls back to the video's
-   *  synced Bunny-thumbnail-in-Cloudinary copy if omitted (see
-   *  bunnyPosterCloudinaryId in src/lib/media/bunny.ts) */
+  /** R2 object path for the poster frame; falls back to Bunny Stream's own
+   *  auto-generated thumbnail (bunnyThumbnailUrl in src/lib/media/bunny.ts)
+   *  rendered as a plain image if omitted */
   posterImageId?: string;
   /** Hero use: silent, looping, autoplaying background video. Default: tap-to-play with sound. */
   autoPlayMuted?: boolean;
@@ -138,7 +138,7 @@ export function BunnyPlayer({
 
   const pullZone = process.env.NEXT_PUBLIC_BUNNY_PULL_ZONE;
   const hlsSrc = pullZone ? `https://${pullZone}.b-cdn.net/${videoId}/playlist.m3u8` : undefined;
-  const effectivePosterId = posterImageId ?? bunnyPosterCloudinaryId(videoId);
+  const bunnyThumbSrc = bunnyThumbnailUrl(videoId);
 
   // Autoplay-preview instances that report their own viewport/hover state
   // via `active` (e.g. VideoWithOverlay's `active={inView}`) shouldn't start
@@ -342,9 +342,9 @@ export function BunnyPlayer({
         aria-label={title}
         className="h-full w-full object-cover"
       />
-      {showPoster && (
+      {showPoster && posterImageId && (
         <CloudinaryImage
-          id={effectivePosterId}
+          id={posterImageId}
           preset="poster"
           alt=""
           aria-hidden="true"
@@ -353,6 +353,19 @@ export function BunnyPlayer({
           onLoad={() => setPosterLoaded(true)}
           onError={() => setPosterLoaded(true)}
           className={`absolute inset-0 object-cover transition-opacity duration-[320ms] ease-veil ${
+            videoPlaying ? "pointer-events-none opacity-0" : "opacity-100"
+          }`}
+        />
+      )}
+      {showPoster && !posterImageId && bunnyThumbSrc && (
+        // eslint-disable-next-line @next/next/no-img-element -- Bunny's raw thumbnail is full video resolution, not a responsive asset next/image should optimize.
+        <img
+          src={bunnyThumbSrc}
+          alt=""
+          aria-hidden="true"
+          onLoad={() => setPosterLoaded(true)}
+          onError={() => setPosterLoaded(true)}
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[320ms] ease-veil ${
             videoPlaying ? "pointer-events-none opacity-0" : "opacity-100"
           }`}
         />

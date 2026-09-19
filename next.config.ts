@@ -12,7 +12,7 @@ import type { NextConfig } from "next";
  * - script-src 'unsafe-eval' is added in development only: React/Turbopack
  *   use eval() in dev to reconstruct server error stacks in the browser.
  *   Neither React nor Next.js use eval() in production.
- * - img-src/media-src/connect-src allow Cloudinary and Bunny's CDN
+ * - img-src/media-src/connect-src allow the R2 CDN and Bunny's CDN
  *   (`*.b-cdn.net` covers both the pull-zone hostname used for HLS
  *   playback/thumbnails and hls.js's own segment fetches).
  * - media-src MUST include `blob:`. Every browser without native HLS
@@ -53,12 +53,12 @@ const CSP = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://*.clarity.ms https://c.bing.com${isDev ? " 'unsafe-eval' https://va.vercel-scripts.com" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' https://res.cloudinary.com https://*.b-cdn.net https://*.clarity.ms https://c.bing.com",
+  "img-src 'self' https://cdn.talonproductionhouse.com https://*.b-cdn.net https://*.clarity.ms https://c.bing.com",
   "media-src 'self' blob: https://*.b-cdn.net",
-  // res.cloudinary.com here (not just in img-src) so the <link rel="preconnect">
-  // in the root layout is allowed — preconnect/dns-prefetch resource hints are
-  // governed by connect-src, not img-src.
-  "connect-src 'self' https://res.cloudinary.com https://*.b-cdn.net https://www.googletagmanager.com https://*.google-analytics.com https://*.clarity.ms https://c.bing.com",
+  // cdn.talonproductionhouse.com here (not just in img-src) so the
+  // <link rel="preconnect"> in the root layout is allowed — preconnect/dns-prefetch
+  // resource hints are governed by connect-src, not img-src.
+  "connect-src 'self' https://cdn.talonproductionhouse.com https://*.b-cdn.net https://www.googletagmanager.com https://*.google-analytics.com https://*.clarity.ms https://c.bing.com",
   "font-src 'self'",
   "worker-src 'self' blob:",
   "frame-src https://www.google.com https://maps.google.com",
@@ -89,14 +89,11 @@ const nextConfig: NextConfig = {
   images: {
     loader: "custom",
     loaderFile: "./src/lib/cloudinary-loader.ts",
-    // Trimmed from Next's default (…1920, 2048, 3840) — these source photos
-    // are huge (~7000px wide), so every extra bucket is another distinct
-    // Cloudinary derived asset that has to be generated from scratch (a
-    // couple of seconds) the first time anyone's viewport lands on it.
-    // Fewer buckets means visitors share a warm cache more often; 2560 still
-    // covers a 2x-retina 1280px layout, well past what any preset here
-    // renders at full width.
-    deviceSizes: [640, 828, 1080, 1600, 1920, 2560],
+    // R2 serves pre-optimized images directly — no on-the-fly transforms —
+    // so Next.js/Vercel's own image optimization pipeline is unused. The
+    // loaderFile above is now a pass-through and `unoptimized` skips the
+    // Vercel optimizer entirely.
+    unoptimized: true,
   },
   async redirects() {
     return [

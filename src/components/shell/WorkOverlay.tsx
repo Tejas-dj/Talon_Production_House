@@ -3,17 +3,16 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { BunnyPlayer } from "@/components/media/BunnyPlayer";
-import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { StillsPreviewCarousel, STILLS_CAROUSEL_IDS } from "@/components/work/StillsPreviewCarousel";
 import { ThemeToggle } from "@/components/shell/ThemeToggle";
-import { bunnyPosterCloudinaryId } from "@/lib/media/bunny";
+import { bunnyThumbnailUrl } from "@/lib/media/bunny";
 import { useDialogBehavior } from "@/lib/use-dialog";
 import {
   HERO_BUNNY_VIDEO_ID,
   WORK_OVERLAY_MOBILE_MOTION_BUNNY_VIDEO_ID,
   WORK_OVERLAY_MOTION_PREVIEW_BUNNY_VIDEO_ID,
 } from "@/lib/site";
-import { CLOUDINARY_PRESETS } from "@/lib/media/presets";
+import { cdnImageUrl } from "@/lib/media/presets";
 
 type WorkOverlayProps = {
   id: string;
@@ -39,15 +38,12 @@ export function WorkOverlay({ id, open, onClose }: WorkOverlayProps) {
 
   useEffect(() => {
     if (!open) return;
-    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-    if (!cloudName) return;
-    const { transform } = CLOUDINARY_PRESETS.portraitCard;
     const links: HTMLLinkElement[] = [];
     for (const id of STILLS_CAROUSEL_IDS.flat()) {
       const link = document.createElement("link");
       link.rel = "prefetch";
       link.as = "image";
-      link.href = `https://res.cloudinary.com/${cloudName}/image/upload/${transform},q_auto,w_640/${id}`;
+      link.href = cdnImageUrl(id);
       document.head.appendChild(link);
       links.push(link);
     }
@@ -94,18 +90,20 @@ export function WorkOverlay({ id, open, onClose }: WorkOverlayProps) {
               transition: "transform 180ms var(--ease-shift)",
             }}
           >
-            {open && (
-              <div className="absolute inset-0">
-                <CloudinaryImage
-                  id={bunnyPosterCloudinaryId(WORK_OVERLAY_MOBILE_MOTION_BUNNY_VIDEO_ID)}
-                  preset="thumbnail"
-                  alt=""
-                  aria-hidden="true"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            )}
+            {open && (() => {
+              const thumbSrc = bunnyThumbnailUrl(WORK_OVERLAY_MOBILE_MOTION_BUNNY_VIDEO_ID);
+              return thumbSrc ? (
+                <div className="absolute inset-0">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- Bunny's raw thumbnail is full video resolution, not a responsive asset next/image should optimize. */}
+                  <img
+                    src={thumbSrc}
+                    alt=""
+                    aria-hidden="true"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              ) : null;
+            })()}
             <div className="work-card-scrim absolute inset-0" />
 
             <div className="relative z-10 mt-auto flex items-end justify-between p-4">

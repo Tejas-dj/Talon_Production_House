@@ -6,7 +6,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { ProjectStillsGallery } from "@/components/work/ProjectStillsGallery";
 import { getAllProjects, getProjectBySlug } from "@/lib/content";
 import { bunnyThumbnailUrl } from "@/lib/media/bunny";
-import { cloudinaryUrl } from "@/lib/media/presets";
+import { cdnImageUrl } from "@/lib/media/presets";
 import { SITE_URL } from "@/lib/site";
 import { buildBreadcrumbSchema, buildVideoObjectSchema } from "@/lib/structured-data";
 
@@ -34,7 +34,7 @@ export async function generateMetadata({
   const description = truncateDescription(project.synopsis);
   const ogTitle = `${project.title} | Talon Production House`;
   const ogImage = project.posterImageId
-    ? cloudinaryUrl(project.posterImageId, "ogImage", 1200)
+    ? cdnImageUrl(project.posterImageId)
     : (bunnyThumbnailUrl(project.bunnyVideoId) ?? "");
 
   return {

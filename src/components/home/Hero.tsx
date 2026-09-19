@@ -32,7 +32,7 @@ export function Hero() {
       className="relative h-[100vh] w-full overflow-hidden bg-surface [clip-path:polygon(0_0,100%_0,100%_100%,0_90%)] -mt-(--header-height)"
     >
       {/* Logo title card — paints from HTML/CSS with zero network wait,
-          making it the LCP element instead of the Cloudinary poster.
+          making it the LCP element instead of the video poster.
           Sits behind the video so it's naturally covered once playback
           starts; the scrim tints it slightly until then. */}
       <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">

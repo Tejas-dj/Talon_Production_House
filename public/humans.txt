@@ -10,7 +10,7 @@ Location: Bengaluru, India
 /* SITE */
 Last update: 2026/08/18
 Language: English
-Built with: Next.js, React, Vercel, Cloudinary, Bunny Stream
+Built with: Next.js, React, Vercel, Cloudflare R2, Bunny Stream
 
 /* THANKS */
 Design & Development: CobaltKite Creatives

@@ -10,7 +10,7 @@ import { PrefetchStills } from "@/components/shell/PrefetchStills";
 import { SkipLink } from "@/components/shell/SkipLink";
 import { ThemeProvider } from "@/components/shell/ThemeProvider";
 import { getAllPhotoSeries } from "@/lib/content";
-import { cloudinaryUrl } from "@/lib/media/presets";
+import { cdnImageUrl } from "@/lib/media/presets";
 import { SITE_URL } from "@/lib/site";
 import { buildOrganizationSchema } from "@/lib/structured-data";
 import "./globals.css";
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
 const stillsPrefetchUrls = getAllPhotoSeries()
   .flatMap((s) => s.imageIds)
   .slice(0, 8)
-  .map((id) => cloudinaryUrl(id, "gallery", 640));
+  .map((id) => cdnImageUrl(id));
 
 const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 const clarityProjectId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
@@ -87,11 +87,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(buildOrganizationSchema()) }}
         />
         <link rel="author" href="/humans.txt" />
-        {/* Warms the connection to Cloudinary before the first image is
+        {/* Warms the connection to the R2 CDN before the first image is
             requested — saves the DNS/TLS handshake (~100-300ms) off the
             very first Stills thumbnail or Lightbox open on a page load. */}
-        <link rel="preconnect" href="https://res.cloudinary.com" />
-        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="preconnect" href="https://cdn.talonproductionhouse.com" />
+        <link rel="dns-prefetch" href="https://cdn.talonproductionhouse.com" />
         {process.env.NEXT_PUBLIC_BUNNY_PULL_ZONE && (
           <>
             <link rel="preconnect" href={`https://${process.env.NEXT_PUBLIC_BUNNY_PULL_ZONE}.b-cdn.net`} />

@@ -1,37 +1,32 @@
 "use client";
 
 import Image, { type ImageProps } from "next/image";
-import { CLOUDINARY_PRESETS, type CloudinaryPresetName } from "@/lib/media/presets";
+import { IMAGE_PRESETS, type ImagePresetName } from "@/lib/media/presets";
+import { r2Url } from "@/lib/r2";
 
 type CloudinaryImageProps = Omit<ImageProps, "src" | "loader" | "sizes"> & {
-  /** Cloudinary public id (no leading slash, no extension) */
+  /** R2 object path (e.g. "Faces_In_Frame/Faces_In_Frame_pic_1.webp") */
   id: string;
-  preset: CloudinaryPresetName;
+  preset: ImagePresetName;
   sizes?: string;
 };
 
 /**
- * The only way Phase 3 should render a Cloudinary image: pick a preset by
- * name (src/lib/media/presets.ts), never compose a transform string inline.
- * Wraps next/image with a per-instance loader bound to the chosen preset, so
- * the responsive srcset still gets the preset's crop/aspect, not just the
- * plain default from the global loaderFile.
+ * The only way Phase 3 should render a CDN image: pick a preset by name
+ * (src/lib/media/presets.ts), never compose a URL inline. Images are served
+ * directly from R2 (pre-optimized, no on-the-fly transforms), so this just
+ * passes the R2 URL through to next/image with `unoptimized`.
  */
 export function CloudinaryImage({ id, preset, sizes, alt, ...imageProps }: CloudinaryImageProps) {
-  const presetConfig = CLOUDINARY_PRESETS[preset];
-
-  function loader({ width, quality }: { src: string; width: number; quality?: number }) {
-    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-    if (!cloudName) {
-      throw new Error(
-        "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME is not set — see .env.example and Step 7 of AGENTS.md.",
-      );
-    }
-    const q = quality ?? "auto";
-    return `https://res.cloudinary.com/${cloudName}/image/upload/${presetConfig.transform},q_${q},f_auto,w_${width}/${id}`;
-  }
+  const presetConfig = IMAGE_PRESETS[preset];
 
   return (
-    <Image loader={loader} src={id} alt={alt} sizes={sizes ?? presetConfig.sizes} {...imageProps} />
+    <Image
+      src={r2Url(id)}
+      alt={alt}
+      sizes={sizes ?? presetConfig.sizes}
+      unoptimized
+      {...imageProps}
+    />
   );
 }

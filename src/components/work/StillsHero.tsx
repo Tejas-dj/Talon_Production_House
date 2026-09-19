@@ -4,7 +4,7 @@ import { SplitText } from "@/components/motion/SplitText";
 
 const ALT = "Stills photography by Talon Production House";
 
-/* Curated pull from Cloudinary's Talon_Production_House/Curated_Pics folder —
+/* Curated pull from R2's Curated_Pics folder —
    a fixed hand-picked set (not editorial content), so it lives here rather
    than in content/photography.json (same precedent as ProjectStillsGallery's
    STILLS_CAROUSEL_IDS). One continuous fanned arc: rotation increases and
@@ -15,13 +15,12 @@ const ALT = "Stills photography by Talon Production House";
    percentage math got wrong once card width stopped scaling with the
    container) always lands on the container's centre, at any viewport width. */
 const ARC = [
-  { id: "WhatsApp_Image_2026-08-06_at_19.47.49_xirljp", rotate: -18, rise: 0 },
-  { id: "ADJ07054_yply4r_lksuto", rotate: -12, rise: 30 },
-  { id: "INDYVARNA_MAY_OUTFIT-48_nblnu5_ez1nea", rotate: -6, rise: 48 },
-  { id: "sakshi_pic-03_4_11zon_lcekqh", rotate: 0, rise: 54 },
-  { id: "INDYVARNA_MAY_OUTFIT-9_o4h0lg_ow1qrg", rotate: 6, rise: 48 },
-  { id: "INDYVARNA_MAY_OUTFIT-38_kklx8c_xsd0g2", rotate: 12, rise: 30 },
-  { id: "VInita_Portfolio-7_n4zde7_vdmj6v", rotate: 18, rise: 0 },
+  { id: "Curated_Pics/Curated_pic_1.webp", rotate: -18, rise: 0 },
+  { id: "Curated_Pics/Curated_pic_2.webp", rotate: -12, rise: 30 },
+  { id: "Curated_Pics/Curated_pic_3.webp", rotate: -6, rise: 48 },
+  { id: "Curated_Pics/Curated_pic_4.webp", rotate: 0, rise: 54 },
+  { id: "Curated_Pics/Curated_pic_5.webp", rotate: 6, rise: 48 },
+  { id: "Curated_Pics/Curated_pic_6.webp", rotate: 12, rise: 30 },
 ];
 
 /* Pure-vw sizing (not a px-heavy clamp) so the arc keeps claiming the same

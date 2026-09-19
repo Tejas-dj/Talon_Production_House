@@ -2,7 +2,6 @@
 
 import { useRef, useState, useEffect } from "react";
 import { CloudinaryImage } from "@/components/media/CloudinaryImage";
-import { cloudinaryBlurPlaceholder } from "@/lib/media/presets";
 import { getPhotoAlt } from "@/lib/media/photo-alt-text";
 import { useDialogBehavior } from "@/lib/use-dialog";
 
@@ -26,16 +25,9 @@ type LightboxProps = {
  * actually picks at render time, so the "preload" was landing on a URL the
  * browser never reused, and prev/next paid full price anyway. Same
  * component, same props, same URL: a guaranteed cache hit on navigation.
- *
- * A blurred ~32px stand-in (cloudinaryBlurPlaceholder) covers the gap while
- * the full-res image loads — mainly for the very first image opened, before
- * any neighbor has had a chance to preload, and for whichever image a
- * Cloudinary derived size is being requested for the first time ever (cold
- * transform cache, can take a couple of seconds on these source photos).
  */
 export function Lightbox({ images, initialIndex, onClose, altPrefix }: LightboxProps) {
   const [index, setIndex] = useState(initialIndex);
-  const [loadedIndex, setLoadedIndex] = useState<Record<number, boolean>>({});
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
   const total = images.length;
@@ -110,16 +102,6 @@ export function Lightbox({ images, initialIndex, onClose, altPrefix }: LightboxP
       )}
 
       <div className="relative max-h-[70vh] max-w-full md:max-h-[80vh]">
-        {!loadedIndex[index] && (
-          // eslint-disable-next-line @next/next/no-img-element -- deliberately bypasses next/image: a fixed tiny blurred URL, not a responsive asset.
-          <img
-            src={cloudinaryBlurPlaceholder(images[index])}
-            alt=""
-            aria-hidden="true"
-            className="absolute inset-0 h-full max-h-[70vh] w-full max-w-[85vw] scale-105 object-contain blur-lg md:max-h-[80vh]"
-          />
-        )}
-
         <CloudinaryImage
           key={images[index]}
           id={images[index]}
@@ -128,7 +110,6 @@ export function Lightbox({ images, initialIndex, onClose, altPrefix }: LightboxP
           width={1600}
           height={1067}
           preload
-          onLoad={() => setLoadedIndex((prev) => ({ ...prev, [index]: true }))}
           className="relative max-h-[70vh] w-auto max-w-[85vw] object-contain md:max-h-[80vh]"
         />
 

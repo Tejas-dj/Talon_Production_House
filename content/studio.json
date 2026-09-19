@@ -3,10 +3,10 @@
     "slug": "talon-studio",
     "name": "Talon Studio",
     "location": "J. P. Nagar, Bengaluru",
-    "heroImageId": "for_website._xxez5y",
+    "heroImageId": "Studio_Images/Studio_Images_pic_1.jpg",
     "galleryImageIds": [
-      "for_website_rduid3",
-      "for_website_2_cjl790"
+      "Studio_Images/Studio_Images_pic_2.jpg",
+      "Studio_Images/Studio_Images_pic_3.jpg"
     ],
     "specs": {
       "backdrops": [

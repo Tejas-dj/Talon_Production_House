@@ -3,25 +3,25 @@ import { Marquee } from "@/components/motion/Marquee";
 
 export const STILLS_CAROUSEL_IDS: string[][] = [
   [
-    "VInita_Portfolio-7_n4zde7",
-    "IMG_9807_cmlxe0",
-    "shradha_team-15_m65ytx",
-    "VInita_Portfolio-2_tpuqzu",
-    "shradha_team-04_oqfoyr",
+    "Faces_In_Frame/Faces_In_Frame_pic_1.webp",
+    "Coastline_Reverie/Coastline_Reverie_pic_3.webp",
+    "The_Ensemble/The_Ensemble_pic_1.webp",
+    "Faces_In_Frame/Faces_In_Frame_pic_2.webp",
+    "Behind_The_Hymn/Behind_The_Hymn_pic_1.webp",
   ],
   [
-    "INDYVARNA_MAY_OUTFIT-35_uitdki",
-    "INDYVARNA_MAY_OUTFIT-32_e0so2k",
-    "INDYVARNA_MAY_OUTFIT-3_iebzbv",
-    "INDYVARNA_MAY_OUTFIT-29_qbas1k",
-    "INDYVARNA_MAY_OUTFIT-26_c3pgbu",
+    "Coastline_Reverie/Coastline_Reverie_pic_5.webp",
+    "Draped_In_Legacy/Draped_In_Legacy_pic_1.webp",
+    "Faces_In_Frame/Faces_In_Frame_pic_7.webp",
+    "Coastline_Reverie/Coastline_Reverie_pic_7.webp",
+    "The_Ensemble/The_Ensemble_pic_3.webp",
   ],
   [
-    "DSC01254_s11rej",
-    "DSC00950_ddrpto",
-    "BEACH_1-19_hxysdl",
-    "BEACH_1-15_xffqol",
-    "BEACH_1-12_jaxcxw",
+    "Faces_In_Frame/Faces_In_Frame_pic_9.webp",
+    "Behind_The_Hymn/Behind_The_Hymn_pic_2.webp",
+    "Coastline_Reverie/Coastline_Reverie_pic_1.webp",
+    "Draped_In_Legacy/Draped_In_Legacy_pic_2.webp",
+    "Faces_In_Frame/Faces_In_Frame_pic_8.webp",
   ],
 ];
 

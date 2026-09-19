@@ -6,14 +6,21 @@ import { CloudinaryImage } from "@/components/media/CloudinaryImage";
 import { BunnyPlayer } from "@/components/media/BunnyPlayer";
 import { Reveal } from "@/components/motion/Reveal";
 import { ReelLightbox } from "@/components/work/ReelLightbox";
-import { bunnyPosterCloudinaryId } from "@/lib/media/bunny";
+import { bunnyThumbnailUrl } from "@/lib/media/bunny";
 import type { VideoProject } from "@/lib/content-types";
 
 function ProjectThumb({ project, className }: { project: VideoProject; className: string }) {
   const alt = `${project.title}, ${project.category.toLowerCase()} for ${project.client}`;
-  const posterId = project.posterImageId ?? bunnyPosterCloudinaryId(project.bunnyVideoId);
+  if (project.posterImageId) {
+    return (
+      <CloudinaryImage id={project.posterImageId} preset="thumbnail" alt={alt} fill className={className} />
+    );
+  }
+  const thumbSrc = bunnyThumbnailUrl(project.bunnyVideoId);
+  if (!thumbSrc) return null;
   return (
-    <CloudinaryImage id={posterId} preset="thumbnail" alt={alt} fill className={className} />
+    // eslint-disable-next-line @next/next/no-img-element -- Bunny's raw thumbnail is full video resolution, not a responsive asset next/image should optimize.
+    <img src={thumbSrc} alt={alt} className={`h-full w-full ${className}`} />
   );
 }
 
