@@ -903,3 +903,57 @@ session's tooling could not actually produce.
   (was `360x640`), detail page `currentTime` advancing 0 → 2.45s, home hero buffered 32s at
   `1280x720`, and zero `securitypolicyviolation` events across all of it. `tsc --noEmit`, `eslint`,
   and `next build` clean.
+
+---
+
+## Maintenance notice dialog (sitewide)
+
+- **What it is.** A dialog that opens itself 900ms after the first page load of a session
+  (`src/components/shell/MaintenanceNotice.tsx`, mounted in `layout.tsx`): says plainly that parts
+  of the site are still being rebuilt, points at `/contact`, and gives the second half of the panel
+  to the newest release — Jhumki, autoplaying silent, with an unmute cue.
+- **Session-scoped, not per-navigation and not forever.** `sessionStorage` is the middle setting:
+  `localStorage` would hide the notice from a returning visitor who never read it, and re-opening on
+  every route change would make it an advert rather than a notice. A blocked/private-mode storage
+  read falls through to showing it — a notice shown twice is a smaller failure than one never shown.
+- **Mounted in `layout.tsx`, deliberately outside `template.tsx`.** `PageTransition`'s `clip-path`
+  makes its wrapper the containing block for every `position: fixed` descendant until the reveal
+  finishes (documented in `PageTransition.tsx`); a dialog mounted under it would be trapped in that
+  local stacking context. Mounting beside `Footer` also means dismissal survives client-side
+  navigation, because the component never unmounts.
+- **`useDialogBehavior` rather than a second implementation.** Escape, focus trap, scroll lock and
+  focus restore come from the same hook `Lightbox` and `ReelLightbox` use, so the site has one
+  dialog contract rather than three. `z-50` matches the other two; `bg-scrim` + `backdrop-blur-md`
+  matches `Lightbox` exactly.
+- **`backdrop-blur-md` on the scrim, against the letter of AI-tell item 10.** That item's target is
+  glassmorphism as a *surface* treatment: translucent frosted panels. Here the panel itself is fully
+  opaque `--surface` and only the page behind the scrim blurs, which is what gives the dark theme a
+  visible panel edge at all (near-black panel, near-black scrim, black page). It is also exactly
+  what `Lightbox` already does, with the same `bg-scrim backdrop-blur-md` pair, so the alternative
+  was two different scrim treatments on the same site. Noted here so the next kill-list pass reads
+  this as a decision rather than a regression.
+- **Panel is `--surface`, not `--bg`.** §4.4's "one step of elevation, used only where content is
+  grouped" is precisely what a dialog is, and on the dark theme it is what separates the panel from
+  a pure-black page behind a near-black scrim. Nothing inside it is a second surface. The panel's
+  only border is a 1px `--rule` hairline; no radius, no shadow.
+- **`BunnyPlayer` gained an optional `muted` prop.** `muted` was hardwired to `autoPlayMuted`, so no
+  caller could ever offer sound on an autoplaying preview. It now defaults to `autoPlayMuted` —
+  every existing caller is unchanged — and the notice passes its own state. The prop is *also*
+  mirrored onto the element in an effect: the HTML `muted` attribute only seeds the element's
+  *default* mute state, so a video that has already begun playing reads `video.muted` and nothing
+  else. Without that line the button flips a React prop and produces no sound.
+- **The unmute cue is an attention cue, not a fourth motion primitive (§7).** A muted autoplaying
+  video reads as a silent GIF unless something says otherwise, so `.cue-nudge` gives the "Tune in"
+  button a two-beat nudge every 3.2s — transform only, with the long idle gap doing the work a
+  continuous pulse would do badly. It pauses on hover and focus (the visitor is already on their way
+  to it) and the class is dropped entirely once the video is unmuted. Reduced motion needs no
+  branch: the sitewide kill switch zeroes `animation-duration`. The panel's own arrival is plain P1
+  Rise + P3 Veil in CSS rather than Framer Motion, since the dialog unmounts outright and there is
+  no exit animation to coordinate.
+- **Verified in a production build** at 1440x900, 1024x500, 820x1000, 390x844 and 320x640, both
+  themes: no page overflow at any width, panel scrolls internally below ~640px tall with the header
+  strip sticky so Close is never out of reach, `video.muted` observed flipping true → false → true
+  on the cue button, Escape closing and restoring body scroll, the session flag suppressing the
+  notice across a client-side navigation and a fresh context showing it again, and both links
+  landing on `/contact` and `/work/motion/jhumki-official-music-video-tanmay-gururaj`. `tsc
+  --noEmit` clean, `eslint` unchanged at the repo's 10 pre-existing errors, `next build` clean.

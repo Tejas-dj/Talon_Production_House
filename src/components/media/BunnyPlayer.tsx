@@ -88,6 +88,10 @@ type BunnyPlayerProps = {
   posterImageId?: string;
   /** Hero use: silent, looping, autoplaying background video. Default: tap-to-play with sound. */
   autoPlayMuted?: boolean;
+  /** Overrides the mute state of an `autoPlayMuted` instance so a parent can
+   *  own the unmute control (MaintenanceNotice's "Tune in" cue). Defaults to
+   *  `autoPlayMuted`, so every existing caller keeps its current behaviour. */
+  muted?: boolean;
   /** Cap the HLS rendition tier for muted previews (e.g. 480 for small
    *  cards). This is the tier's short side — the "p" number — so 480 means
    *  854x480 landscape and 480x854 portrait alike. Ignored for
@@ -113,6 +117,7 @@ export function BunnyPlayer({
   title,
   posterImageId,
   autoPlayMuted = false,
+  muted,
   maxHeight,
   maxLoops,
   startTime,
@@ -129,6 +134,7 @@ export function BunnyPlayer({
   const loopCount = useRef(0);
 
   const shouldAutoPlay = active != null ? active : autoPlayMuted;
+  const isMuted = muted ?? autoPlayMuted;
 
   const pullZone = process.env.NEXT_PUBLIC_BUNNY_PULL_ZONE;
   const hlsSrc = pullZone ? `https://${pullZone}.b-cdn.net/${videoId}/playlist.m3u8` : undefined;
@@ -234,6 +240,17 @@ export function BunnyPlayer({
     };
   }, [hlsSrc, videoId, playing, autoPlayMuted, maxHeight, deferLoad, deferForLcp]);
 
+  // `muted` is one of the handful of DOM properties React can't express as an
+  // attribute — the HTML `muted` attribute only seeds the *default* mute state,
+  // so a browser that has already begun playback reads `video.muted` and
+  // nothing else. Mirroring the prop onto the element directly is what makes
+  // the "Tune in" button actually produce sound rather than silently flipping
+  // a React prop.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) video.muted = isMuted;
+  }, [isMuted]);
+
   useEffect(() => {
     if (startTime == null || startTimeApplied.current) return;
     const video = videoRef.current;
@@ -318,7 +335,7 @@ export function BunnyPlayer({
         {...{ fetchPriority }}
         controls={playing && !autoPlayMuted}
         playsInline
-        muted={autoPlayMuted}
+        muted={isMuted}
         loop={autoPlayMuted && maxLoops == null}
         autoPlay={shouldAutoPlay}
         onPlaying={() => setVideoPlaying(true)}

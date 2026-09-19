@@ -5,6 +5,7 @@ import Script from "next/script";
 import { CustomCursor } from "@/components/shell/CustomCursor";
 import { Footer } from "@/components/shell/Footer";
 import { Header } from "@/components/shell/Header";
+import { MaintenanceNotice } from "@/components/shell/MaintenanceNotice";
 import { PrefetchStills } from "@/components/shell/PrefetchStills";
 import { SkipLink } from "@/components/shell/SkipLink";
 import { ThemeProvider } from "@/components/shell/ThemeProvider";
@@ -121,6 +122,11 @@ export default function RootLayout({
               {children}
             </main>
             <Footer />
+            {/* Sitewide maintenance dialog. Mounted here, outside
+                template.tsx's PageTransition, so it is never caught by that
+                wrapper's clip-path containing block (see PageTransition.tsx)
+                and so dismissing it survives client-side navigation. */}
+            <MaintenanceNotice />
           </ThemeProvider>
         </div>
         <PrefetchStills urls={stillsPrefetchUrls} />
