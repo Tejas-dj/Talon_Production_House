@@ -15,12 +15,12 @@ const ALT = "Stills photography by Talon Production House";
    percentage math got wrong once card width stopped scaling with the
    container) always lands on the container's centre, at any viewport width. */
 const ARC = [
-  { id: "Curated_Pics/Curated_pic_1.webp", rotate: -18, rise: 0, w: 2592, h: 3240 },
-  { id: "Curated_Pics/Curated_pic_2.webp", rotate: -12, rise: 30, w: 2046, h: 3638 },
-  { id: "Curated_Pics/Curated_pic_3.webp", rotate: -6, rise: 48, w: 2046, h: 3638 },
-  { id: "Curated_Pics/Curated_pic_4.webp", rotate: 0, rise: 54, w: 2046, h: 3638 },
-  { id: "Curated_Pics/Curated_pic_5.webp", rotate: 6, rise: 48, w: 3072, h: 4608 },
-  { id: "Curated_Pics/Curated_pic_6.webp", rotate: 12, rise: 30, w: 2181, h: 2963 },
+  { id: "Curated_Pics/Curated_pic_1.webp", rotate: -18, rise: 0 },
+  { id: "Curated_Pics/Curated_pic_2.webp", rotate: -12, rise: 30 },
+  { id: "Curated_Pics/Curated_pic_3.webp", rotate: -6, rise: 48 },
+  { id: "Curated_Pics/Curated_pic_4.webp", rotate: 0, rise: 54 },
+  { id: "Curated_Pics/Curated_pic_5.webp", rotate: 6, rise: 48 },
+  { id: "Curated_Pics/Curated_pic_6.webp", rotate: 12, rise: 30 },
 ];
 
 /* Pure-vw sizing (not a px-heavy clamp) so the arc keeps claiming the same
@@ -39,11 +39,10 @@ const CARD_OVERLAP = `calc(0.18 * ${CARD_WIDTH})`;
 // height sized for the widest case (420px cards) left ~160px of dead
 // headroom above the cards at every narrower width, since the fan is
 // bottom-anchored and never actually grew to fill that height.
-const TALLEST_RATIO = 3638 / 2046;
-const ROW_HEIGHT = `calc(${CARD_WIDTH} * ${TALLEST_RATIO.toFixed(4)} + 70px)`;
+const ROW_HEIGHT = `calc(${CARD_WIDTH} * 3 / 2 + 70px)`;
 
 const IMG_CLASS =
-  "object-cover saturate-[.92] transition-[filter,transform] duration-[240ms] ease-shift group-hover:saturate-100 group-focus-visible:saturate-100";
+  "object-cover object-top saturate-[.92] transition-[filter,transform] duration-[240ms] ease-shift group-hover:saturate-100 group-focus-visible:saturate-100";
 
 export function StillsHero() {
   return (
@@ -87,10 +86,7 @@ export function StillsHero() {
                 transform: `translateY(-${img.rise}px) rotate(${img.rotate}deg)`,
               }}
             >
-              <div
-                className="relative overflow-hidden transition-transform duration-[320ms] ease-shift group-hover:-translate-y-12 group-hover:scale-[1.05]"
-                style={{ aspectRatio: `${img.w}/${img.h}` }}
-              >
+              <div className="relative aspect-[2/3] overflow-hidden transition-transform duration-[320ms] ease-shift group-hover:-translate-y-12 group-hover:scale-[1.05]">
                 <CloudinaryImage
                   id={img.id}
                   preset="portraitCard"
@@ -115,8 +111,7 @@ export function StillsHero() {
           {ARC.map((img, i) => (
             <div
               key={img.id}
-              className="group relative w-[44%] shrink-0 snap-center overflow-hidden"
-              style={{ aspectRatio: `${img.w}/${img.h}` }}
+              className="group relative aspect-[2/3] w-[44%] shrink-0 snap-center overflow-hidden"
             >
               <CloudinaryImage
                 id={img.id}
