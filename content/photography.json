@@ -1,28 +1,16 @@
 [
   {
-    "slug": "coastline-reverie",
-    "title": "Coastline Reverie",
-    "statement": "Golden hour, volcanic rock, and the kind of light you can’t fake. A portrait series shot where the shoreline meets the sky, capturing stillness in a place that never sits still.",
+    "slug": "draped-in-legacy",
+    "title": "Draped in Legacy",
+    "statement": "Silk, gold, and a quiet kind of power. An editorial portrait series that treats heritage not as costume but as character, shot with the warmth it deserves.",
     "imageIds": [
-      "Coastline_Reverie/Coastline_Reverie_pic_1.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_2.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_3.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_4.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_5.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_6.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_7.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_8.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_9.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_10.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_11.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_12.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_13.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_14.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_15.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_16.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_17.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_18.webp",
-      "Coastline_Reverie/Coastline_Reverie_pic_19.webp"
+      "Draped_In_Legacy/Draped_In_Legacy_pic_1.webp",
+      "Draped_In_Legacy/Draped_In_Legacy_pic_2.webp",
+      "Draped_In_Legacy/Draped_In_Legacy_pic_3.webp",
+      "Draped_In_Legacy/Draped_In_Legacy_pic_4.webp",
+      "Draped_In_Legacy/Draped_In_Legacy_pic_5.webp",
+      "Draped_In_Legacy/Draped_In_Legacy_pic_6.webp",
+      "Draped_In_Legacy/Draped_In_Legacy_pic_7.webp"
     ]
   },
   {
@@ -91,17 +79,29 @@
     ]
   },
   {
-    "slug": "the-ensemble",
-    "title": "The Ensemble",
-    "statement": "One cast. One studio. One rule: all black. A group portrait series built on composition, chemistry, and controlled chaos under dramatic light.",
+    "slug": "coastline-reverie",
+    "title": "Coastline Reverie",
+    "statement": "Golden hour, volcanic rock, and the kind of light you can't fake. A portrait series shot where the shoreline meets the sky, capturing stillness in a place that never sits still.",
     "imageIds": [
-      "The_Ensemble/The_Ensemble_pic_1.webp",
-      "The_Ensemble/The_Ensemble_pic_2.webp",
-      "The_Ensemble/The_Ensemble_pic_3.webp",
-      "The_Ensemble/The_Ensemble_pic_4.webp",
-      "The_Ensemble/The_Ensemble_pic_5.webp",
-      "The_Ensemble/The_Ensemble_pic_6.webp",
-      "The_Ensemble/The_Ensemble_pic_7.webp"
+      "Coastline_Reverie/Coastline_Reverie_pic_1.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_2.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_3.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_4.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_5.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_6.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_7.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_8.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_9.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_10.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_11.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_12.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_13.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_14.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_15.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_16.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_17.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_18.webp",
+      "Coastline_Reverie/Coastline_Reverie_pic_19.webp"
     ]
   },
   {
@@ -191,6 +191,20 @@
     ]
   },
   {
+    "slug": "the-ensemble",
+    "title": "The Ensemble",
+    "statement": "One cast. One studio. One rule: all black. A group portrait series built on composition, chemistry, and controlled chaos under dramatic light.",
+    "imageIds": [
+      "The_Ensemble/The_Ensemble_pic_1.webp",
+      "The_Ensemble/The_Ensemble_pic_2.webp",
+      "The_Ensemble/The_Ensemble_pic_3.webp",
+      "The_Ensemble/The_Ensemble_pic_4.webp",
+      "The_Ensemble/The_Ensemble_pic_5.webp",
+      "The_Ensemble/The_Ensemble_pic_6.webp",
+      "The_Ensemble/The_Ensemble_pic_7.webp"
+    ]
+  },
+  {
     "slug": "eva-chemlinks",
     "title": "EVA CHEMLINKS",
     "statement": "Product photography for EVA CHEMLINKS. Raw textures, vivid color, and clean composition designed to make industrial beauty impossible to scroll past.",
@@ -219,20 +233,6 @@
       "Skill Beyond Education-Event Coverage/Skill_Beyond_Education_Event_pic_9.webp",
       "Skill Beyond Education-Event Coverage/Skill_Beyond_Education_Event_pic_10.webp",
       "Skill Beyond Education-Event Coverage/Skill_Beyond_Education_Event_pic_11.webp"
-    ]
-  },
-  {
-    "slug": "draped-in-legacy",
-    "title": "Draped in Legacy",
-    "statement": "Silk, gold, and a quiet kind of power. An editorial portrait series that treats heritage not as costume but as character, shot with the warmth it deserves.",
-    "imageIds": [
-      "Draped_In_Legacy/Draped_In_Legacy_pic_1.webp",
-      "Draped_In_Legacy/Draped_In_Legacy_pic_2.webp",
-      "Draped_In_Legacy/Draped_In_Legacy_pic_3.webp",
-      "Draped_In_Legacy/Draped_In_Legacy_pic_4.webp",
-      "Draped_In_Legacy/Draped_In_Legacy_pic_5.webp",
-      "Draped_In_Legacy/Draped_In_Legacy_pic_6.webp",
-      "Draped_In_Legacy/Draped_In_Legacy_pic_7.webp"
     ]
   }
 ]

@@ -7,9 +7,8 @@ export const contentType = OG_CONTENT_TYPE;
 export const alt = "Stills | Talon Production House";
 
 // First image of the first series in content/photography.json
-// (Coastline Reverie) — a deterministic, content-driven pick rather than a
-// subjective "best" call, and stable as series get added/reordered at the
-// end of the file.
+// (Draped in Legacy) — a deterministic, content-driven pick rather than a
+// subjective "best" call.
 export default function Image() {
   const [firstSeries] = getAllPhotoSeries();
   const photoUrl = cdnImageUrl(firstSeries.imageIds[0]);
