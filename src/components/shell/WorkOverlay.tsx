@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { BunnyPlayer } from "@/components/media/BunnyPlayer";
 import { StillsPreviewCarousel, STILLS_CAROUSEL_IDS } from "@/components/work/StillsPreviewCarousel";
 import { ThemeToggle } from "@/components/shell/ThemeToggle";
-import { bunnyThumbnailUrl } from "@/lib/media/bunny";
 import { useDialogBehavior } from "@/lib/use-dialog";
 import {
   HERO_BUNNY_VIDEO_ID,
@@ -90,20 +89,17 @@ export function WorkOverlay({ id, open, onClose }: WorkOverlayProps) {
               transition: "transform 180ms var(--ease-shift)",
             }}
           >
-            {open && (() => {
-              const thumbSrc = bunnyThumbnailUrl(WORK_OVERLAY_MOBILE_MOTION_BUNNY_VIDEO_ID);
-              return thumbSrc ? (
-                <div className="absolute inset-0">
-                  {/* eslint-disable-next-line @next/next/no-img-element -- Bunny's raw thumbnail is full video resolution, not a responsive asset next/image should optimize. */}
-                  <img
-                    src={thumbSrc}
-                    alt=""
-                    aria-hidden="true"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              ) : null;
-            })()}
+            {open && (
+              <div className="absolute inset-0">
+                <BunnyPlayer
+                  videoId={WORK_OVERLAY_MOBILE_MOTION_BUNNY_VIDEO_ID}
+                  title="Motion preview"
+                  autoPlayMuted
+                  active
+                  className="h-full w-full"
+                />
+              </div>
+            )}
             <div className="work-card-scrim absolute inset-0" />
 
             <div className="relative z-10 mt-auto flex items-end justify-between p-4">
