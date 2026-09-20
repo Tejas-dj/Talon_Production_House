@@ -32,24 +32,6 @@ type Props = {
   altPrefix?: string;
 };
 
-const SIZE_SEQ = [4, 3, 7, 3, 5, 6, 3, 4, 3, 7, 5, 3, 6, 3, 4, 3, 5, 3, 8, 4];
-
-function getColSpan(img: StillsImage, seed: number): number {
-  const ratio = img.w / img.h;
-  let s = SIZE_SEQ[seed % SIZE_SEQ.length];
-  if (ratio < 0.8) s = Math.min(s, 5);
-  else if (ratio > 1.3) s = Math.max(s, 4);
-  return Math.max(3, Math.min(s, 9));
-}
-
-function rowSpanFor(colSpan: number, img: StillsImage): number {
-  return Math.max(2, Math.round(colSpan * (img.h / img.w)));
-}
-
-function scaleSpan(lgSpan: number, fromCols: number, toCols: number): number {
-  return Math.max(2, Math.min(Math.round(lgSpan * (toCols / fromCols)), toCols - 1));
-}
-
 export function StillsGallery({ sections, showSectionHeader = true, altPrefix = "Stills" }: Props) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -106,39 +88,23 @@ export function StillsGallery({ sections, showSectionHeader = true, altPrefix = 
             <div className="collage-grid">
               {section.images.map((img, iIdx) => {
                 const thisGlobalIdx = globalIdx++;
-                const lgCol = getColSpan(img, thisGlobalIdx);
-                const lgRow = rowSpanFor(lgCol, img);
-                const mdCol = scaleSpan(lgCol, 36, 20);
-                const mdRow = rowSpanFor(mdCol, img);
-                const smCol = scaleSpan(lgCol, 36, 12);
-                const smRow = rowSpanFor(smCol, img);
 
                 return (
                   <button
                     key={img.id}
                     type="button"
                     onClick={() => setOpenIndex(thisGlobalIdx)}
-                    className="collage-item relative overflow-hidden"
-                    style={
-                      {
-                        "--lg-col": lgCol,
-                        "--lg-row": lgRow,
-                        "--md-col": mdCol,
-                        "--md-row": mdRow,
-                        "--sm-col": smCol,
-                        "--sm-row": smRow,
-                      } as React.CSSProperties
-                    }
+                    className="collage-item"
                     aria-label={`View photograph ${thisGlobalIdx + 1} of ${allIds.length}`}
                   >
                     <CloudinaryImage
                       id={img.id}
                       preset="gallery"
                       alt={getPhotoAlt(img.id) ?? `${section.title}, photograph ${iIdx + 1}`}
-                      fill
+                      width={img.w}
+                      height={img.h}
                       loading={thisGlobalIdx < 8 ? undefined : "lazy"}
                       preload={thisGlobalIdx < 4}
-                      className="object-cover"
                     />
                   </button>
                 );

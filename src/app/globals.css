@@ -608,47 +608,40 @@
 }
 
 /* ==========================================================================
-   STILLS COLLAGE GRID — organic, varying-size image layout
+   STILLS COLLAGE GRID — masonry layout preserving original aspect ratios
    ========================================================================== */
 .collage-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: calc(100vw / 12);
-  grid-auto-flow: dense;
-  gap: 2px;
+  column-count: 2;
+  column-gap: 2px;
 }
 
 @media (min-width: 768px) {
   .collage-grid {
-    grid-template-columns: repeat(20, 1fr);
-    grid-auto-rows: calc(100vw / 20);
+    column-count: 3;
   }
 }
 
 @media (min-width: 1024px) {
   .collage-grid {
-    grid-template-columns: repeat(36, 1fr);
-    grid-auto-rows: calc(100vw / 36);
+    column-count: 4;
   }
 }
 
 .collage-item {
-  grid-column: span var(--sm-col, 3);
-  grid-row: span var(--sm-row, 2);
+  break-inside: avoid;
+  margin-bottom: 2px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  display: block;
+  width: 100%;
 }
 
-@media (min-width: 768px) {
-  .collage-item {
-    grid-column: span var(--md-col, 4);
-    grid-row: span var(--md-row, 3);
-  }
-}
-
-@media (min-width: 1024px) {
-  .collage-item {
-    grid-column: span var(--lg-col, 5);
-    grid-row: span var(--lg-row, 4);
-  }
+.collage-item img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 
