@@ -623,7 +623,13 @@
 
 @media (min-width: 1024px) {
   .collage-grid {
-    column-count: 4;
+    column-count: 5;
+  }
+}
+
+@media (min-width: 1536px) {
+  .collage-grid {
+    column-count: 6;
   }
 }
 
