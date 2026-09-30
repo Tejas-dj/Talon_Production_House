@@ -59,9 +59,15 @@ export const CONTACT_LINKS = [
   },
 ] as const;
 
+/* Footer credit, standardised across every CobaltKite Creative build. Names,
+   URLs, and rel values are fixed by that standard — do not reword, add
+   keywords, or change the URLs. Rendered by Footer.tsx. */
 export const CREDIT = {
-  label: "CobaltKite Creatives",
-  href: "#", // TODO: confirm URL
+  brand: { label: "CobaltKite Creative", href: "https://cobaltkitecreative.com/" },
+  founder: {
+    label: "Tejas D Jaiprakash",
+    href: "https://cobaltkitecreative.com/about/tejas-d-jaiprakash/",
+  },
 } as const;
 
 /* Verified Google Business Profile listing — same "Share" link Maps gives

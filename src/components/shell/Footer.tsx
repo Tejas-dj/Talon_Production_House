@@ -131,10 +131,18 @@ export function Footer() {
               Careers
             </Link>
           </p>
-          <p className="type-small text-muted">
-            Site by{" "}
-            <a href={CREDIT.href} className="underline underline-offset-2">
-              {CREDIT.label}
+          {/* Credit wording, names, URLs and rel values are fixed by the
+              CobaltKite Creative standard (see CREDIT in @/lib/site). Real
+              server-rendered text, exactly two links, nofollow (never
+              noreferrer, no target). */}
+          <p className="credit type-small text-muted">
+            Website by{" "}
+            <a href={CREDIT.brand.href} rel="nofollow" className="underline underline-offset-2">
+              {CREDIT.brand.label}
+            </a>
+            , a search and AI visibility agency in Bengaluru, founded by{" "}
+            <a href={CREDIT.founder.href} rel="nofollow" className="underline underline-offset-2">
+              {CREDIT.founder.label}
             </a>
           </p>
         </div>

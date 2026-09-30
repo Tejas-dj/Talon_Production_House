@@ -56,7 +56,7 @@ Reasoning: `src/` with `@/*` alias keeps app code separate from content and docs
 - **`--header-height` (56px) is a new token, undocumented in the Bible** — needed so the mobile overlay panel can sit below the fixed header row without either component hardcoding the other's height inline. Recorded here since the Bible is silent on header height specifically.
 - **The mobile nav overlay is always mounted; `inert` (not conditional rendering) gates interactivity.** This survived a real debugging investigation: framer-motion's `AnimatePresence`/`animate` prop reliably failed to update this element in this stack (confirmed with a debug attribute — React state and re-renders were correct, only the animation-driven style never moved), and switching to a plain CSS `opacity` transition plus `inert` sidesteps the problem entirely, since the panel's non-interactivity is set synchronously with the state change rather than depending on an animation or unmount callback completing. Verified correct via forced-completion of the CSS transition (`Animation.finish()`) and via real keyboard-driven focus-trap tests in both directions (Tab wraps last→first, Shift+Tab wraps first→last), Escape-close-with-focus-return, and body-scroll-lock/unlock — all confirmed on a production build, not just dev/HMR.
 - **Footer full-color lockup and header monochrome wordmark are typographic stand-ins** (Archivo display type + a CSS `clip-path` wedge) until the client supplies the source vector logo (§2.3 asks to confirm against source vector in Phase 2) — swap point is `Header.tsx`'s `.wordmark` usage and `Footer.tsx`'s clip-path div.
-- **Contact links, Instagram/YouTube/phone/email hrefs, and the CobaltKite credit URL are `#` placeholders** centralized in `src/lib/site.ts`, per the brief's list of true unknowns (real handles, WhatsApp number, etc.) — one file to update when real values arrive, not a hunt through components.
+- **Contact links, Instagram/YouTube/phone/email hrefs, are `#` placeholders** centralized in `src/lib/site.ts`, per the brief's list of true unknowns (real handles, WhatsApp number, etc.) — one file to update when real values arrive, not a hunt through components.
 - **Skip link uses `sr-only` + `focus:not-sr-only`** rather than an off-screen-position hack, so it participates correctly in the same focus-ring styling as everything else.
 
 ## Content layer (Step 6)
@@ -380,10 +380,9 @@ assets`, adding `public/images/logo/TALON_Logo_{Light,Dark}Theme.svg`) — cherr
   Instagram, YouTube, or either WhatsApp number. Phone (`+91 70759 81258`) and WhatsApp
   (`+91 95380 25355`) are different numbers, kept distinct (`tel:` href vs. `WHATSAPP_NUMBER`).
   Instagram href kept exactly as supplied, tracking parameters included — not truncated to a bare
-  profile URL, since altering a client-supplied credential value wasn't asked for. `CREDIT.href`
-  (CobaltKite Creatives) is left as `"#"`: no real URL was supplied for it, and inventing one would
-  violate the brief's "do not invent fake real data" instruction — flagged in the final report as
-  a still-open item, not silently left broken.
+  profile URL, since altering a client-supplied credential value wasn't asked for. The footer
+  credit (`CREDIT` in `src/lib/site.ts`) was a `"#"` placeholder at this point; it has since been
+  replaced by the standardised CobaltKite Creative credit with real URLs.
 - **`content/{projects,photography,studio}.json` and `content/clients.json` were not modified.**
   Every entry across all three populated files references fictional clients/films and Cloudinary
   public ids / Bunny video GUIDs that don't match the real `Talon_Production_House` Cloudinary
@@ -676,9 +675,9 @@ own additions didn't quietly reintroduce one, which they didn't.
 - **Zero broken links.** All 19 real routes return HTTP 200 (checked directly, not inferred from
   `<Link>` presence). Every external link (Instagram, YouTube, the WhatsApp deep link) carries
   `target="_blank" rel="noopener noreferrer"`; `tel:`/`mailto:` links correctly carry neither. The
-  one known non-functional link, `CREDIT.href` ("#" for CobaltKite Creatives), is the same
-  documented, unresolved placeholder from Phase 3.5 - not a Phase 4 regression, still flagged as an
-  open item.
+  one known non-functional link at the time, the footer credit's `"#"` placeholder, was the same
+  documented placeholder from Phase 3.5 - not a Phase 4 regression. It has since been replaced by
+  the standardised CobaltKite Creative credit with real URLs.
 - **Both themes** re-verified via the live toggle (not just reading tokens): light theme measures
   `rgb(237, 231, 220)` background / `rgb(23, 22, 20)` text against the page, matching `#EDE7DC`/
   `#171614` exactly; the theme-conditional logo swap (`display: block`/`none` pairing) flips
@@ -736,10 +735,10 @@ All six steps done. Summary against the brief's own checklist:
 - Final integration: one real bug found and fixed (44px touch targets, sitewide, one-line fix);
   zero broken links; both themes and all five breakpoints clean; build and lint clean.
 
-Open items carried forward, not introduced by Phase 4: `CREDIT.href` ("#" placeholder, no real
-CobaltKite Creatives URL supplied), and the placeholder Cloudinary/Bunny asset IDs in
-`content/*.json` that don't resolve against the real accounts yet - both pre-existing, both
-already documented in the Phase 3.5 section above.
+Open items carried forward, not introduced by Phase 4: the placeholder Cloudinary/Bunny asset IDs
+in `content/*.json` that don't resolve against the real accounts yet - pre-existing, already
+documented in the Phase 3.5 section above. (The footer credit `"#"` placeholder listed here at the
+time has since been resolved.)
 
 ## Contact page interaction pass (post-Phase 4)
 
