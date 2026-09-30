@@ -1,0 +1,83 @@
+{
+  "slug": "behind-the-hymn",
+  "title": "Behind the Hymn",
+  "images": [
+    {
+      "r2Id": "Behind_The_Hymn/Behind_The_Hymn_pic_1.webp",
+      "filename": "Behind_The_Hymn_pic_1.webp",
+      "role": "Gallery",
+      "visualDescription": "Close-up of a man in a white shirt and red shawl with white horizontal forehead markings, with other men in red shawls behind him.",
+      "altText": "Close-up of a man in a white shirt and red shawl with white forehead markings from the O Belake music video.",
+      "imageTitle": "O Belake Music Video | Man in Red Shawl",
+      "searchTopic": "O Belake music video photography",
+      "creator": "Talon Production House",
+      "client": "Daali Dhananjaya"
+    },
+    {
+      "r2Id": "Behind_The_Hymn/Behind_The_Hymn_pic_2.webp",
+      "filename": "Behind_The_Hymn_pic_2.webp",
+      "role": "Gallery",
+      "visualDescription": "Portrait of a man in a white shirt and red shawl with white horizontal forehead markings, framed against a blurred group in similar red shawls.",
+      "altText": "Portrait of a man in a red shawl with white forehead markings from the O Belake music video.",
+      "imageTitle": "O Belake Music Video | Portrait in Red Shawl",
+      "searchTopic": "O Belake music video photography",
+      "creator": "Talon Production House",
+      "client": "Daali Dhananjaya"
+    },
+    {
+      "r2Id": "Behind_The_Hymn/Behind_The_Hymn_pic_3.webp",
+      "filename": "Behind_The_Hymn_pic_3.webp",
+      "role": "Gallery",
+      "visualDescription": "Two smiling schoolchildren in red-and-white checkered uniforms sit in a classroom, with other students behind them.",
+      "altText": "Two smiling schoolchildren in red-and-white checkered uniforms in a classroom from the O Belake music video.",
+      "imageTitle": "O Belake Music Video | Smiling Schoolchildren",
+      "searchTopic": "O Belake music video classroom photography",
+      "creator": "Talon Production House",
+      "client": "Daali Dhananjaya"
+    },
+    {
+      "r2Id": "Behind_The_Hymn/Behind_The_Hymn_pic_4.webp",
+      "filename": "Behind_The_Hymn_pic_4.webp",
+      "role": "Gallery",
+      "visualDescription": "Wide view of a large seated gathering in red and teal shawls outside a multi-storey building with domed towers and a central clock.",
+      "altText": "Large gathering in red and teal shawls seated outside a building with domed towers and a clock in the O Belake music video.",
+      "imageTitle": "O Belake Music Video | Gathering Outside Clock Building",
+      "searchTopic": "O Belake music video group photography",
+      "creator": "Talon Production House",
+      "client": "Daali Dhananjaya"
+    },
+    {
+      "r2Id": "Behind_The_Hymn/Behind_The_Hymn_pic_5.webp",
+      "filename": "Behind_The_Hymn_pic_5.webp",
+      "role": "Gallery",
+      "visualDescription": "A man in a white shirt and red shawl sits on stone steps with other men in red shawls outside a building entrance.",
+      "altText": "Man in a white shirt and red shawl seated with others on stone steps from the O Belake music video.",
+      "imageTitle": "O Belake Music Video | Men on Stone Steps",
+      "searchTopic": "O Belake music video photography",
+      "creator": "Talon Production House",
+      "client": "Daali Dhananjaya"
+    },
+    {
+      "r2Id": "Behind_The_Hymn/Behind_The_Hymn_pic_6.webp",
+      "filename": "Behind_The_Hymn_pic_6.webp",
+      "role": "Gallery",
+      "visualDescription": "Three-panel collage showing men in red shawls, a rear view of a man facing a large outdoor gathering, and men seated on stone steps.",
+      "altText": "Three-panel collage of men in red shawls and a large outdoor gathering from the O Belake music video.",
+      "imageTitle": "O Belake Music Video | Red Shawl Gathering Collage",
+      "searchTopic": "O Belake music video collage photography",
+      "creator": "Talon Production House",
+      "client": "Daali Dhananjaya"
+    },
+    {
+      "r2Id": "Behind_The_Hymn/Behind_The_Hymn_pic_7.webp",
+      "filename": "Behind_The_Hymn_pic_7.webp",
+      "role": "Gallery",
+      "visualDescription": "Three-panel classroom collage showing an adult gesturing among seated schoolchildren, two smiling children in checkered uniforms, and an adult leaning toward a child.",
+      "altText": "Three-panel classroom collage with schoolchildren from the O Belake music video.",
+      "imageTitle": "O Belake Music Video | Classroom Moments Collage",
+      "searchTopic": "O Belake music video classroom photography",
+      "creator": "Talon Production House",
+      "client": "Daali Dhananjaya"
+    }
+  ]
+}

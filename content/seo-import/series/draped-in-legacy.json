@@ -1,0 +1,83 @@
+{
+  "slug": "draped-in-legacy",
+  "title": "Draped in Legacy",
+  "images": [
+    {
+      "r2Id": "Draped_In_Legacy/Draped_In_Legacy_pic_1.webp",
+      "filename": "Draped_In_Legacy_pic_1.webp",
+      "role": "Gallery",
+      "visualDescription": "Soft-focus portrait of a woman in a black sari with a red and gold border, wearing gold jewellery against a pale pink background.",
+      "altText": "Soft-focus portrait of a woman in a black sari with a red and gold border.",
+      "imageTitle": "Traditional Portrait | Black and Red Sari",
+      "searchTopic": "Traditional portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Draped_In_Legacy/Draped_In_Legacy_pic_2.webp",
+      "filename": "Draped_In_Legacy_pic_2.webp",
+      "role": "Gallery",
+      "visualDescription": "Full-length soft-focus portrait of a woman in a black sari with a red and gold border, wearing gold jewellery against a pale pink background.",
+      "altText": "Full-length portrait of a woman in a black sari with a red and gold border.",
+      "imageTitle": "Traditional Portrait | Full-Length Sari",
+      "searchTopic": "Traditional portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Draped_In_Legacy/Draped_In_Legacy_pic_3.webp",
+      "filename": "Draped_In_Legacy_pic_3.webp",
+      "role": "Gallery",
+      "visualDescription": "Studio portrait of a woman in a black sari with a red and gold border, resting her hand below her chin against a brown background.",
+      "altText": "Woman in a black sari with a red and gold border in a studio portrait.",
+      "imageTitle": "Traditional Portrait | Sari and Gold Jewellery",
+      "searchTopic": "Traditional portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Draped_In_Legacy/Draped_In_Legacy_pic_4.webp",
+      "filename": "Draped_In_Legacy_pic_4.webp",
+      "role": "Gallery",
+      "visualDescription": "Seated portrait of a woman in a black sari with a red and gold border, posed before red and cream fabric drapery.",
+      "altText": "Seated woman in a black sari with a red and gold border before fabric drapery.",
+      "imageTitle": "Traditional Portrait | Seated Sari",
+      "searchTopic": "Traditional portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Draped_In_Legacy/Draped_In_Legacy_pic_5.webp",
+      "filename": "Draped_In_Legacy_pic_5.webp",
+      "role": "Gallery",
+      "visualDescription": "Close seated portrait of a woman in a black sari with a red and gold border, wearing gold jewellery before red and cream fabric drapery.",
+      "altText": "Close seated portrait of a woman in a black sari with a red and gold border.",
+      "imageTitle": "Traditional Portrait | Seated Detail",
+      "searchTopic": "Traditional portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Draped_In_Legacy/Draped_In_Legacy_pic_6.webp",
+      "filename": "Draped_In_Legacy_pic_6.webp",
+      "role": "Gallery",
+      "visualDescription": "Full-length portrait of a woman seated in a black sari with a red and gold border against a muted pink background.",
+      "altText": "Full-length portrait of a seated woman in a black sari with a red and gold border.",
+      "imageTitle": "Traditional Portrait | Seated Full-Length",
+      "searchTopic": "Traditional portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Draped_In_Legacy/Draped_In_Legacy_pic_7.webp",
+      "filename": "Draped_In_Legacy_pic_7.webp",
+      "role": "Gallery",
+      "visualDescription": "Seated studio portrait of a woman in a black sari with a red and gold border, wearing gold jewellery against a muted pink background.",
+      "altText": "Seated studio portrait of a woman in a black sari with a red and gold border.",
+      "imageTitle": "Traditional Portrait | Black Sari",
+      "searchTopic": "Traditional portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    }
+  ]
+}

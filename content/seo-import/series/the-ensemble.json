@@ -1,0 +1,83 @@
+{
+  "slug": "the-ensemble",
+  "title": "The Ensemble",
+  "images": [
+    {
+      "r2Id": "The_Ensemble/The_Ensemble_pic_1.webp",
+      "filename": "The_Ensemble_pic_1.webp",
+      "role": "Gallery",
+      "visualDescription": "Twelve people in black clothing pose in two rows on white-draped stools against a studio backdrop.",
+      "altText": "Twelve people in black pose for a studio group portrait in a model team photography project.",
+      "imageTitle": "Studio Group Portrait in Black",
+      "searchTopic": "Model team photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "The_Ensemble/The_Ensemble_pic_2.webp",
+      "filename": "The_Ensemble_pic_2.webp",
+      "role": "Gallery",
+      "visualDescription": "Twelve people in black clothing pose in two rows against a studio backdrop.",
+      "altText": "Twelve people in black pose in a two-row studio group portrait for a model team photography project.",
+      "imageTitle": "Two-Row Studio Group Portrait",
+      "searchTopic": "Model team photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "The_Ensemble/The_Ensemble_pic_3.webp",
+      "filename": "The_Ensemble_pic_3.webp",
+      "role": "Gallery",
+      "visualDescription": "Seven men in black clothing stand closely together against a grey studio backdrop.",
+      "altText": "Seven men in black pose in a low-key studio portrait for a model team photography project.",
+      "imageTitle": "Men's Studio Group Portrait",
+      "searchTopic": "Model team photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "The_Ensemble/The_Ensemble_pic_4.webp",
+      "filename": "The_Ensemble_pic_4.webp",
+      "role": "Gallery",
+      "visualDescription": "Six men in black clothing pose in two rows in a low-key studio portrait.",
+      "altText": "Six men in black pose in a two-row low-key studio portrait for a model team photography project.",
+      "imageTitle": "Low-Key Men's Group Portrait",
+      "searchTopic": "Model team photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "The_Ensemble/The_Ensemble_pic_5.webp",
+      "filename": "The_Ensemble_pic_5.webp",
+      "role": "Gallery",
+      "visualDescription": "Six women in black clothing pose in two rows in a low-key studio portrait.",
+      "altText": "Six women in black pose in a low-key studio portrait for a model team photography project.",
+      "imageTitle": "Low-Key Women's Group Portrait",
+      "searchTopic": "Model team photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "The_Ensemble/The_Ensemble_pic_6.webp",
+      "filename": "The_Ensemble_pic_6.webp",
+      "role": "Gallery",
+      "visualDescription": "Six women in black dresses pose in a studio, with three seated and three standing against a white backdrop.",
+      "altText": "Six women in black dresses pose in a studio group portrait for a model team photography project.",
+      "imageTitle": "Women's Studio Group Portrait",
+      "searchTopic": "Model team photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "The_Ensemble/The_Ensemble_pic_7.webp",
+      "filename": "The_Ensemble_pic_7.webp",
+      "role": "Gallery",
+      "visualDescription": "Six women in black dresses pose around a single seated woman against a white studio backdrop.",
+      "altText": "Six women in black dresses pose around a seated woman in a studio group portrait for a model team photography project.",
+      "imageTitle": "Studio Portrait with Seated Woman",
+      "searchTopic": "Model team photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    }
+  ]
+}

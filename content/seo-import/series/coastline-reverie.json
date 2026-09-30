@@ -1,0 +1,215 @@
+{
+  "slug": "coastline-reverie",
+  "title": "Coastline Reverie",
+  "images": [
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_1.webp",
+      "filename": "Coastline_Reverie_pic_1.webp",
+      "role": "Gallery",
+      "visualDescription": "The sun reflects across the sea beyond a sandy beach, framed by dark wooden poles and rope.",
+      "altText": "Sunset reflecting across the sea and sand, framed by wooden poles on a Goa beach.",
+      "imageTitle": "Goa Beach Sunset | Wooden Poles",
+      "searchTopic": "Goa beach sunset photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_2.webp",
+      "filename": "Coastline_Reverie_pic_2.webp",
+      "role": "Gallery",
+      "visualDescription": "Sunset over the sea seen beneath a green canopy and strings of worn flags, with a rocky shoreline in the distance.",
+      "altText": "Sunset over the sea beneath a green canopy and hanging flags on a Goa beach.",
+      "imageTitle": "Goa Beach Sunset | Hanging Flags",
+      "searchTopic": "Goa beach sunset photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_3.webp",
+      "filename": "Coastline_Reverie_pic_3.webp",
+      "role": "Gallery",
+      "visualDescription": "Sunset over waves breaking around dark shoreline rocks, with a small rocky island silhouette in the distance.",
+      "altText": "Sunset over waves and dark shoreline rocks on a Goa beach.",
+      "imageTitle": "Goa Beach Sunset | Rocky Shoreline",
+      "searchTopic": "Goa beach sunset photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_4.webp",
+      "filename": "Coastline_Reverie_pic_4.webp",
+      "role": "Gallery",
+      "visualDescription": "Close-up portrait of a woman resting folded arms under a yellow patterned scarf on a sandy beach.",
+      "altText": "Close-up beach portrait of a woman under a yellow patterned scarf in Goa.",
+      "imageTitle": "Goa Beach Portrait | Yellow Scarf",
+      "searchTopic": "Goa beach portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_5.webp",
+      "filename": "Coastline_Reverie_pic_5.webp",
+      "role": "Gallery",
+      "visualDescription": "Close-up portrait of a woman in a yellow patterned scarf with one hand in her hair on a sandy beach.",
+      "altText": "Woman in a yellow patterned scarf with one hand in her hair on a Goa beach.",
+      "imageTitle": "Goa Beach Portrait | Yellow Scarf Close-Up",
+      "searchTopic": "Goa beach portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_6.webp",
+      "filename": "Coastline_Reverie_pic_6.webp",
+      "role": "Gallery",
+      "visualDescription": "A woman draped in a yellow patterned scarf sits near the waterline on a rocky beach.",
+      "altText": "Woman draped in a yellow patterned scarf near the waterline on a Goa beach.",
+      "imageTitle": "Goa Beach Portrait | Woman by the Water",
+      "searchTopic": "Goa beach portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_7.webp",
+      "filename": "Coastline_Reverie_pic_7.webp",
+      "role": "Gallery",
+      "visualDescription": "A woman draped in yellow patterned fabric crouches at the water's edge, with beachgoers in soft focus behind her.",
+      "altText": "Woman in yellow patterned fabric at the water's edge on a Goa beach.",
+      "imageTitle": "Goa Beach Portrait | Water's Edge",
+      "searchTopic": "Goa beach portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_8.webp",
+      "filename": "Coastline_Reverie_pic_8.webp",
+      "role": "Gallery",
+      "visualDescription": "Tight portrait of a woman in a yellow patterned scarf, with rocks and shoreline blurred behind her.",
+      "altText": "Tight portrait of a woman in a yellow patterned scarf on a Goa beach.",
+      "imageTitle": "Goa Beach Portrait | Scarf Detail",
+      "searchTopic": "Goa beach portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_9.webp",
+      "filename": "Coastline_Reverie_pic_9.webp",
+      "role": "Gallery",
+      "visualDescription": "Sunlit portrait of an older shirtless man wearing layered bead necklaces near a blue slatted structure.",
+      "altText": "Sunlit portrait of an older man wearing layered bead necklaces on a Goa beach.",
+      "imageTitle": "Goa Beach Portrait | Bead Necklaces",
+      "searchTopic": "Goa beach portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_10.webp",
+      "filename": "Coastline_Reverie_pic_10.webp",
+      "role": "Gallery",
+      "visualDescription": "A smiling shirtless man with a topknot and pendant necklace sits on a red plastic chair beside a beach-side structure.",
+      "altText": "Smiling man with a topknot and pendant necklace seated by a Goa beach.",
+      "imageTitle": "Goa Beach Portrait | Topknot and Pendant",
+      "searchTopic": "Goa beach portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_11.webp",
+      "filename": "Coastline_Reverie_pic_11.webp",
+      "role": "Gallery",
+      "visualDescription": "Black-and-white photograph of one adult lifting another adult horizontally overhead at the shoreline, with rocks and sea behind them.",
+      "altText": "Black-and-white beach photograph of an adult lifting another overhead beside the sea in Goa.",
+      "imageTitle": "Goa Beach Action | Overhead Lift",
+      "searchTopic": "Goa beach acrobatic photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_12.webp",
+      "filename": "Coastline_Reverie_pic_12.webp",
+      "role": "Gallery",
+      "visualDescription": "Black-and-white portrait of a woman in a patterned tank top and headband beside a rocky waterline.",
+      "altText": "Black-and-white portrait of a woman in a patterned tank top beside the sea in Goa.",
+      "imageTitle": "Goa Beach Portrait | Patterned Tank Top",
+      "searchTopic": "Black-and-white Goa beach portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_13.webp",
+      "filename": "Coastline_Reverie_pic_13.webp",
+      "role": "Gallery",
+      "visualDescription": "Black-and-white portrait of a woman wearing a headband and patterned tank top, with rocks and sea behind her.",
+      "altText": "Black-and-white portrait of a woman wearing a headband on a Goa beach.",
+      "imageTitle": "Goa Beach Portrait | Headband by the Sea",
+      "searchTopic": "Black-and-white Goa beach portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_14.webp",
+      "filename": "Coastline_Reverie_pic_14.webp",
+      "role": "Gallery",
+      "visualDescription": "Black-and-white photograph of a woman in a two-piece swimsuit seated on dark rocks at the water's edge.",
+      "altText": "Black-and-white photograph of a woman seated on dark rocks at the water's edge in Goa.",
+      "imageTitle": "Goa Beach Portrait | Seated on Rocks",
+      "searchTopic": "Black-and-white Goa beach portrait photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_15.webp",
+      "filename": "Coastline_Reverie_pic_15.webp",
+      "role": "Gallery",
+      "visualDescription": "A woman in a patterned sleeveless top and headband sits on a man's lap on dark rocks as sea spray rises behind them.",
+      "altText": "Woman and man seated on dark coastal rocks with sea spray on a Goa beach.",
+      "imageTitle": "Goa Beach Portrait | Seated on Coastal Rocks",
+      "searchTopic": "Goa beach lifestyle photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_16.webp",
+      "filename": "Coastline_Reverie_pic_16.webp",
+      "role": "Gallery",
+      "visualDescription": "A woman in a patterned sleeveless top sits behind a shirtless man reclining among dark rocks as waves splash in front of them.",
+      "altText": "Two adults reclining among dark coastal rocks as waves splash on a Goa beach.",
+      "imageTitle": "Goa Beach Portrait | Waves Among the Rocks",
+      "searchTopic": "Goa beach lifestyle photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_17.webp",
+      "filename": "Coastline_Reverie_pic_17.webp",
+      "role": "Gallery",
+      "visualDescription": "A woman in a patterned sleeveless top sits behind a shirtless man reclining on dark rocks at the waterline.",
+      "altText": "Two adults relaxing on dark rocks at the waterline on a Goa beach.",
+      "imageTitle": "Goa Beach Portrait | Relaxing at the Waterline",
+      "searchTopic": "Goa beach lifestyle photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_18.webp",
+      "filename": "Coastline_Reverie_pic_18.webp",
+      "role": "Gallery",
+      "visualDescription": "Low-angle photograph of a smiling woman in a patterned sleeveless top beside a reclining man on dark coastal rocks.",
+      "altText": "Smiling woman and reclining man on dark coastal rocks at a Goa beach.",
+      "imageTitle": "Goa Beach Portrait | Low-Angle Rock Scene",
+      "searchTopic": "Goa beach lifestyle photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    },
+    {
+      "r2Id": "Coastline_Reverie/Coastline_Reverie_pic_19.webp",
+      "filename": "Coastline_Reverie_pic_19.webp",
+      "role": "Gallery",
+      "visualDescription": "A man rests his face against a woman's shin while she smiles above him on dark coastal rocks.",
+      "altText": "Two adults on dark coastal rocks at a Goa beach, with one resting against the other's leg.",
+      "imageTitle": "Goa Beach Portrait | Resting on Coastal Rocks",
+      "searchTopic": "Goa beach lifestyle photography",
+      "creator": "Talon Production House | Pratham Raje Urs",
+      "client": ""
+    }
+  ]
+}

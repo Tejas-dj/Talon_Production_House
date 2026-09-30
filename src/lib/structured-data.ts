@@ -8,6 +8,7 @@
 import { getStudioSpace } from "./content";
 import type { PhotoSeries, VideoProject } from "./content-types";
 import { bunnyThumbnailUrl } from "./media/bunny";
+import { getPhotoDescription, getPhotoTitle } from "./media/photo-metadata";
 import { cdnImageUrl } from "./media/presets";
 import { CONTACT_LINKS, GOOGLE_MAPS_URL, SITE_URL, STUDIO_ADDRESS_PARTS } from "./site";
 
@@ -241,7 +242,10 @@ export function buildImageGallerySchema(series: PhotoSeries) {
     image: series.imageIds.map((id, i) => ({
       "@type": "ImageObject",
       contentUrl: cdnImageUrl(id),
-      name: `${series.title}, photograph ${i + 1}`,
+      name: getPhotoTitle(id) ?? `${series.title}, photograph ${i + 1}`,
+      ...(getPhotoDescription(id) ? { description: getPhotoDescription(id) } : {}),
+      creator: { "@type": "Organization", name: "Talon Production House" },
+      creditText: "Talon Production House",
     })),
     isPartOf: {
       "@type": "CollectionPage",

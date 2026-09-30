@@ -1,0 +1,72 @@
+{
+  "slug": "eva-chemlinks",
+  "title": "EVA CHEMLINKS",
+  "images": [
+    {
+      "r2Id": "EVA_CHEMLINKS/EVA_CHEMLINKS_pic_1.jpg",
+      "filename": "EVA_CHEMLINKS_pic_1.jpg",
+      "role": "Gallery",
+      "visualDescription": "Macro photograph of vivid blue copper sulphate crystals with shallow focus.",
+      "altText": "Macro photograph of copper sulphate crystals for Eva Chemlinks.",
+      "imageTitle": "Eva Chemlinks | Copper Sulphate Crystals",
+      "searchTopic": "Copper sulphate product photography",
+      "creator": "Talon Production House",
+      "client": "Eva Chemlinks"
+    },
+    {
+      "r2Id": "EVA_CHEMLINKS/EVA_CHEMLINKS_pic_2.jpg",
+      "filename": "EVA_CHEMLINKS_pic_2.jpg",
+      "role": "Gallery",
+      "visualDescription": "Close macro photograph of blue copper sulphate crystals with a softly blurred foreground.",
+      "altText": "Close macro photograph of blue copper sulphate crystals for Eva Chemlinks.",
+      "imageTitle": "Eva Chemlinks | Copper Sulphate Crystal Detail",
+      "searchTopic": "Copper sulphate product photography",
+      "creator": "Talon Production House",
+      "client": "Eva Chemlinks"
+    },
+    {
+      "r2Id": "EVA_CHEMLINKS/EVA_CHEMLINKS_pic_3.jpg",
+      "filename": "EVA_CHEMLINKS_pic_3.jpg",
+      "role": "Gallery",
+      "visualDescription": "Two hands hold bright blue copper sulphate crystals against a blue background.",
+      "altText": "Hands holding copper sulphate crystals for Eva Chemlinks.",
+      "imageTitle": "Eva Chemlinks | Copper Sulphate in Hand",
+      "searchTopic": "Copper sulphate product photography",
+      "creator": "Talon Production House",
+      "client": "Eva Chemlinks"
+    },
+    {
+      "r2Id": "EVA_CHEMLINKS/EVA_CHEMLINKS_pic_4.jpg",
+      "filename": "EVA_CHEMLINKS_pic_4.jpg",
+      "role": "Gallery",
+      "visualDescription": "Two hands hold white TCCA 90% granules against a pale background.",
+      "altText": "Hands holding white TCCA 90% granules for Eva Chemlinks.",
+      "imageTitle": "Eva Chemlinks | TCCA 90% Granules",
+      "searchTopic": "TCCA 90% product photography",
+      "creator": "Talon Production House",
+      "client": "Eva Chemlinks"
+    },
+    {
+      "r2Id": "EVA_CHEMLINKS/EVA_CHEMLINKS_pic_5.jpg",
+      "filename": "EVA_CHEMLINKS_pic_5.jpg",
+      "role": "Gallery",
+      "visualDescription": "Two hands hold a mound of fine white Ankur Salt against a pale background.",
+      "altText": "Hands holding Ankur Salt for Eva Chemlinks.",
+      "imageTitle": "Eva Chemlinks | Ankur Salt",
+      "searchTopic": "Salt product photography",
+      "creator": "Talon Production House",
+      "client": "Eva Chemlinks"
+    },
+    {
+      "r2Id": "EVA_CHEMLINKS/EVA_CHEMLINKS_pic_6.jpg",
+      "filename": "EVA_CHEMLINKS_pic_6.jpg",
+      "role": "Gallery",
+      "visualDescription": "Two hands hold coarse white Crystal Salt grains against a pale background.",
+      "altText": "Hands holding Crystal Salt grains for Eva Chemlinks.",
+      "imageTitle": "Eva Chemlinks | Crystal Salt",
+      "searchTopic": "Salt product photography",
+      "creator": "Talon Production House",
+      "client": "Eva Chemlinks"
+    }
+  ]
+}
