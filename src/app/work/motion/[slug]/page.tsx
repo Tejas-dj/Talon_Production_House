@@ -156,13 +156,14 @@ export default async function ProjectDetailPage({ params }: { params: Promise<Pa
                 key={`${c.role}-${c.name}`}
                 className="hairline flex items-baseline justify-between gap-3 py-2 first:border-t-0"
               >
-                <span className="type-small text-muted">{c.role}</span>
-                <span className="type-small">{c.name}</span>
+                <span className="type-small text-muted shrink-0">{c.role}</span>
+                <span className="type-small text-right">{c.name}</span>
               </li>
             ))}
           </ul>
         </div>
-        <div className="md:[grid-column:7/13]">
+        {/* Sticky so a long credits roll doesn't leave this column empty. */}
+        <div className="md:sticky md:top-(--header-height) md:self-start md:[grid-column:7/13]">
           <h2 className="type-meta text-muted mb-3">/ About the Project</h2>
           <Reveal>
             <div className="max-w-[70ch] space-y-4">

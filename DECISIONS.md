@@ -956,3 +956,17 @@ session's tooling could not actually produce.
   notice across a client-side navigation and a fresh context showing it again, and both links
   landing on `/contact` and `/work/motion/jhumki-official-music-video-tanmay-gururaj`. `tsc
   --noEmit` clean, `eslint` unchanged at the repo's 10 pre-existing errors, `next build` clean.
+
+---
+
+## Menake music video schema
+
+- **VideoObject now names the people.** `director`, `actor`, `musicBy` and `producer` are derived
+  from `credits` by role, and credits naming a team member link to that person's `/team#slug`
+  Person `@id`, so answer engines connect "director of Menake" with "founder of Talon".
+  `productionCompany` links to the Organization `@id`. New optional `genre` and `inLanguage` fields
+  feed the same schema.
+- **`uploadDate` uses `releaseDate`.** It was hardcoded to `YEAR-01-01`, which told Google that
+  Jhumki came out on 1 January. It now emits the real release day at midnight IST.
+- **About column is sticky beside the credits** (`md:top-(--header-height)`, same as Studio), since
+  Menake's 34-row credits roll otherwise left the right column empty for most of its height.

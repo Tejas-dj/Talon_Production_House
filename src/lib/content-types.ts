@@ -60,6 +60,10 @@ export interface VideoProject {
   releaseDate?: string;
   /** Display override for category, e.g. "Kannada Music Video" */
   displayCategory?: string;
+  /** Schema.org `genre` for the VideoObject, e.g. "Kannada indie-pop" */
+  genre?: string;
+  /** BCP 47 language code for the VideoObject's `inLanguage`, e.g. "kn" */
+  inLanguage?: string;
   /** Production company name when shown as its own metadata field */
   productionCompany?: string;
   /** Heading + body for a "shot at" note below the About section */

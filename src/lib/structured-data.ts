@@ -79,20 +79,76 @@ export function buildVideoObjectSchema(project: VideoProject) {
         .replace("youtube.com/watch?v=", "youtube.com/embed/")
     : undefined;
 
+  const director = creditPeople(project, /^Director\b/i);
+  const actor = creditPeople(project, /^(Cast|Featuring)$/i);
+  const musicBy = creditPeople(project, /Composer/i);
+  const producer = creditPeople(project, /^Executive Producer$/i);
+
   return {
     "@context": "https://schema.org",
     "@type": "VideoObject",
     name: project.title,
     description: project.synopsis,
     thumbnailUrl,
-    uploadDate: `${project.year}-01-01`,
+    uploadDate: projectUploadDate(project),
     duration: runtimeToIso8601(project.runtime),
     ...(playbackUrl ? { contentUrl: playbackUrl } : {}),
     ...(youtubeEmbedUrl ? { embedUrl: youtubeEmbedUrl } : playbackUrl ? { embedUrl: playbackUrl } : {}),
+    ...(project.inLanguage ? { inLanguage: project.inLanguage } : {}),
+    ...(project.genre ? { genre: project.genre } : {}),
+    ...(director.length ? { director } : {}),
+    ...(actor.length ? { actor } : {}),
+    ...(musicBy.length ? { musicBy } : {}),
+    ...(producer.length ? { producer } : {}),
     ...(project.productionCompany
-      ? { productionCompany: { "@type": "Organization", name: project.productionCompany } }
+      ? {
+          productionCompany: {
+            "@type": "Organization",
+            name: project.productionCompany,
+            ...(project.productionCompany === "Talon Production House" ? { "@id": ORG_ID } : {}),
+          },
+        }
       : {}),
   };
+}
+
+/* Team members with their own Person entity on /team (buildTeamProfileSchemas,
+   fed by LEADERS in src/app/team/page.tsx). A credit naming one of them links
+   to that same @id, so search and answer engines read "director of this
+   video" and "founder of Talon" as one person rather than two strings. Keep in
+   step with LEADERS; importing it here would make this module depend on a
+   page. */
+const TEAM_MEMBER_NAMES = ["Pratham Raje Urs", "Vikram Adithya Reddy"];
+
+function teamPersonId(name: string): string {
+  return `${SITE_URL}/team#${name.toLowerCase().replace(/\s+/g, "-")}`;
+}
+
+/** Person entities for every credit whose role matches, deduplicated by name. */
+function creditPeople(project: VideoProject, role: RegExp) {
+  const names = new Set(
+    project.credits.filter((c) => role.test(c.role)).map((c) => c.name),
+  );
+  return [...names].map((name) => ({
+    "@type": "Person",
+    name,
+    ...(TEAM_MEMBER_NAMES.includes(name) ? { "@id": teamPersonId(name) } : {}),
+  }));
+}
+
+/** The real release day in IST when one is known, else the 1 January
+ *  placeholder for projects that only carry a year. */
+function projectUploadDate(project: VideoProject): string {
+  if (project.releaseDate) {
+    const parsed = new Date(project.releaseDate);
+    if (!Number.isNaN(parsed.getTime())) {
+      const yyyy = parsed.getFullYear();
+      const mm = String(parsed.getMonth() + 1).padStart(2, "0");
+      const dd = String(parsed.getDate()).padStart(2, "0");
+      return `${yyyy}-${mm}-${dd}T00:00:00+05:30`;
+    }
+  }
+  return `${project.year}-01-01`;
 }
 
 /** Site-wide Organization, embedded once in the root layout. */
