@@ -57,7 +57,20 @@
     "category": "Music Video",
     "featured": true,
     "bunnyVideoId": "bcb24077-82f4-4a16-b155-0d0ef12eea12",
-    "youtubeUrl": "https://youtu.be/E2_Kz8wh2rw"
+    "youtubeUrl": "https://youtu.be/E2_Kz8wh2rw",
+    "songTitle": "Menake",
+    "streamingLinks": [
+      { "platform": "Spotify", "url": "https://open.spotify.com/album/0MY3ocHCC4TtBezNUKqDj8" },
+      { "platform": "Apple Music", "url": "https://music.apple.com/us/album/menake-single/6822046492" },
+      { "platform": "YouTube Music", "url": "https://music.youtube.com/playlist?list=OLAK5uy_lbqW11nhMfuiTF5nRp081FzxMjA8SV2nM" },
+      { "platform": "JioSaavn", "url": "https://www.jiosaavn.com/album/menake/IYVqqBBmohE_" },
+      { "platform": "Amazon Music", "url": "https://music.amazon.com/albums/B0HMSMY1PK" },
+      { "platform": "Gaana", "url": "https://gaana.com/album/menake-p36D9qgNbr" }
+    ],
+    "artistProfiles": [
+      "https://www.youtube.com/@TanmayGururaj",
+      "https://www.instagram.com/tanmayg_music/"
+    ]
   },
   {
     "slug": "jhumki-official-music-video-tanmay-gururaj",
@@ -89,7 +102,16 @@
     "inLanguage": "kn",
     "category": "Music Video",
     "bunnyVideoId": "e66190ce-cb87-4850-ac37-6cfafb8eb763",
-    "youtubeUrl": "https://youtu.be/XhUPPuZMEPY"
+    "youtubeUrl": "https://youtu.be/XhUPPuZMEPY",
+    "songTitle": "Jhumki",
+    "streamingLinks": [
+      { "platform": "Spotify", "url": "https://open.spotify.com/track/02TtzIxJej92ghL8hFJt6h" },
+      { "platform": "Apple Music", "url": "https://music.apple.com/in/album/jhumki/6806159910?i=6806159912" }
+    ],
+    "artistProfiles": [
+      "https://www.youtube.com/@TanmayGururaj",
+      "https://www.instagram.com/tanmayg_music/"
+    ]
   },
   {
     "slug": "shazia-khan-ad",

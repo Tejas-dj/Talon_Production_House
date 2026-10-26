@@ -77,6 +77,16 @@ function assertVideoProject(value: unknown, index: number): asserts value is Vid
     fail(file, index, `"${p.slug}" is missing "credits"`);
   }
   p.credits.forEach((c, i) => assertCredit(c, file, index, i));
+  if (p.streamingLinks !== undefined) {
+    if (!Array.isArray(p.streamingLinks)) {
+      fail(file, index, `"${p.slug}" has an invalid "streamingLinks"`);
+    }
+    p.streamingLinks.forEach((l, i) => {
+      if (!l || !isNonEmptyString(l.platform) || !isNonEmptyString(l.url) || !l.url.startsWith("https://")) {
+        fail(file, index, `"${p.slug}" streamingLinks ${i} needs a "platform" and an https "url"`);
+      }
+    });
+  }
   if (p.stillImageIds !== undefined) {
     if (!Array.isArray(p.stillImageIds)) {
       fail(file, index, `"${p.slug}" has an invalid "stillImageIds"`);

@@ -187,6 +187,31 @@ export default async function ProjectDetailPage({ params }: { params: Promise<Pa
         </>
       )}
 
+      {project.streamingLinks && project.streamingLinks.length > 0 && (
+        <>
+          <div className="hairline" />
+          <section className="container-site pt-6 pb-6">
+            <h2 className="type-meta text-muted mb-3">
+              / Listen to {project.songTitle ?? project.title}
+            </h2>
+            <ul className="flex flex-wrap gap-x-5 gap-y-3">
+              {project.streamingLinks.map((link) => (
+                <li key={link.url}>
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener"
+                    className="link-draw type-meta inline-block pb-1"
+                  >
+                    {link.platform}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </>
+      )}
+
       {project.stillImageIds && project.stillImageIds.length > 0 && (
         <section className="container-site pb-6">
           <ProjectStillsGallery

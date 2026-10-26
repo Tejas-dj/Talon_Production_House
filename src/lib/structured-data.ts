@@ -100,6 +100,7 @@ export function buildVideoObjectSchema(project: VideoProject) {
     ...(actor.length ? { actor } : {}),
     ...(musicBy.length ? { musicBy } : {}),
     ...(producer.length ? { producer } : {}),
+    ...(project.songTitle ? { about: buildMusicRecording(project, project.songTitle) } : {}),
     ...(project.productionCompany
       ? {
           productionCompany: {
@@ -109,6 +110,26 @@ export function buildVideoObjectSchema(project: VideoProject) {
           },
         }
       : {}),
+  };
+}
+
+/* The song a music video is about. Its `sameAs` points at the official
+   streaming listings, which is how search and answer engines tie this page to
+   the exact track (there are many songs called "Menake") rather than to the
+   word. `byArtist` is the client, carrying their own official profiles. */
+function buildMusicRecording(project: VideoProject, songTitle: string) {
+  const streamingUrls = project.streamingLinks?.map((l) => l.url) ?? [];
+  return {
+    "@type": "MusicRecording",
+    name: songTitle,
+    byArtist: {
+      "@type": "Person",
+      name: project.client,
+      ...(project.artistProfiles?.length ? { sameAs: project.artistProfiles } : {}),
+    },
+    ...(project.inLanguage ? { inLanguage: project.inLanguage } : {}),
+    ...(project.genre ? { genre: project.genre } : {}),
+    ...(streamingUrls.length ? { sameAs: streamingUrls } : {}),
   };
 }
 

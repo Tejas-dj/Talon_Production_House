@@ -20,6 +20,13 @@ export interface Credit {
   name: string;
 }
 
+export interface StreamingLink {
+  /** Display name, e.g. "Spotify", "Apple Music" */
+  platform: string;
+  /** Full official listing URL, tracking parameters stripped */
+  url: string;
+}
+
 export interface VideoProject {
   slug: string;
   /** [18–48 ch] */
@@ -64,6 +71,15 @@ export interface VideoProject {
   genre?: string;
   /** BCP 47 language code for the VideoObject's `inLanguage`, e.g. "kn" */
   inLanguage?: string;
+  /** Song title for music videos, e.g. "Menake". Names the MusicRecording
+   * the VideoObject is `about`. */
+  songTitle?: string;
+  /** Official listings of the song on streaming platforms, rendered as the
+   * "Listen" row and emitted as the MusicRecording's `sameAs`. */
+  streamingLinks?: StreamingLink[];
+  /** The artist's own official profiles (YouTube channel, Instagram), emitted
+   * as `sameAs` on the MusicRecording's `byArtist` Person. */
+  artistProfiles?: string[];
   /** Production company name when shown as its own metadata field */
   productionCompany?: string;
   /** Heading + body for a "shot at" note below the About section */
