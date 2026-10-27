@@ -112,4 +112,4 @@ export const WORK_OVERLAY_MOTION_PREVIEW_BUNNY_VIDEO_ID = "69681521-f62b-454a-93
    release, Menake (see content/projects.json, slug
    "menake-official-music-video-tanmay-gururaj"), as a silent, looping
    preview instead of a static thumbnail. */
-export const WORK_OVERLAY_MOBILE_MOTION_BUNNY_VIDEO_ID = "79ae64bc-5c7e-4108-8b81-8c1679bce348";
+export const WORK_OVERLAY_MOBILE_MOTION_BUNNY_VIDEO_ID = "30d419f2-129e-49e8-8d88-4dcc2bce9eea";
