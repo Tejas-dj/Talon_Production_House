@@ -132,7 +132,7 @@ export function Footer() {
             </Link>
           </p>
           {/* Credit wording, names, URLs and rel values are fixed by the
-              CobaltKite Creative standard (see CREDIT in @/lib/site). Real
+              CobaltKite standard (see CREDIT in @/lib/site). Real
               server-rendered text, exactly two links, nofollow (never
               noreferrer, no target). */}
           <p className="credit type-small text-muted">
